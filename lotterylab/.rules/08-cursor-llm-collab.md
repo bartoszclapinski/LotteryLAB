@@ -1,0 +1,28 @@
+### Collaboration Rules for Cursor/LLMs
+
+- **Read before write**:
+  - Always scan `.ai/` (PRD, sprints) and `.rules/` before making changes.
+  - Check `sprints/log.md` for recent decisions and conventions.
+- **Planning**:
+  - For multi-step changes, create a brief TODO plan and execute incrementally.
+  - Respect sprint scope; don’t expand features without updating backlog/plan.
+- **Editing**:
+  - Use small, focused edits; avoid refactoring unrelated code.
+  - Preserve indentation and formatting; match existing style.
+  - Update or add tests alongside code changes.
+- **Docs & Logs**:
+  - When adding features, update `ROADMAP.md`/`BACKLOG.md` if scope changes.
+  - Add entries to `sprints/log.md` for meaningful milestones.
+- **Constraints**:
+  - Python-first UI (FastAPI + Jinja2 + HTMX). Streamlit is for internal research.
+  - Default theme is light; keep dark-mode tokens intact.
+  - Do not auto-open browsers in dev servers.
+- **Pull Requests**:
+  - Keep PRs small with a clear description, acceptance criteria, and screenshots (for UI).
+  - Reference related sprint items/backlog IDs.
+- **Quality gates**:
+  - Run tests locally; ensure lints pass; avoid introducing flaky behavior.
+- **Security**:
+  - Never invent or hardcode secrets; read from env.
+- **Language & Style**:
+  - Write professional, concise commit messages; no emojis in code.

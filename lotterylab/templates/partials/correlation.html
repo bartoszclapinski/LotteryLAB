@@ -1,0 +1,255 @@
+<div class="correlation-analysis">
+  <h2>🔗 {{ correlation_title }}</h2>
+  <p class="analysis-subtitle">{{ correlation_subtitle }}</p>
+
+  <!-- Summary Statistics Card -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>Correlation Overview</h3>
+      <div class="correlation-indicator">
+        <span class="indicator-dot"></span>
+        <span class="indicator-text">
+          {{ total_draws }} draws analyzed
+        </span>
+      </div>
+    </div>
+
+    <div class="test-results">
+      <div class="metric-row">
+        <div class="metric">
+          <div class="metric-label">Numbers Analyzed</div>
+          <div class="metric-value">{{ numbers|length if numbers else 0 }}</div>
+          <div class="metric-desc">Unique numbers in dataset</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Avg Correlation</div>
+          <div class="metric-value">{{ "%.3f"|format(summary.average_correlation) }}</div>
+          <div class="metric-desc">Mean pairwise correlation</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Strongest Link</div>
+          <div class="metric-value">{{ "%.3f"|format(summary.max_correlation) }}</div>
+          <div class="metric-desc">Maximum correlation found</div>
+        </div>
+      </div>
+
+      <div class="correlation-distribution">
+        <h4>Correlation Strength Distribution</h4>
+        <div class="distribution-bars">
+          {% for strength, count in summary.correlation_distribution.items() %}
+          <div class="distribution-item">
+            <span class="strength-label">{{ strength }}</span>
+            <div class="strength-bar">
+              <div class="bar-fill" style="width: {{ (count / summary.correlation_distribution.values()|list|sum * 100)|round }}%"></div>
+            </div>
+            <span class="strength-count">{{ count }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Correlation Heatmap Card -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>Correlation Heatmap</h3>
+      <div class="heatmap-info">
+        <span class="info-text">🔵 Strong positive correlation • 🔴 Strong negative correlation • ⚪ Weak/no correlation</span>
+      </div>
+    </div>
+
+    <div class="heatmap-container">
+      <div id="correlation-heatmap" class="correlation-heatmap">
+        <!-- Heatmap will be rendered here by JavaScript -->
+      </div>
+    </div>
+
+    <div class="heatmap-legend">
+      <div class="legend-item">
+        <div class="legend-color" style="background: #1e88e5;"></div>
+        <span>Strong Positive (+0.7 to +1.0)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: #42a5f5;"></div>
+        <span>Moderate Positive (+0.3 to +0.7)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: #90caf9;"></div>
+        <span>Weak Positive (+0.1 to +0.3)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: #e3f2fd;"></div>
+        <span>Very Weak (±0.0 to ±0.1)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: #ffebee;"></div>
+        <span>Weak Negative (-0.3 to -0.1)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: #ffcdd2;"></div>
+        <span>Moderate Negative (-0.7 to -0.3)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: #e53935;"></div>
+        <span>Strong Negative (-1.0 to -0.7)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Correlated Pairs Card -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>Top Correlated Number Pairs</h3>
+      <div class="correlation-indicator">
+        <span class="indicator-dot"></span>
+        <span class="indicator-text">
+          Most frequently co-occurring numbers
+        </span>
+      </div>
+    </div>
+
+    <div class="correlation-pairs">
+      {% if top_pairs %}
+        {% for pair in top_pairs[:12] %}
+        <div class="correlation-pair">
+          <div class="pair-numbers">
+            <span class="number-ball">{{ pair.number1 }}</span>
+            <span class="correlation-arrow">↔</span>
+            <span class="number-ball">{{ pair.number2 }}</span>
+          </div>
+          <div class="pair-stats">
+            <div class="correlation-strength">
+              <span class="strength-value {{ 'positive' if pair.correlation > 0 else 'negative' }}">
+                {{ "%.3f"|format(pair.correlation) }}
+              </span>
+              <span class="strength-label">correlation</span>
+            </div>
+            {% if pair.significant %}
+            <div class="significance-badge">Statistically Significant</div>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="no-data">
+          <p>No significant correlations found in the current dataset.</p>
+          <p>This could indicate truly random number selection or insufficient data for analysis.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Analysis Insights Card -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>Analysis Insights</h3>
+    </div>
+
+    <div class="insights-content">
+      <div class="insight-item">
+        <h4>🎯 Interpretation Guide</h4>
+        <p><strong>Positive correlation:</strong> Numbers that tend to appear together more often than expected by chance.</p>
+        <p><strong>Negative correlation:</strong> Numbers that tend to avoid appearing together.</p>
+        <p><strong>Zero correlation:</strong> Numbers appear independently (truly random behavior).</p>
+      </div>
+
+      <div class="insight-item">
+        <h4>🔬 Statistical Method</h4>
+        <p>This analysis uses <strong>Pearson correlation coefficient</strong> to measure the linear relationship between number co-occurrences across {{ total_draws }} lottery draws.</p>
+        <p>Statistical significance is determined using t-tests with α = 0.05.</p>
+      </div>
+
+      <div class="insight-item">
+        <h4>💡 Research Applications</h4>
+        <ul>
+          <li><strong>Lottery Design:</strong> Verify that number selection appears truly random</li>
+          <li><strong>Pattern Detection:</strong> Identify any systematic clustering that shouldn't exist</li>
+          <li><strong>Statistical Validation:</strong> Confirm independence assumptions in probability models</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Prepare data for heatmap
+  const numbers = {{ numbers|tojson }};
+  const correlationMatrix = {{ correlation_matrix|tojson }};
+
+  if (numbers && correlationMatrix && numbers.length > 0) {
+    renderCorrelationHeatmap(numbers, correlationMatrix);
+  }
+});
+
+function renderCorrelationHeatmap(numbers, correlationMatrix) {
+  const container = document.getElementById('correlation-heatmap');
+
+  // Create heatmap grid
+  const grid = document.createElement('div');
+  grid.className = 'heatmap-grid';
+
+  // Add number labels on top
+  const topLabels = document.createElement('div');
+  topLabels.className = 'heatmap-top-labels';
+  topLabels.appendChild(document.createElement('div')); // Empty corner
+
+  numbers.forEach(num => {
+    const label = document.createElement('div');
+    label.className = 'heatmap-label';
+    label.textContent = num;
+    topLabels.appendChild(label);
+  });
+  grid.appendChild(topLabels);
+
+  // Create heatmap cells
+  numbers.forEach((num1, i) => {
+    // Side label
+    const sideLabel = document.createElement('div');
+    sideLabel.className = 'heatmap-side-label';
+    sideLabel.textContent = num1;
+    grid.appendChild(sideLabel);
+
+    // Correlation cells for this row
+    correlationMatrix[i].forEach((corr, j) => {
+      const cell = document.createElement('div');
+      cell.className = 'heatmap-cell';
+      cell.style.backgroundColor = getCorrelationColor(corr);
+
+      // Add tooltip
+      cell.title = `${numbers[i]} ↔ ${numbers[j]}: ${corr.toFixed(3)}`;
+
+      // Highlight diagonal (self-correlation = 1.0)
+      if (i === j) {
+        cell.classList.add('diagonal-cell');
+      }
+
+      grid.appendChild(cell);
+    });
+  });
+
+  container.appendChild(grid);
+}
+
+function getCorrelationColor(correlation) {
+  const absCorr = Math.abs(correlation);
+
+  if (correlation > 0) {
+    // Positive correlations - blue scale
+    if (absCorr >= 0.7) return '#1e88e5';      // Strong positive
+    else if (absCorr >= 0.3) return '#42a5f5'; // Moderate positive
+    else if (absCorr >= 0.1) return '#90caf9'; // Weak positive
+    else return '#e3f2fd';                      // Very weak
+  } else {
+    // Negative correlations - red scale
+    if (absCorr >= 0.7) return '#e53935';      // Strong negative
+    else if (absCorr >= 0.3) return '#ef5350'; // Moderate negative
+    else if (absCorr >= 0.1) return '#ffcdd2'; // Weak negative
+    else return '#ffebee';                      // Very weak
+  }
+}
+</script>
+

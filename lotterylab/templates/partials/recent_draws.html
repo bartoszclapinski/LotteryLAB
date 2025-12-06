@@ -1,0 +1,25 @@
+<div class="recent">
+  <h2>{{ recent_draws }}</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>{{ date }}</th>
+        <th>{{ game }}</th>
+        <th>{{ provider }}</th>
+        <th>{{ numbers }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for d in items %}
+      <tr>
+        <td>{{ d.draw_number }}</td>
+        <td>{{ d.draw_date }}</td>
+        <td>{{ d.game_type }}</td>
+        <td>{{ d.game_provider or '-' }}</td>
+        <td>{{ d.numbers }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

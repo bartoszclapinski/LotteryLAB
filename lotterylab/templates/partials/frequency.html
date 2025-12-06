@@ -1,0 +1,42 @@
+<div class="frequency">
+  <h2>{{ frequency_analysis }} — {{ game_type|capitalize }} ({{ window_days }} {{ days }})</h2>
+  <div class="meta">{{ draws }}: {{ num_draws }} | {{ expected_each }}: {{ '%.2f' % expected_each }}</div>
+
+  <!-- Interactive Chart -->
+  <div id="freq-chart" class="chart" data-game="{{ game_type }}" data-window="{{ window_days }}" data-json='{{ frequency | tojson }}' data-expected='{{ expected_each }}'></div>
+
+  <!-- Hot & Cold Numbers -->
+  <div class="hot-cold-grid">
+    <div class="hot-section">
+      <h3>🔥 {{ hot_numbers_title }}</h3>
+      <div class="number-list">
+        {% for num in hot_numbers %}
+        <div class="number-item hot">{{ num }}</div>
+        {% endfor %}
+      </div>
+      <div class="hot-desc">{{ hot_desc }}</div>
+    </div>
+    <div class="cold-section">
+      <h3>❄️ {{ cold_numbers_title }}</h3>
+      <div class="number-list">
+        {% for num in cold_numbers %}
+        <div class="number-item cold">{{ num }}</div>
+        {% endfor %}
+      </div>
+      <div class="cold-desc">{{ cold_desc }}</div>
+    </div>
+  </div>
+
+  <!-- Frequency Grid (compact view) -->
+  <details class="frequency-details">
+    <summary>{{ view_all }}</summary>
+    <div class="frequency-grid">
+    {% for num in range(1, 50) %}
+      <div class="cell{% if num in hot_numbers %} hot{% elif num in cold_numbers %} cold{% endif %}">
+        <div class="n">{{ num }}</div>
+        <div class="c">{{ frequency.get(num, 0) }}</div>
+      </div>
+    {% endfor %}
+    </div>
+  </details>
+</div>

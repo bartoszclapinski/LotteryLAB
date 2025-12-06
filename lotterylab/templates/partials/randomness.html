@@ -1,0 +1,324 @@
+<div class="randomness-analysis">
+  <h2>🎲 {{ randomness_title }}</h2>
+  <p class="analysis-subtitle">{{ randomness_subtitle }}</p>
+
+  <!-- Main Results Card -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>Chi-Square Goodness-of-Fit Test</h3>
+      <div class="randomness-indicator {{ 'random' if chi_square_test.is_random else 'not-random' }}">
+        <span class="indicator-dot"></span>
+        <span class="indicator-text">
+          {{ 'Appears Random' if chi_square_test.is_random else 'Not Random' }}
+        </span>
+      </div>
+    </div>
+
+    <div class="test-results">
+      <div class="metric-row">
+        <div class="metric">
+          <div class="metric-label">p-value</div>
+          <div class="metric-value {{ 'significant' if chi_square_test.p_value < 0.05 else 'not-significant' }}">
+            {{ "%.4f"|format(chi_square_test.p_value) }}
+          </div>
+          <div class="metric-desc">
+            {{ 'Significant (p < 0.05)' if chi_square_test.p_value < 0.05 else 'Not significant (p ≥ 0.05)' }}
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Chi-Square</div>
+          <div class="metric-value">{{ "%.2f"|format(chi_square_test.chi_square_statistic) }}</div>
+          <div class="metric-desc">Test statistic</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Degrees of Freedom</div>
+          <div class="metric-value">{{ chi_square_test.degrees_of_freedom }}</div>
+          <div class="metric-desc">49 numbers - 1</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kolmogorov-Smirnov Test Card -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>Kolmogorov-Smirnov Test</h3>
+      <div class="randomness-indicator {{ 'random' if kolmogorov_smirnov_test.is_random else 'not-random' }}">
+        <span class="indicator-dot"></span>
+        <span class="indicator-text">
+          {{ 'Appears Random' if kolmogorov_smirnov_test.is_random else 'Not Random' }}
+        </span>
+      </div>
+    </div>
+
+    <div class="test-results">
+      <div class="metric-row">
+        <div class="metric">
+          <div class="metric-label">p-value</div>
+          <div class="metric-value {{ 'significant' if kolmogorov_smirnov_test.p_value < 0.05 else 'not-significant' }}">
+            {{ "%.4f"|format(kolmogorov_smirnov_test.p_value) }}
+          </div>
+          <div class="metric-desc">
+            {{ 'Significant (p < 0.05)' if kolmogorov_smirnov_test.p_value < 0.05 else 'Not significant (p ≥ 0.05)' }}
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">KS Statistic</div>
+          <div class="metric-value">
+            {{ "%.4f"|format(kolmogorov_smirnov_test.ks_statistic) }}
+          </div>
+          <div class="metric-desc">
+            Max difference from uniform
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Critical Value</div>
+          <div class="metric-value">
+            {{ "%.4f"|format(kolmogorov_smirnov_test.critical_value) }}
+          </div>
+          <div class="metric-desc">
+            95% confidence threshold
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Runs Test Card -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>Runs Test (Sequence Randomness)</h3>
+      <div class="randomness-indicator {{ 'random' if runs_test_median.is_random else 'not-random' }}">
+        <span class="indicator-dot"></span>
+        <span class="indicator-text">
+          {{ 'Appears Random' if runs_test_median.is_random else 'Not Random' }}
+        </span>
+      </div>
+    </div>
+
+    <div class="test-results">
+      <!-- Median-based runs -->
+      <div class="metric-row">
+        <div class="metric">
+          <div class="metric-label">Median Runs p-value</div>
+          <div class="metric-value {{ 'significant' if runs_test_median.p_value < 0.05 else 'not-significant' }}">
+            {{ "%.4f"|format(runs_test_median.p_value) }}
+          </div>
+          <div class="metric-desc">
+            Above/below median sequences
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Observed/Expected</div>
+          <div class="metric-value">
+            {{ runs_test_median.observed_runs }}/{{ "%.1f"|format(runs_test_median.expected_runs) }}
+          </div>
+          <div class="metric-desc">
+            Runs in sequence
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Z-score</div>
+          <div class="metric-value">
+            {{ "%.2f"|format(runs_test_median.z_score) }}
+          </div>
+          <div class="metric-desc">
+            Standardized statistic
+          </div>
+        </div>
+      </div>
+
+      <!-- Even/Odd runs -->
+      <div class="metric-row">
+        <div class="metric">
+          <div class="metric-label">Even/Odd p-value</div>
+          <div class="metric-value {{ 'significant' if runs_test_even_odd.p_value < 0.05 else 'not-significant' }}">
+            {{ "%.4f"|format(runs_test_even_odd.p_value) }}
+          </div>
+          <div class="metric-desc">
+            Even/odd number sequences
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">High/Low p-value</div>
+          <div class="metric-value {{ 'significant' if runs_test_high_low.p_value < 0.05 else 'not-significant' }}">
+            {{ "%.4f"|format(runs_test_high_low.p_value) }}
+          </div>
+          <div class="metric-desc">
+            High/low number sequences
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Sample Size</div>
+          <div class="metric-value">
+            {{ runs_test_median.n1 + runs_test_median.n2 }}
+          </div>
+          <div class="metric-desc">
+            Numbers analyzed
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Autocorrelation Analysis Card -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>Autocorrelation Analysis</h3>
+      <div class="randomness-indicator {{ 'random' if not autocorrelation_analysis.overall_significance else 'not-random' }}">
+        <span class="indicator-dot"></span>
+        <span class="indicator-text">
+          {{ 'No Temporal Dependencies' if not autocorrelation_analysis.overall_significance else 'Temporal Dependencies Detected' }}
+        </span>
+      </div>
+    </div>
+
+    <div class="test-results">
+      <div class="metric-row">
+        <div class="metric">
+          <div class="metric-label">Significant Lags</div>
+          <div class="metric-value {{ 'significant' if autocorrelation_analysis.overall_significance else 'not-significant' }}">
+            {{ autocorrelation_analysis.significant_lags|length }}
+          </div>
+          <div class="metric-desc">
+            Lags with p < 0.05 ({{ autocorrelation_analysis.significant_lags|join(', ') if autocorrelation_analysis.significant_lags else 'None' }})
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Sample Size</div>
+          <div class="metric-value">
+            {{ autocorrelation_analysis.sample_size }}
+          </div>
+          <div class="metric-desc">
+            Numbers analyzed
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Max Lags Tested</div>
+          <div class="metric-value">
+            {{ autocorrelation_analysis.autocorrelations|length }}
+          </div>
+          <div class="metric-desc">
+            Lags examined (1-10)
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed autocorrelation results -->
+      <div class="autocorrelation-details">
+        <h4>Autocorrelation Coefficients by Lag</h4>
+        <div class="autocorr-grid">
+          {% for lag in [1,2,3,5,10] %}
+            {% if lag in autocorrelation_analysis.autocorrelations %}
+              <div class="autocorr-item">
+                <div class="autocorr-lag">Lag {{ lag }}</div>
+                <div class="autocorr-value {{ 'significant' if lag in autocorrelation_analysis.significant_lags else 'not-significant' }}">
+                  {{ "%.4f"|format(autocorrelation_analysis.autocorrelations[lag]) }}
+                </div>
+                <div class="autocorr-pvalue">
+                  p = {{ "%.4f"|format(autocorrelation_analysis.p_values[lag]) }}
+                </div>
+                <div class="autocorr-ci">
+                  CI: [{{ "%.4f"|format(autocorrelation_analysis.confidence_intervals[lag][0]) }}, {{ "%.4f"|format(autocorrelation_analysis.confidence_intervals[lag][1]) }}]
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional Metrics -->
+  <div class="metrics-grid">
+    <!-- Sample Information -->
+    <div class="analysis-card">
+      <h3>📊 Sample Information</h3>
+      <div class="metric-row">
+        <div class="metric">
+          <div class="metric-label">Total Draws</div>
+          <div class="metric-value">{{ sample_size.total_draws }}</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Total Numbers</div>
+          <div class="metric-value">{{ sample_size.total_observations }}</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Coverage</div>
+          <div class="metric-value">{{ "%.1f"|format(sample_size.coverage_percentage) }}%</div>
+          <div class="metric-desc">Numbers used (1-49)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Entropy Analysis -->
+    <div class="analysis-card">
+      <h3>🧠 Information Entropy</h3>
+      <div class="entropy-viz">
+        <div class="entropy-bar">
+          <div class="entropy-fill" style="width: {{ (entropy.normalized_entropy * 100)|round }}%"></div>
+        </div>
+        <div class="entropy-labels">
+          <span>Low Randomness</span>
+          <span class="entropy-value">{{ "%.2f"|format(entropy.normalized_entropy) }}</span>
+          <span>High Randomness</span>
+        </div>
+      </div>
+      <div class="metric-row">
+        <div class="metric">
+          <div class="metric-label">Shannon Entropy</div>
+          <div class="metric-value">{{ "%.3f"|format(entropy.shannon_entropy) }}</div>
+          <div class="metric-desc">bits per number</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Maximum Possible</div>
+          <div class="metric-value">{{ "%.3f"|format(entropy.max_possible_entropy) }}</div>
+          <div class="metric-desc">for 49 numbers</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistical Interpretation -->
+  <div class="analysis-card interpretation">
+    <h3>📖 Statistical Interpretation</h3>
+    <div class="interpretation-content">
+      {% if chi_square_test.is_random %}
+        <div class="interpretation-positive">
+          <h4>✅ Appears Random</h4>
+          <p>The lottery draws in this analysis period follow expected random patterns. The p-value ({{ "%.4f"|format(chi_square_test.p_value) }}) indicates that observed deviations from perfect uniformity could occur by chance {{ "%.1f"|format((1-chi_square_test.p_value)*100) }}% of the time.</p>
+        </div>
+      {% else %}
+        <div class="interpretation-negative">
+          <h4>⚠️ Statistical Anomalies Detected</h4>
+          <p>The lottery draws show significant deviations from expected random patterns. The p-value ({{ "%.4f"|format(chi_square_test.p_value) }}) suggests these deviations are unlikely to occur by chance alone.</p>
+        </div>
+      {% endif %}
+
+      <div class="interpretation-notes">
+        <h4>🔍 Additional Insights</h4>
+        <ul>
+          <li><strong>Entropy:</strong> {{ "%.1f"|format(entropy.normalized_entropy * 100) }}% of maximum possible randomness</li>
+          <li><strong>Coverage:</strong> {{ "%.1f"|format(sample_size.coverage_percentage) }}% of available numbers appeared</li>
+          <li><strong>Sample Size:</strong> {{ sample_size.total_draws }} draws analyzed</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Educational Disclaimer -->
+  <div class="analysis-card disclaimer">
+    <h3>📚 Educational Note</h3>
+    <p><strong>This analysis tests for statistical randomness, not prediction power.</strong> Even truly random systems can show temporary patterns in finite samples. Lottery outcomes remain unpredictable regardless of statistical properties.</p>
+  </div>
+</div>

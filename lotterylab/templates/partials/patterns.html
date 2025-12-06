@@ -1,0 +1,263 @@
+<div class="pattern-analysis">
+  <h2>🔍 {{ pattern_title }}</h2>
+  <p class="analysis-subtitle">{{ pattern_subtitle }}</p>
+
+  <!-- Consecutive Numbers Card -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>Consecutive Numbers</h3>
+      <div class="pattern-indicator">
+        <span class="indicator-dot"></span>
+        <span class="indicator-text">
+          {{ consecutive_numbers.total_sequences }} sequences found
+        </span>
+      </div>
+    </div>
+
+    <div class="test-results">
+      <div class="metric-row">
+        <div class="metric">
+          <div class="metric-label">Total Sequences</div>
+          <div class="metric-value">
+            {{ consecutive_numbers.total_sequences }}
+          </div>
+          <div class="metric-desc">
+            Consecutive number chains
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Max Length</div>
+          <div class="metric-value">
+            {{ consecutive_numbers.max_length }}
+          </div>
+          <div class="metric-desc">
+            Longest consecutive chain
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Avg Length</div>
+          <div class="metric-value">
+            {{ "%.1f"|format(consecutive_numbers.avg_length) }}
+          </div>
+          <div class="metric-desc">
+            Average chain length
+          </div>
+        </div>
+      </div>
+
+      {% if consecutive_numbers.sequences %}
+      <div class="sequences-list">
+        <h4>Found Sequences:</h4>
+        <div class="sequence-grid">
+          {% for seq in consecutive_numbers.sequences %}
+            <div class="sequence-item">
+              <span class="sequence-numbers">{{ seq|join(', ') }}</span>
+              <span class="sequence-length">({{ seq|length }} numbers)</span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Arithmetic Sequences Card -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>Arithmetic Sequences</h3>
+      <div class="pattern-indicator">
+        <span class="indicator-dot"></span>
+        <span class="indicator-text">
+          {{ arithmetic_sequences.total_sequences }} sequences detected
+        </span>
+      </div>
+    </div>
+
+    <div class="test-results">
+      <div class="metric-row">
+        <div class="metric">
+          <div class="metric-label">Sequences Found</div>
+          <div class="metric-value">
+            {{ arithmetic_sequences.total_sequences }}
+          </div>
+          <div class="metric-desc">
+            Arithmetic progressions
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Common Differences</div>
+          <div class="metric-value">
+            {{ arithmetic_sequences.common_differences|length }}
+          </div>
+          <div class="metric-desc">
+            Unique step sizes
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Most Common</div>
+          <div class="metric-value">
+            {% set most_common = arithmetic_sequences.common_differences|dictsort(false, 'value')|last %}
+            {% if most_common %}
+              {{ most_common[0] }}
+            {% else %}
+              N/A
+            {% endif %}
+          </div>
+          <div class="metric-desc">
+            Most frequent difference
+          </div>
+        </div>
+      </div>
+
+      {% if arithmetic_sequences.sequences_found %}
+      <div class="sequences-list">
+        <h4>Found Sequences:</h4>
+        <div class="sequence-grid">
+          {% for seq_info in arithmetic_sequences.sequences_found[:10] %}
+            <div class="sequence-item">
+              <span class="sequence-numbers">{{ seq_info.sequence|join(', ') }}</span>
+              <span class="sequence-diff">(diff: {{ seq_info.common_difference }})</span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Digit Patterns Card -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>Digit Analysis</h3>
+      <div class="pattern-indicator">
+        <span class="indicator-dot"></span>
+        <span class="indicator-text">
+          Individual digit patterns
+        </span>
+      </div>
+    </div>
+
+    <div class="test-results">
+      <div class="metric-row">
+        <div class="metric">
+          <div class="metric-label">Repeating Digits</div>
+          <div class="metric-value">
+            {{ digit_patterns.repeating_digits|length }}
+          </div>
+          <div class="metric-desc">
+            Digits appearing multiple times
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Most Common Digit</div>
+          <div class="metric-value">
+            {% set most_common_digit = digit_patterns.digit_frequencies|dictsort(false, 'value')|last %}
+            {% if most_common_digit %}
+              {{ most_common_digit[0] }} ({{ most_common_digit[1] }}x)
+            {% else %}
+              N/A
+            {% endif %}
+          </div>
+          <div class="metric-desc">
+            Most frequent digit
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Unique Digits</div>
+          <div class="metric-value">
+            {{ digit_patterns.digit_frequencies|length }}
+          </div>
+          <div class="metric-desc">
+            Total unique digits found
+          </div>
+        </div>
+      </div>
+
+      {% if digit_patterns.repeating_digits %}
+      <div class="sequences-list">
+        <h4>Repeating Digits:</h4>
+        <div class="digit-grid">
+          {% for digit, count in digit_patterns.repeating_digits.items() %}
+            <div class="digit-item">
+              <span class="digit-number">{{ digit }}</span>
+              <span class="digit-count">({{ count }} times)</span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Sum Patterns Card -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>Sum Analysis</h3>
+      <div class="pattern-indicator">
+        <span class="indicator-dot"></span>
+        <span class="indicator-text">
+          Patterns in draw sums
+        </span>
+      </div>
+    </div>
+
+    <div class="test-results">
+      <div class="metric-row">
+        <div class="metric">
+          <div class="metric-label">Sum Range</div>
+          <div class="metric-value">
+            {{ sum_patterns.sum_range[0] }} - {{ sum_patterns.sum_range[1] }}
+          </div>
+          <div class="metric-desc">
+            Min to max sum
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Most Common Sum</div>
+          <div class="metric-value">
+            {% set most_common_sum = sum_patterns.most_common_sums|dictsort(false, 'value')|last %}
+            {% if most_common_sum %}
+              {{ most_common_sum[0] }} ({{ most_common_sum[1] }} times)
+            {% else %}
+              N/A
+            {% endif %}
+          </div>
+          <div class="metric-desc">
+            Most frequent sum
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Total Draws</div>
+          <div class="metric-value">
+            {{ total_draws_analyzed }}
+          </div>
+          <div class="metric-desc">
+            Draws analyzed
+          </div>
+        </div>
+      </div>
+
+      {% if sum_patterns.most_common_sums %}
+      <div class="sequences-list">
+        <h4>Most Common Sums:</h4>
+        <div class="sum-grid">
+          {% for sum_value, count in sum_patterns.most_common_sums.items() %}
+            <div class="sum-item">
+              <span class="sum-value">{{ sum_value }}</span>
+              <span class="sum-count">({{ count }} draws)</span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

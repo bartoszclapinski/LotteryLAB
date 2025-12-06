@@ -1,0 +1,25 @@
+### Data Ingestion Rules
+
+- **Sources**: MBNet TXT (primary fallback), Lotto API (future), CSV/Excel.
+- **Parsing**:
+  - Implement parsers in `src/data_acquisition/` modules; keep them pure and iterable-based.
+  - Use `parse_initial_txt` style: ignore blanks/comments; yield typed records.
+- **Validation**:
+  - Validate each parsed record via `validate_draw` (range 1..49, uniqueness, date not in future, positive draw number).
+  - Return structured results (`ValidationResult`) with reasons.
+- **Normalization**:
+  - Map game types via `normalize_game_type` (e.g., `lotto` vs `lotto_plus`).
+- **Upsert/Idempotency**:
+  - Skip draws with `draw_number` ≤ current max; log skipped vs inserted.
+  - Commit in batches (e.g., every 500 rows).
+- **Scheduler/Updates**:
+  - Use `scheduler.update_from_mbnet()`; archive raw files under `.data/raw/` with timestamp.
+  - Retain up to 30 files; compare by SHA-256 to avoid duplicates.
+- **Auditing**:
+  - Append to `.data/update_log.csv` with timestamp (UTC), source, inserted/skipped, file name, sha256.
+  - Log to `.logs/scheduler.log` using rotating file handler.
+- **Errors/Resilience**:
+  - Catch `URLError/HTTPError`; rethrow as runtime errors after logging.
+  - Validate encoding (utf-8; fallback latin-1).
+- **Testing**:
+  - Provide fixtures with small synthetic datasets; include invalid lines to test validator and skip logic.

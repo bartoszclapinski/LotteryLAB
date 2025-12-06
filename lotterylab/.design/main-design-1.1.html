@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LotteryLab Research Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fff;
+            color: #202124;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: #fff;
+            border-bottom: 1px solid #e8eaed;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 32px;
+            height: 32px;
+            background: #1a73e8;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .site-title {
+            font-size: 20px;
+            color: #5f6368;
+            font-weight: 400;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            margin-left: 48px;
+        }
+
+        .nav-tab {
+            padding: 8px 16px;
+            color: #5f6368;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .nav-tab.active {
+            background: #e8f0fe;
+            color: #1a73e8;
+        }
+
+        .nav-tab:hover {
+            background: #f8f9fa;
+        }
+
+        /* Container */
+        .container {
+            display: flex;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            padding: 24px;
+            border-right: 1px solid #e8eaed;
+            height: calc(100vh - 65px);
+            overflow-y: auto;
+            position: sticky;
+            top: 65px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 32px;
+        }
+
+        .sidebar-title {
+            font-size: 11px;
+            font-weight: 500;
+            color: #5f6368;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            margin: 2px 0;
+            color: #202124;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-size: 14px;
+            gap: 8px;
+        }
+
+        .sidebar-item:hover {
+            background: #f8f9fa;
+        }
+
+        .sidebar-item.active {
+            background: #e8f0fe;
+            color: #1a73e8;
+            font-weight: 500;
+        }
+
+        .duration {
+            margin-left: auto;
+            font-size: 12px;
+            color: #5f6368;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 48px 64px;
+            max-width: 900px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #5f6368;
+        }
+
+        .breadcrumb a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 400;
+            color: #202124;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #5f6368;
+            margin-bottom: 48px;
+            line-height: 1.5;
+        }
+
+        /* Content Sections */
+        .content-section {
+            margin-bottom: 48px;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 400;
+            color: #202124;
+            margin-bottom: 24px;
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 16px;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.75;
+            color: #3c4043;
+            margin-bottom: 16px;
+        }
+
+        /* Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin: 32px 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #5f6368;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 300;
+            color: #202124;
+            margin-bottom: 8px;
+        }
+
+        .stat-description {
+            font-size: 14px;
+            color: #5f6368;
+        }
+
+        /* Formula Box */
+        .formula-box {
+            background: #f8f9fa;
+            border-left: 4px solid #1a73e8;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+
+        .formula {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            color: #202124;
+            text-align: center;
+            margin: 16px 0;
+        }
+
+        /* Interactive Elements */
+        .interactive-demo {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 32px;
+            margin: 32px 0;
+            color: white;
+        }
+
+        .demo-title {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .slider-container {
+            margin: 24px 0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+        }
+
+        /* Results Section */
+        .results-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .result-box {
+            background: white;
+            border: 1px solid #e8eaed;
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .result-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #5f6368;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-size: 24px;
+            color: #202124;
+            margin-bottom: 4px;
+        }
+
+        .result-status {
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        .status-reject {
+            background: #fce8e6;
+            color: #d33b27;
+        }
+
+        .status-accept {
+            background: #e6f4ea;
+            color: #188038;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            position: fixed;
+            bottom: 0;
+            left: 280px;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e8eaed;
+            padding: 16px 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: #e8eaed;
+            border-radius: 2px;
+            margin: 0 24px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #1a73e8;
+            border-radius: 2px;
+            width: 35%;
+            transition: width 0.3s;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #1a73e8;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1557b0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #1a73e8;
+            border: 1px solid #dadce0;
+        }
+
+        .btn-secondary:hover {
+            background: #f8f9fa;
+        }
+
+        /* Right Panel */
+        .right-panel {
+            width: 280px;
+            padding: 48px 24px;
+            border-left: 1px solid #e8eaed;
+        }
+
+        .panel-section {
+            margin-bottom: 32px;
+        }
+
+        .panel-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 12px;
+        }
+
+        .info-card {
+            background: #e8f0fe;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .info-card-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1a73e8;
+            margin-bottom: 8px;
+        }
+
+        .info-card-text {
+            font-size: 13px;
+            color: #3c4043;
+            line-height: 1.5;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 32px 0;
+            position: relative;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div style="display: flex; align-items: center;">
+                <div class="logo-section">
+                    <div class="logo">L</div>
+                    <div class="site-title">LotteryLab Research Platform</div>
+                </div>
+                <nav class="nav-tabs">
+                    <a href="#" class="nav-tab active">Przegląd</a>
+                    <a href="#" class="nav-tab">Analiza danych</a>
+                    <a href="#" class="nav-tab">Eksperymenty</a>
+                    <a href="#" class="nav-tab">Publikacje</a>
+                    <a href="#" class="nav-tab">Metodologia</a>
+                    <a href="#" class="nav-tab">Dokumentacja</a>
+                </nav>
+            </div>
+            <button class="btn btn-primary">Nowe badanie</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">Wprowadzenie</div>
+                <a href="#" class="sidebar-item">
+                    <span>🎯</span>
+                    <span>Podstawy teorii loterii</span>
+                    <span class="duration">10 min</span>
+                </a>
+                <a href="#" class="sidebar-item active">
+                    <span>📊</span>
+                    <span>Analiza statystyczna</span>
+                    <span class="duration">15 min</span>
+                </a>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">Metody badawcze</div>
+                <a href="#" class="sidebar-item">
+                    <span>🔬</span>
+                    <span>Test chi-kwadrat</span>
+                    <span class="duration">20 min</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <span>📈</span>
+                    <span>Analiza częstości</span>
+                    <span class="duration">25 min</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <span>🎲</span>
+                    <span>Symulacje Monte Carlo</span>
+                    <span class="duration">30 min</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <span>🧮</span>
+                    <span>Entropia Shannona</span>
+                    <span class="duration">15 min</span>
+                </a>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">Zaawansowane</div>
+                <a href="#" class="sidebar-item">
+                    <span>🤖</span>
+                    <span>Machine Learning</span>
+                    <span class="duration">45 min</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <span>📉</span>
+                    <span>Analiza szeregów czasowych</span>
+                    <span class="duration">35 min</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="breadcrumb">
+                <a href="#">LotteryLab</a>
+                <span>›</span>
+                <a href="#">Metody badawcze</a>
+                <span>›</span>
+                <span>Analiza statystyczna</span>
+            </div>
+
+            <h1>Analiza statystyczna losowań</h1>
+            <p class="subtitle">
+                Poznaj matematyczne podstawy analizy gier loteryjnych i naucz się interpretować wyniki testów statystycznych w kontekście teorii prawdopodobieństwa.
+            </p>
+
+            <div class="content-section">
+                <h2>Kluczowe metryki</h2>
+                <p>
+                    Podczas analizy losowań loteryjnych wykorzystujemy szereg metryk statystycznych, które pomagają nam zrozumieć rozkład wyników i wykryć ewentualne anomalie.
+                </p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Wielkość próby</div>
+                        <div class="stat-value">5,847</div>
+                        <div class="stat-description">Historycznych losowań przeanalizowanych</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Test Chi-kwadrat</div>
+                        <div class="stat-value">χ² = 47.32</div>
+                        <div class="stat-description">p-value = 0.5234 (df = 48)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Poziom entropii</div>
+                        <div class="stat-value">5.614</div>
+                        <div class="stat-description">Entropia Shannona (bits)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Przedział ufności</div>
+                        <div class="stat-value">±2.3%</div>
+                        <div class="stat-description">95% CI dla rozkładu częstości</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2>Test hipotezy statystycznej</h2>
+                <p>
+                    Test chi-kwadrat pozwala nam określić, czy obserwowany rozkład liczb różni się istotnie od rozkładu teoretycznego (równomiernego).
+                </p>
+
+                <div class="formula-box">
+                    <h3>Wzór na statystykę chi-kwadrat:</h3>
+                    <div class="formula">
+                        χ² = Σ [(O - E)² / E]
+                    </div>
+                    <p style="text-align: center; color: #5f6368; font-size: 14px;">
+                        gdzie O - częstość obserwowana, E - częstość oczekiwana
+                    </p>
+                </div>
+
+                <div class="results-container">
+                    <div class="result-box">
+                        <div class="result-label">Hipoteza zerowa (H₀)</div>
+                        <div class="result-value">Rozkład równomierny</div>
+                        <p style="font-size: 14px; color: #5f6368; margin-top: 8px;">
+                            "Rozkład liczb w loterii jest zgodny z rozkładem równomiernym z równym prawdopodobieństwem dla każdej liczby."
+                        </p>
+                        <div class="result-status status-accept">FAIL TO REJECT</div>
+                    </div>
+                    <div class="result-box">
+                        <div class="result-label">Hipoteza alternatywna (H₁)</div>
+                        <div class="result-value">Rozkład nierównomierny</div>
+                        <p style="font-size: 14px; color: #5f6368; margin-top: 8px;">
+                            "Rozkład liczb w loterii wykazuje nielosowe wzorce lub odchylenia od rozkładu równomiernego."
+                        </p>
+                        <div class="result-status status-reject">NOT SIGNIFICANT</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2>Interaktywna symulacja</h2>
+                <p>
+                    Eksperymentuj z parametrami symulacji, aby zobaczyć jak wielkość próby wpływa na wyniki testów statystycznych.
+                </p>
+
+                <div class="interactive-demo">
+                    <div class="demo-title">Symulacja Monte Carlo</div>
+                    <p style="margin-bottom: 24px;">Przeprowadź wielokrotne losowania i obserwuj zbieżność do rozkładu teoretycznego.</p>
+                    
+                    <div class="slider-container">
+                        <label style="display: block; margin-bottom: 8px;">Liczba symulacji: <span id="simCount">10,000</span></label>
+                        <input type="range" min="1000" max="100000" value="10000" class="slider" id="simSlider">
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label style="display: block; margin-bottom: 8px;">Seed: <span id="seedValue">42</span></label>
+                        <input type="range" min="1" max="9999" value="42" class="slider" id="seedSlider">
+                    </div>
+                    
+                    <button class="btn" style="background: white; color: #667eea; margin-top: 16px;">
+                        Uruchom symulację
+                    </button>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="chart" style="width: 100%; height: 100%;"></canvas>
+            </div>
+
+        </main>
+
+        <aside class="right-panel">
+            <div class="panel-section">
+                <div class="info-card">
+                    <div class="info-card-title">💡 Wskazówka</div>
+                    <div class="info-card-text">
+                        Wartość p-value > 0.05 oznacza, że nie mamy podstaw do odrzucenia hipotezy o losowości wyników.
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="panel-title">Na tej stronie</div>
+                <nav style="font-size: 14px;">
+                    <a href="#" style="display: block; padding: 8px 0; color: #5f6368; text-decoration: none;">Kluczowe metryki</a>
+                    <a href="#" style="display: block; padding: 8px 0; color: #1a73e8; text-decoration: none;">Test hipotezy statystycznej</a>
+                    <a href="#" style="display: block; padding: 8px 0; color: #5f6368; text-decoration: none;">Interaktywna symulacja</a>
+                </nav>
+            </div>
+
+            <div class="panel-section">
+                <div class="panel-title">Powiązane tematy</div>
+                <div class="info-card" style="background: white; border: 1px solid #e8eaed;">
+                    <div class="info-card-title" style="color: #202124;">📚 Dodatkowe materiały</div>
+                    <div class="info-card-text">
+                        • Rozkład dwumianowy<br>
+                        • Prawo wielkich liczb<br>
+                        • Centralne twierdzenie graniczne
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <div class="progress-section">
+        <button class="btn btn-secondary">Poprzedni temat</button>
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        <button class="btn btn-primary">Następny temat</button>
+    </div>
+
+    <script>
+        // Slider interactions
+        const simSlider = document.getElementById('simSlider');
+        const simCount = document.getElementById('simCount');
+        const seedSlider = document.getElementById('seedSlider');
+        const seedValue = document.getElementById('seedValue');
+
+        simSlider.oninput = function() {
+            simCount.textContent = parseInt(this.value).toLocaleString();
+        }
+
+        seedSlider.oninput = function() {
+            seedValue.textContent = this.value;
+        }
+
+        // Simple chart visualization
+        const canvas = document.getElementById('chart');
+        const ctx = canvas.getContext('2d');
+        
+        function drawChart() {
+            const width = canvas.parentElement.clientWidth;
+            const height = 250;
+            canvas.width = width;
+            canvas.height = height;
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw axes
+            ctx.strokeStyle = '#e8eaed';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(40, height - 30);
+            ctx.lineTo(width - 20, height - 30);
+            ctx.moveTo(40, 20);
+            ctx.lineTo(40, height - 30);
+            ctx.stroke();
+            
+            // Draw bars
+            const data = [42, 38, 45, 41, 43, 39, 44, 40, 42, 41];
+            const barWidth = (width - 80) / data.length;
+            
+            data.forEach((value, index) => {
+                const barHeight = (value / 50) * (height - 60);
+                const x = 40 + index * barWidth + barWidth * 0.1;
+                const y = height - 30 - barHeight;
+                
+                ctx.fillStyle = '#1a73e8';
+                ctx.fillRect(x, y, barWidth * 0.8, barHeight);
+            });
+            
+            // Labels
+            ctx.fillStyle = '#5f6368';
+            ctx.font = '12px sans-serif';
+            ctx.fillText('Częstość', 45, 15);
+            ctx.fillText('Numery', width/2 - 20, height - 5);
+        }
+        
+        drawChart();
+        window.addEventListener('resize', drawChart);
+    </script>
+</body>
+</html>

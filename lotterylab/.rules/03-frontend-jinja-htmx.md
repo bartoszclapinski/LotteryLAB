@@ -1,0 +1,21 @@
+### Jinja2 + HTMX + Plotly Rules
+
+- **Structure**: Base page in `templates/index.html`; partials in `templates/partials/`.
+- **HTMX**:
+  - Use `hx-get` for partials; `hx-trigger="load"` for initial fetch.
+  - Keep responses as HTML partials; avoid JSON for UI swaps.
+  - After-swap hooks init charts (`htmx:afterSwap`).
+- **Plotly**:
+  - Render via `static/js/app.js`; pass data through `data-*` attributes.
+  - Disable mode bar; keep charts minimalist for speed.
+- **Styling**:
+  - CSS in `static/css/main.css`. Use design tokens; no inline styles.
+  - Default light theme; prepare dark via `html[data-theme="dark"]` tokens.
+- **Accessibility**:
+  - Use semantic HTML, proper labels in forms.
+  - Ensure chart colors have sufficient contrast.
+- **Performance**:
+  - Keep partials small; avoid heavy loops server-side.
+  - Defer scripts; use static assets via `/static` mount.
+- **Streamlit**:
+  - Keep for internal research only; don’t block public UI.

@@ -1,0 +1,34 @@
+### Python Coding Standards
+
+- **Language/Versions**: Python 3.11+. Use type hints everywhere except trivially inferred locals.
+- **Style**: PEP 8/PEP 484 aligned. Prefer readable, explicit code over clever one-liners.
+- **Naming**:
+  - Functions: verbs/verb-phrases (`calculate_frequency`), variables: meaningful nouns.
+  - Avoid abbreviations; no 1–2 character names.
+  - Constants UPPER_SNAKE; modules and packages lower_snake.
+- **Types**:
+  - Public functions and dataclasses fully annotated.
+  - Avoid `Any`. Use `Optional[T]` explicitly.
+  - Prefer `TypedDict`/Pydantic models for structured payloads.
+- **Control flow**:
+  - Use guard clauses; limit nesting to ≤2–3 levels.
+  - Handle edge/error cases first.
+  - Don’t catch and ignore exceptions; log meaningfully.
+- **Errors/Logging**:
+  - Use `src/utils/logger.get_logger` with rotating files; UTC timestamps.
+  - Raise domain errors with clear messages; include context (ids, filters).
+- **Configuration**:
+  - Read via `src/utils/config.py`; don’t import `os.getenv` directly elsewhere.
+  - Never commit secrets. Use `.env` locally.
+- **Modules/Structure**:
+  - Business logic in `src/` packages (analysis, services, repositories).
+  - API layer thin; call services/repositories; no SQL in routes.
+- **I/O and Paths**:
+  - Use `pathlib.Path`. Specify encodings (`utf-8`).
+  - No hardcoded absolute paths; work relative to repo root.
+- **Docstrings/Comments**:
+  - Function docstrings: behavior, params, return, errors, side-effects.
+  - Comment “why”, not “how”. Avoid TODOs—implement instead.
+- **Performance**:
+  - O(49) loops for number ranges are fine. Avoid N+1 queries.
+  - Batch DB writes; commit in chunks (e.g., per 500 rows) as ingestion does.

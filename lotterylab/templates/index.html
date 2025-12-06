@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="{{ lang }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title }}</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <script src="https://unpkg.com/htmx.org@1.9.12" defer></script>
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" defer></script>
+    <script src="/static/js/app.js" defer></script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-content">
+        <div style="display: flex; align-items: center;">
+          <div class="logo-section">
+            <div class="logo">Λ</div>
+            <div class="site-title">{{ site_title }}</div>
+          </div>
+          <nav class="nav-tabs">
+            <a href="#" class="nav-tab active">{{ nav_overview }}</a>
+            <a href="#" class="nav-tab">{{ nav_analysis }}</a>
+            <a href="#" class="nav-tab">{{ nav_experiments }}</a>
+            <a href="#" class="nav-tab">{{ nav_docs }}</a>
+          </nav>
+        </div>
+        <div class="header-actions">
+          <div class="lang-switcher">
+            {% for supported_lang in supported_languages %}
+            <a href="/set-language?lang={{ supported_lang }}" 
+               class="lang-btn {% if lang == supported_lang %}active{% endif %}">
+              {{ supported_lang|upper }}
+            </a>
+            {% endfor %}
+          </div>
+          <button class="btn btn-primary">{{ new_study }}</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="container-3col">
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-title">{{ controls }}</div>
+          <form hx-get="/partials/frequency" hx-target="#frequency" hx-trigger="change delay:200ms">
+            <label class="form-field">
+              <span>{{ game_type_label }}</span>
+              <select name="game_type">
+                <option value="lotto" {% if game_type == 'lotto' %}selected{% endif %}>Lotto</option>
+                <option value="lotto_plus" {% if game_type == 'lotto_plus' %}selected{% endif %}>Lotto Plus</option>
+              </select>
+            </label>
+            <label class="form-field">
+              <span>{{ window_days_label }}</span>
+              <input type="number" name="window_days" value="365" min="7" max="3650" />
+            </label>
+          </form>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-title">{{ methods }}</div>
+          <a href="#" class="sidebar-item active" hx-get="/partials/frequency" hx-target="#main-content" hx-swap="innerHTML"><span>📈</span><span>{{ frequency_analysis }}</span><span class="duration">15 min</span></a>
+          <a href="#" class="sidebar-item" hx-get="/partials/randomness" hx-target="#main-content" hx-swap="innerHTML"><span>🎲</span><span>{{ randomness_tests }}</span><span class="duration">10 min</span></a>
+          <a href="#" class="sidebar-item" hx-get="/partials/generator" hx-target="#main-content" hx-swap="innerHTML"><span>🎯</span><span>{{ number_generator }}</span><span class="duration">5 min</span></a>
+          <a href="#" class="sidebar-item" hx-get="/partials/patterns" hx-target="#main-content" hx-swap="innerHTML"><span>🔍</span><span>{{ pattern_analysis }}</span><span class="duration">15 min</span></a>
+          <a href="#" class="sidebar-item" hx-get="/partials/correlation" hx-target="#main-content" hx-swap="innerHTML"><span>🔗</span><span>{{ correlation_heatmap }}</span><span class="duration">12 min</span></a>
+          <a href="#" class="sidebar-item"><span>🧪</span><span>{{ hypothesis_tests }}</span><span class="duration">20 min</span></a>
+        </div>
+      </aside>
+
+      <main class="main-content" id="main-content">
+        <div class="breadcrumb">
+          <a href="#">Lottery Lab</a>
+          <span>›</span>
+          <a href="#">{{ methods }}</a>
+          <span>›</span>
+          <span>{{ frequency_analysis }}</span>
+        </div>
+
+        <h1>{{ statistical_analysis }}</h1>
+        <p class="subtitle">{{ explore_frequency }}</p>
+
+        <section id="frequency" hx-get="/partials/frequency" hx-trigger="load" class="card">
+          {{ loading }}
+        </section>
+
+        <section id="recent-draws" hx-get="/partials/recent-draws" hx-trigger="load" class="card" style="margin-top:16px;">
+          {{ loading_recent }}
+        </section>
+      </main>
+
+      <aside class="right-panel">
+        <div class="panel-section">
+          <div class="info-card">
+            <div class="info-card-title">💡 {{ tip }}</div>
+            <div class="info-card-text">{{ tip_window }}</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="site-footer">
+      <div class="container">© {{ title }} — {{ footer }}</div>
+    </footer>
+  </body>
+</html>

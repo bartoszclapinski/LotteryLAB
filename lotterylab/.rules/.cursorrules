@@ -1,0 +1,178 @@
+# LotteryLAB Cursor/LLM Development Rules
+
+## Project Overview
+- Educational/research lottery analysis system (Polish Lotto focus)
+- NOT a prediction system - emphasize statistical verification of randomness
+- Tech stack: Python 3.11+, FastAPI, SQLAlchemy, Pandas/NumPy/SciPy, Plotly, Streamlit
+- Architecture: Backend API + dual frontend (Streamlit research + FastAPI+Jinja2+HTMX public)
+
+## Code Style & Standards
+
+### Python Code Guidelines
+- Use Python 3.11+ features and type hints throughout
+- Follow PEP 8 with 88-character line length (Black formatter style)
+- Use f-strings for string formatting, not .format() or %
+- Prefer pathlib.Path over os.path for file operations
+- Use dataclasses or Pydantic models for structured data
+- Always add docstrings for public functions/classes using Google style
+- Use absolute imports, avoid relative imports when possible
+
+### Database & SQLAlchemy
+- All models inherit from `src.database.base.Base`
+- Use Alembic for all schema changes - never modify models without migration
+- Prefer repository pattern over direct model access in services
+- Use SQLAlchemy 2.0+ syntax (select(), where(), etc.)
+- Add indexes for frequently queried columns
+- Use proper foreign key constraints and relationships
+
+### FastAPI Patterns
+- All API endpoints use Pydantic schemas for request/response
+- Use dependency injection for database sessions and services  
+- Group related endpoints in separate routers
+- Add proper HTTP status codes and error handling
+- Use async/await consistently for database operations
+- Enable CORS for development, configure properly for production
+
+### Error Handling
+- Use proper logging with UTC timestamps (existing logger in utils/)
+- Never expose internal errors to API responses
+- Validate all inputs at service boundaries
+- Use custom exception classes for business logic errors
+- Log all data import/processing operations with counts and timing
+
+### Testing
+- Minimum 80% code coverage target
+- Use pytest with fixtures for database setup
+- Mock external dependencies (APIs, file system)
+- Test both happy path and error conditions
+- Use factory pattern for test data generation
+
+## Project Structure Rules
+
+### File Organization
+- Keep existing structure: `src/`, `tests/`, `templates/`, `static/`, `.ai/`
+- Analysis modules go in `src/analysis/` with clear separation by type
+- All database operations through repository pattern in `src/repositories/`
+- Business logic in `src/services/`, not in API endpoints
+- Utilities in `src/utils/` for cross-cutting concerns
+
+### Import Organization
+- Standard library imports first
+- Third-party imports second  
+- Local application imports last
+- Use absolute imports from project root: `from src.database.models import Draw`
+
+### Configuration
+- All config through environment variables with .env support
+- Provide .env.example with all required variables
+- Use Pydantic Settings for configuration validation
+- Never commit secrets or API keys
+
+## Data & Analysis Guidelines
+
+### Data Handling
+- Always validate lottery data: dates, number ranges (1-49), uniqueness
+- Use pandas for data analysis, NumPy for mathematical operations
+- Implement idempotent operations - safe to run multiple times
+- Log all data operations with source, counts, and checksums
+- Archive raw data files with timestamps and SHA256 hashes
+
+### Statistical Analysis
+- Use SciPy for statistical tests, clearly document assumptions
+- Always include confidence intervals and p-values in results
+- Implement proper null/alternative hypothesis testing
+- Document mathematical formulas and cite sources
+- Include educational disclaimers about randomness vs patterns
+
+### Visualization
+- Use Plotly for interactive charts (web-compatible JSON)
+- Matplotlib/Seaborn for research notebooks only
+- Ensure all charts have proper labels, titles, and legends  
+- Support both light and dark themes consistently
+- Make visualizations accessible (color-blind friendly)
+
+## Frontend Guidelines
+
+### FastAPI + Jinja2 + HTMX (Public UI)
+- Follow existing 3-column layout design in `.design/main-design.html`
+- Use semantic HTML5 elements with proper ARIA labels
+- Implement progressive enhancement - work without JavaScript
+- Use HTMX for partial page updates, not full SPA behavior
+- Keep CSS organized with CSS custom properties for theming
+- Mobile-first responsive design approach
+
+### Streamlit (Research UI)
+- Use for internal analysis and experimentation only
+- Implement caching with @st.cache_data for expensive operations
+- Create reusable components for common chart types
+- Keep research notebooks in separate `notebooks/` directory
+
+## Deployment & Operations
+
+### Environment Setup
+- Document all dependencies in requirements.txt
+- Use virtual environments, provide setup instructions
+- Include health checks for all services
+- Implement proper logging levels (DEBUG/INFO/WARNING/ERROR)
+
+### Performance
+- Database queries should include EXPLAIN ANALYZE results
+- Cache expensive computations with appropriate TTL
+- Use async operations for I/O bound tasks
+- Target <500ms API response times (p95)
+- Load test with realistic lottery data volumes (10k+ draws)
+
+## Security & Compliance
+
+### Data Protection
+- No personal data collection - only public lottery results
+- Implement rate limiting on API endpoints
+- Sanitize all user inputs, especially for SQL queries
+- Use HTTPS in production, secure headers
+- Regular dependency updates for security patches
+
+### Legal Compliance
+- Include clear educational disclaimers
+- Respect data source terms of service
+- No gambling promotion or prediction claims
+- GDPR compliance for any user data
+
+## LLM Assistant Guidelines
+
+### When Working on This Project
+- Always read existing code patterns before implementing new features
+- Check sprint plans in `.ai/sprints/` before major changes
+- Update documentation and tests with code changes
+- Consider performance impact of new features
+- Maintain the educational/research focus - avoid gambling implications
+
+### Code Review Checklist
+- [ ] Follows project structure and naming conventions
+- [ ] Includes proper type hints and docstrings
+- [ ] Has corresponding tests with good coverage
+- [ ] Updates Alembic migration if database changes
+- [ ] Includes appropriate logging statements
+- [ ] Handles errors gracefully
+- [ ] Uses existing repository/service patterns
+- [ ] Updates API documentation if endpoints added
+
+### Common Pitfalls to Avoid
+- Don't bypass repository layer for direct database access
+- Don't add prediction/gambling features - keep it statistical
+- Don't ignore existing error handling patterns
+- Don't modify database schema without Alembic migration
+- Don't expose internal errors in API responses
+- Don't implement features without corresponding tests
+- Don't break the educational nature of the project
+
+## Sprint-Specific Context
+- Current: Sprint 001 complete (MVP with data pipeline, basic analysis, UI)
+- Next: Sprint 002 (randomness tests, pattern analysis, advanced charts)
+- Focus: Statistical rigor, educational value, code quality
+
+## Resources & References
+- PRD: `.ai/lotto-analysis-prd.md`
+- Sprint plans: `.ai/sprints/`
+- Design assets: `.design/`
+- API documentation: Auto-generated via FastAPI
+- Logging guide: Main README.md

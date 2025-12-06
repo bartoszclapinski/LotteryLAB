@@ -1,0 +1,31 @@
+<div class="generator" id="generator">
+  <h2>🎲 {{ generator_title }}</h2>
+  <p class="generator-desc">{{ generator_desc }}</p>
+
+  <div class="generated-set">
+    <h3>{{ your_set }}</h3>
+    <div class="number-set">
+      {% for num in generated_numbers %}
+      <div class="number-item{% if num in hot_numbers %} hot{% elif num in cold_numbers %} cold{% else %} neutral{% endif %}">{{ num }}</div>
+      {% endfor %}
+    </div>
+    <div class="set-meta">
+      <span class="hot-count">{{ generated_numbers | select('in', hot_numbers) | list | length }} {{ hot }}</span>
+      <span class="neutral-count">{{ generated_numbers | reject('in', hot_numbers) | reject('in', cold_numbers) | list | length }} {{ neutral }}</span>
+      <span class="cold-count">{{ generated_numbers | select('in', cold_numbers) | list | length }} {{ cold }}</span>
+    </div>
+  </div>
+
+  <div class="generator-actions">
+    <button
+      hx-get="/partials/generator?game_type={{ game_type }}"
+      hx-target="#generator"
+      hx-swap="innerHTML"
+      class="btn btn-primary">
+      🎲 {{ generate_new }}
+    </button>
+    <div class="disclaimer">
+      <small>⚠️ {{ generator_disclaimer }}</small>
+    </div>
+  </div>
+</div>
