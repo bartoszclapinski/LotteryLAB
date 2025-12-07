@@ -23,10 +23,10 @@
 - [x] Create pattern detection algorithms (consecutive numbers, sequences)
 - [x] Add digit analysis (last digit distribution, sum patterns)
 - [x] Implement correlation heatmap visualization
-- [ ] Add time series trend analysis
+- [x] Add time series trend analysis
 - [x] Add pattern analysis endpoints (`/api/v1/analysis/patterns`)
 - [x] Enhance UI with statistical test results display
-- [ ] Add downloadable analysis reports (PDF/Excel)
+- [x] Add downloadable analysis reports (PDF/Excel)
 
 ## ✅ Acceptance criteria
 - All statistical tests return p-values with proper interpretation
@@ -54,3 +54,12 @@
 - Clear documentation of statistical methods and interpretations
 
 ## 🔁 Changes during sprint (running notes)
+
+### 2025-12-07 - Sprint Completion
+- ✅ Time series trend analysis implemented with period controls (week/month/quarter)
+- ✅ Streak analysis (hot/cold streaks) added to trends
+- ✅ Interactive Plotly charts for frequency trends over time
+- ✅ PDF export with ReportLab (comprehensive reports with tables and styling)
+- ✅ Excel export with OpenPyXL (multi-sheet workbooks with frequency, randomness, patterns, draws)
+- ✅ Export buttons in UI sidebar with download links
+- ✅ Full i18n support for trends and export features (PL/EN)

@@ -1,11 +1,11 @@
-from fastapi import FastAPI, Request, Response
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi import FastAPI, Request, Response, HTTPException
+from fastapi.responses import HTMLResponse, RedirectResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from datetime import date
-from typing import Optional
+from datetime import date, datetime
+from typing import Optional, List
 from sqlalchemy.orm import Session
 from sqlalchemy import select, and_, desc
 from pathlib import Path
@@ -16,7 +16,12 @@ from src.repositories.draws import DrawRepository
 from src.analysis.frequency import calculate_frequency, count_draws, get_hot_cold_numbers
 from src.analysis.randomness import analyze_number_randomness
 from src.analysis.patterns import analyze_patterns
-from src.analysis.visualizations import create_correlation_heatmap_data
+from src.analysis.visualizations import (
+    create_correlation_heatmap_data,
+    analyze_time_series_trends,
+    create_time_series_chart_data
+)
+from src.services.export import create_full_report
 from src.utils.logger import get_logger
 from src.utils.i18n import detect_language, get_all_texts, SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE
 import random
@@ -383,3 +388,190 @@ def get_randomness_analysis(
             game_provider=game_provider,
         )
     return result
+
+
+@app.get("/api/v1/analysis/trends")
+def get_trends_analysis(
+    game_type: str = "lotto",
+    period: str = "month",
+    num_periods: int = 12
+):
+    """Get time series trend analysis for lottery numbers."""
+    with SessionLocal() as session:
+        result = analyze_time_series_trends(
+            session=session,
+            game_type=game_type,
+            period=period,
+            num_periods=num_periods,
+        )
+    
+    if "error" in result:
+        raise HTTPException(status_code=404, detail=result["error"])
+    
+    return result
+
+
+@app.get("/api/v1/analysis/trends/chart")
+def get_trends_chart_data(
+    game_type: str = "lotto",
+    period: str = "month",
+    num_periods: int = 12,
+    numbers: Optional[str] = None
+):
+    """Get chart-ready time series data for selected numbers."""
+    # Parse numbers from comma-separated string
+    number_list = None
+    if numbers:
+        try:
+            number_list = [int(n.strip()) for n in numbers.split(',') if n.strip()]
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Invalid numbers format")
+    
+    with SessionLocal() as session:
+        result = create_time_series_chart_data(
+            session=session,
+            game_type=game_type,
+            numbers=number_list,
+            period=period,
+            num_periods=num_periods,
+        )
+    
+    if "error" in result:
+        raise HTTPException(status_code=404, detail=result["error"])
+    
+    return result
+
+
+@app.get("/partials/trends", response_class=HTMLResponse)
+async def trends_partial(
+    request: Request,
+    game_type: str = "lotto",
+    period: str = "month",
+    num_periods: int = 12
+):
+    """Get HTML partial for time series trend analysis display."""
+    with SessionLocal() as session:
+        result = analyze_time_series_trends(
+            session=session,
+            game_type=game_type,
+            period=period,
+            num_periods=num_periods,
+        )
+        
+        chart_data = create_time_series_chart_data(
+            session=session,
+            game_type=game_type,
+            period=period,
+            num_periods=num_periods,
+        )
+
+    # Remove keys that conflict with template context
+    result.pop("game_type", None)
+    chart_data.pop("game_type", None)
+    
+    ctx = get_template_context(
+        request,
+        game_type=game_type,
+        period=period,
+        num_periods=num_periods,
+        chart_data=chart_data,
+        **result
+    )
+    return templates.TemplateResponse("partials/trends.html", ctx)
+
+
+@app.get("/api/v1/export/report")
+async def export_report(
+    request: Request,
+    format: str = "pdf",
+    game_type: str = "lotto",
+    window_days: int = 365,
+    include_frequency: bool = True,
+    include_randomness: bool = True,
+    include_patterns: bool = True,
+    include_draws: bool = True
+):
+    """
+    Export comprehensive analysis report as PDF or Excel.
+    
+    Args:
+        format: Export format ('pdf' or 'excel')
+        game_type: Type of lottery game
+        window_days: Analysis window in days
+        include_frequency: Include frequency analysis
+        include_randomness: Include randomness tests
+        include_patterns: Include pattern analysis
+        include_draws: Include recent draws (Excel only)
+    """
+    if format not in ["pdf", "excel"]:
+        raise HTTPException(status_code=400, detail="Format must be 'pdf' or 'excel'")
+    
+    lang = get_lang_from_request(request)
+    
+    frequency_data = None
+    randomness_data = None
+    patterns_data = None
+    draws_data = None
+    
+    with SessionLocal() as session:
+        if include_frequency:
+            freq = calculate_frequency(session, game_type=game_type, window_days=window_days)
+            num_draws = count_draws(session, game_type=game_type, window_days=window_days)
+            expected_each = num_draws * (6/49) if num_draws else 0.0
+            hot_cold = get_hot_cold_numbers(freq, expected_each)
+            frequency_data = {
+                "game_type": game_type,
+                "window_days": window_days,
+                "num_draws": num_draws,
+                "frequency": freq,
+                "expected_each": expected_each,
+                "hot_numbers": hot_cold["hot"],
+                "cold_numbers": hot_cold["cold"],
+            }
+        
+        if include_randomness:
+            randomness_data = analyze_number_randomness(
+                session=session,
+                game_type=game_type,
+                window_days=window_days,
+            )
+        
+        if include_patterns:
+            patterns_data = analyze_patterns(
+                session=session,
+                game_type=game_type,
+                window_days=window_days,
+            )
+        
+        if include_draws and format == "excel":
+            repo = DrawRepository(session)
+            draws_data = repo.latest(100)
+    
+    # Generate report
+    buffer = create_full_report(
+        frequency_data=frequency_data,
+        randomness_data=randomness_data,
+        patterns_data=patterns_data,
+        draws_data=draws_data,
+        format=format,
+        language=lang,
+        game_type=game_type,
+        window_days=window_days
+    )
+    
+    # Set filename
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M")
+    if format == "pdf":
+        filename = f"lottery_report_{game_type}_{timestamp}.pdf"
+        media_type = "application/pdf"
+    else:
+        filename = f"lottery_report_{game_type}_{timestamp}.xlsx"
+        media_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    
+    return StreamingResponse(
+        buffer,
+        media_type=media_type,
+        headers={
+            "Content-Disposition": f"attachment; filename={filename}"
+        }
+    )

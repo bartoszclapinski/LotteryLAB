@@ -1,16 +1,17 @@
 """
 Visualization analysis module for Lottery Lab.
 
-This module implements correlation analysis and other visualizations
-to provide deeper insights into lottery data patterns.
+This module implements correlation analysis, time series trends,
+and other visualizations to provide deeper insights into lottery data patterns.
 """
 
 from __future__ import annotations
 from typing import Dict, List, Optional, Tuple, Any
+from datetime import datetime, timedelta
+from collections import Counter, defaultdict
 import numpy as np
 import pandas as pd
 from scipy import stats
-from collections import defaultdict
 import math
 
 from src.database.session import SessionLocal
@@ -314,4 +315,307 @@ def create_correlation_heatmap_data(
         "top_pairs": json_safe_top_pairs,
         "game_type": game_type,
         "total_draws": int(correlation_data["total_draws_analyzed"])
+    }
+
+
+def analyze_time_series_trends(
+    session: SessionLocal,
+    game_type: str = "lotto",
+    period: str = "month",  # "week", "month", "quarter"
+    num_periods: int = 12
+) -> Dict[str, Any]:
+    """
+    Analyze frequency trends over time periods.
+    
+    Calculates how number frequencies change across time periods,
+    identifies trending numbers (increasing/decreasing), and
+    detects potential patterns.
+    
+    Args:
+        session: Database session
+        game_type: Type of lottery game
+        period: Time grouping ("week", "month", "quarter")
+        num_periods: Number of periods to analyze
+        
+    Returns:
+        Dictionary with time series analysis results
+    """
+    repo = DrawRepository(session)
+    draws = repo.list(limit=10000, game_type=game_type)
+    
+    if len(draws) < 20:
+        return {"error": "Insufficient data for time series analysis (need at least 20 draws)"}
+    
+    # Parse draws into DataFrame
+    draw_data = []
+    for draw in draws:
+        if 'numbers' in draw and isinstance(draw['numbers'], str):
+            try:
+                draw_date = datetime.fromisoformat(draw['draw_date'])
+                numbers = [int(x.strip()) for x in draw['numbers'].split(',') if x.strip()]
+                draw_data.append({
+                    'date': draw_date,
+                    'numbers': numbers
+                })
+            except (ValueError, TypeError):
+                continue
+    
+    if len(draw_data) < 20:
+        return {"error": "Insufficient valid draws for time series analysis"}
+    
+    df = pd.DataFrame(draw_data)
+    df['date'] = pd.to_datetime(df['date'])
+    df = df.sort_values('date')
+    
+    # Group by period
+    if period == "week":
+        df['period'] = df['date'].dt.isocalendar().week.astype(str) + '-' + df['date'].dt.year.astype(str)
+        df['period_start'] = df['date'] - pd.to_timedelta(df['date'].dt.dayofweek, unit='d')
+    elif period == "quarter":
+        df['period'] = df['date'].dt.to_period('Q').astype(str)
+        df['period_start'] = df['date'].dt.to_period('Q').apply(lambda x: x.start_time)
+    else:  # month
+        df['period'] = df['date'].dt.to_period('M').astype(str)
+        df['period_start'] = df['date'].dt.to_period('M').apply(lambda x: x.start_time)
+    
+    # Get unique periods (most recent first, then reverse for chronological)
+    periods = df['period'].unique()[-num_periods:]
+    
+    # Calculate frequency per period for each number
+    number_trends = {}
+    all_numbers = set(range(1, 50))  # Lotto numbers 1-49
+    
+    for num in all_numbers:
+        period_frequencies = []
+        for p in periods:
+            period_draws = df[df['period'] == p]['numbers'].tolist()
+            count = sum(1 for draw in period_draws for n in draw if n == num)
+            total_draws = len(period_draws)
+            freq = count / total_draws if total_draws > 0 else 0
+            period_frequencies.append({
+                'period': str(p),
+                'count': int(count),
+                'total_draws': int(total_draws),
+                'frequency': float(freq)
+            })
+        number_trends[num] = period_frequencies
+    
+    # Calculate trend direction and strength for each number
+    trend_analysis = []
+    for num in all_numbers:
+        frequencies = [p['frequency'] for p in number_trends[num]]
+        if len(frequencies) >= 3:
+            # Linear regression for trend
+            x = np.arange(len(frequencies))
+            slope, intercept, r_value, p_value, std_err = stats.linregress(x, frequencies)
+            
+            # Determine trend direction
+            if slope > 0.005 and p_value < 0.1:
+                trend = "increasing"
+            elif slope < -0.005 and p_value < 0.1:
+                trend = "decreasing"
+            else:
+                trend = "stable"
+            
+            # Calculate moving average
+            ma_3 = np.convolve(frequencies, np.ones(3)/3, mode='valid').tolist() if len(frequencies) >= 3 else frequencies
+            
+            trend_analysis.append({
+                'number': int(num),
+                'trend': trend,
+                'slope': float(slope),
+                'r_squared': float(r_value ** 2),
+                'p_value': float(p_value),
+                'current_frequency': float(frequencies[-1]) if frequencies else 0,
+                'avg_frequency': float(np.mean(frequencies)),
+                'std_frequency': float(np.std(frequencies)),
+                'moving_average': [float(v) for v in ma_3]
+            })
+    
+    # Sort by trend strength
+    trend_analysis.sort(key=lambda x: abs(x['slope']), reverse=True)
+    
+    # Identify hot streaks (consecutive appearances)
+    streak_analysis = analyze_streaks(df, all_numbers)
+    
+    # Get top trending numbers
+    increasing = [t for t in trend_analysis if t['trend'] == 'increasing'][:5]
+    decreasing = [t for t in trend_analysis if t['trend'] == 'decreasing'][:5]
+    
+    return {
+        "game_type": game_type,
+        "period_type": period,
+        "num_periods": len(periods),
+        "periods": [str(p) for p in periods],
+        "total_draws_analyzed": len(draw_data),
+        "trend_analysis": trend_analysis[:20],  # Top 20 by trend strength
+        "increasing_numbers": increasing,
+        "decreasing_numbers": decreasing,
+        "number_trends": {int(k): v for k, v in list(number_trends.items())[:10]},  # Sample for chart
+        "streak_analysis": streak_analysis,
+        "summary": {
+            "strongly_trending": len([t for t in trend_analysis if abs(t['slope']) > 0.01]),
+            "stable_numbers": len([t for t in trend_analysis if t['trend'] == 'stable']),
+            "avg_trend_strength": float(np.mean([abs(t['slope']) for t in trend_analysis]))
+        }
+    }
+
+
+def analyze_streaks(df: pd.DataFrame, all_numbers: set) -> Dict[str, Any]:
+    """
+    Analyze appearance and absence streaks for numbers.
+    
+    Args:
+        df: DataFrame with draws
+        all_numbers: Set of all possible numbers
+        
+    Returns:
+        Dictionary with streak analysis
+    """
+    # Sort by date
+    draws_list = df.sort_values('date')['numbers'].tolist()
+    
+    if len(draws_list) < 5:
+        return {"error": "Insufficient data for streak analysis"}
+    
+    streaks = {}
+    for num in all_numbers:
+        current_streak = 0
+        max_appearance_streak = 0
+        max_absence_streak = 0
+        current_absence = 0
+        
+        for draw in draws_list:
+            if num in draw:
+                current_streak += 1
+                max_appearance_streak = max(max_appearance_streak, current_streak)
+                if current_absence > 0:
+                    max_absence_streak = max(max_absence_streak, current_absence)
+                current_absence = 0
+            else:
+                current_absence += 1
+                max_absence_streak = max(max_absence_streak, current_absence)
+                if current_streak > 0:
+                    max_appearance_streak = max(max_appearance_streak, current_streak)
+                current_streak = 0
+        
+        # Check if currently in streak (for last draw)
+        last_draw = draws_list[-1]
+        in_hot_streak = num in last_draw and current_streak >= 2
+        in_cold_streak = num not in last_draw and current_absence >= 5
+        
+        streaks[num] = {
+            'number': int(num),
+            'max_appearance_streak': int(max_appearance_streak),
+            'max_absence_streak': int(max_absence_streak),
+            'current_appearance_streak': int(current_streak),
+            'current_absence_streak': int(current_absence),
+            'in_hot_streak': bool(in_hot_streak),
+            'in_cold_streak': bool(in_cold_streak)
+        }
+    
+    # Find notable streaks
+    hot_streak_numbers = [s for s in streaks.values() if s['in_hot_streak']]
+    cold_streak_numbers = [s for s in streaks.values() if s['in_cold_streak']]
+    longest_appearance = max(streaks.values(), key=lambda x: x['max_appearance_streak'])
+    longest_absence = max(streaks.values(), key=lambda x: x['max_absence_streak'])
+    
+    return {
+        'hot_streak_numbers': sorted(hot_streak_numbers, key=lambda x: x['current_appearance_streak'], reverse=True)[:5],
+        'cold_streak_numbers': sorted(cold_streak_numbers, key=lambda x: x['current_absence_streak'], reverse=True)[:5],
+        'longest_appearance_streak': longest_appearance,
+        'longest_absence_streak': longest_absence,
+        'all_streaks': {int(k): v for k, v in list(streaks.items())[:10]}  # Sample
+    }
+
+
+def create_time_series_chart_data(
+    session: SessionLocal,
+    game_type: str = "lotto",
+    numbers: Optional[List[int]] = None,
+    period: str = "month",
+    num_periods: int = 12
+) -> Dict[str, Any]:
+    """
+    Prepare time series data formatted for Plotly charts.
+    
+    Args:
+        session: Database session
+        game_type: Type of lottery game
+        numbers: Specific numbers to track (None for top trending)
+        period: Time grouping
+        num_periods: Number of periods
+        
+    Returns:
+        Dictionary with chart-ready data
+    """
+    trend_data = analyze_time_series_trends(session, game_type, period, num_periods)
+    
+    if "error" in trend_data:
+        return trend_data
+    
+    # Get numbers to display
+    if numbers is None:
+        # Use top 5 increasing and decreasing
+        numbers = (
+            [t['number'] for t in trend_data.get('increasing_numbers', [])[:3]] +
+            [t['number'] for t in trend_data.get('decreasing_numbers', [])[:3]]
+        )
+        if not numbers:
+            numbers = list(range(1, 7))  # Default to first 6 numbers
+    
+    # Build chart series
+    periods = trend_data['periods']
+    series = []
+    
+    repo = DrawRepository(session)
+    draws = repo.list(limit=10000, game_type=game_type)
+    
+    # Build period-based frequency data for selected numbers
+    draw_data = []
+    for draw in draws:
+        if 'numbers' in draw and isinstance(draw['numbers'], str):
+            try:
+                draw_date = datetime.fromisoformat(draw['draw_date'])
+                nums = [int(x.strip()) for x in draw['numbers'].split(',') if x.strip()]
+                draw_data.append({'date': draw_date, 'numbers': nums})
+            except (ValueError, TypeError):
+                continue
+    
+    df = pd.DataFrame(draw_data)
+    df['date'] = pd.to_datetime(df['date'])
+    
+    if period == "week":
+        df['period'] = df['date'].dt.isocalendar().week.astype(str) + '-' + df['date'].dt.year.astype(str)
+    elif period == "quarter":
+        df['period'] = df['date'].dt.to_period('Q').astype(str)
+    else:
+        df['period'] = df['date'].dt.to_period('M').astype(str)
+    
+    for num in numbers:
+        freq_values = []
+        for p in periods:
+            period_draws = df[df['period'] == p]['numbers'].tolist()
+            count = sum(1 for draw in period_draws for n in draw if n == num)
+            total = len(period_draws)
+            freq = count / total if total > 0 else 0
+            freq_values.append(float(freq))
+        
+        # Get trend info
+        trend_info = next((t for t in trend_data['trend_analysis'] if t['number'] == num), None)
+        
+        series.append({
+            'number': int(num),
+            'values': freq_values,
+            'trend': trend_info['trend'] if trend_info else 'unknown',
+            'slope': float(trend_info['slope']) if trend_info else 0
+        })
+    
+    return {
+        'periods': periods,
+        'series': series,
+        'game_type': game_type,
+        'period_type': period,
+        'summary': trend_data.get('summary', {}),
+        'streak_analysis': trend_data.get('streak_analysis', {})
     }

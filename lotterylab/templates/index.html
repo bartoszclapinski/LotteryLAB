@@ -65,6 +65,7 @@
           <a href="#" class="sidebar-item" hx-get="/partials/generator" hx-target="#main-content" hx-swap="innerHTML"><span>🎯</span><span>{{ number_generator }}</span><span class="duration">5 min</span></a>
           <a href="#" class="sidebar-item" hx-get="/partials/patterns" hx-target="#main-content" hx-swap="innerHTML"><span>🔍</span><span>{{ pattern_analysis }}</span><span class="duration">15 min</span></a>
           <a href="#" class="sidebar-item" hx-get="/partials/correlation" hx-target="#main-content" hx-swap="innerHTML"><span>🔗</span><span>{{ correlation_heatmap }}</span><span class="duration">12 min</span></a>
+          <a href="#" class="sidebar-item" hx-get="/partials/trends" hx-target="#main-content" hx-swap="innerHTML"><span>📊</span><span>{{ time_series }}</span><span class="duration">10 min</span></a>
           <a href="#" class="sidebar-item"><span>🧪</span><span>{{ hypothesis_tests }}</span><span class="duration">20 min</span></a>
         </div>
       </aside>
@@ -95,6 +96,20 @@
           <div class="info-card">
             <div class="info-card-title">💡 {{ tip }}</div>
             <div class="info-card-text">{{ tip_window }}</div>
+          </div>
+        </div>
+        
+        <div class="panel-section">
+          <div class="sidebar-title">{{ export_reports }}</div>
+          <div class="export-buttons">
+            <a href="/api/v1/export/report?format=pdf&game_type={{ game_type }}&window_days=365" 
+               class="btn btn-export btn-pdf" download>
+              📄 {{ download_pdf }}
+            </a>
+            <a href="/api/v1/export/report?format=excel&game_type={{ game_type }}&window_days=365" 
+               class="btn btn-export btn-excel" download>
+              📊 {{ download_excel }}
+            </a>
           </div>
         </div>
       </aside>
