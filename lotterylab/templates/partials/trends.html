@@ -1,0 +1,289 @@
+<div class="trends-analysis">
+  <h2>📈 {{ trends_title }}</h2>
+  <p class="analysis-subtitle">{{ trends_subtitle }}</p>
+
+  <!-- Period Controls -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>{{ period_controls }}</h3>
+    </div>
+    <div class="period-selector">
+      <form hx-get="/partials/trends" hx-target="#main-content" hx-swap="innerHTML">
+        <input type="hidden" name="game_type" value="{{ game_type }}" />
+        <label class="form-field inline">
+          <span>{{ period_type_label }}</span>
+          <select name="period">
+            <option value="week" {% if period == 'week' %}selected{% endif %}>{{ period_week }}</option>
+            <option value="month" {% if period == 'month' %}selected{% endif %}>{{ period_month }}</option>
+            <option value="quarter" {% if period == 'quarter' %}selected{% endif %}>{{ period_quarter }}</option>
+          </select>
+        </label>
+        <label class="form-field inline">
+          <span>{{ num_periods_label }}</span>
+          <input type="number" name="num_periods" value="{{ num_periods }}" min="3" max="24" />
+        </label>
+        <button type="submit" class="btn btn-primary">{{ update_chart }}</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Summary Statistics Card -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>{{ trend_overview }}</h3>
+      <div class="trends-indicator">
+        <span class="indicator-dot"></span>
+        <span class="indicator-text">
+          {{ total_draws_analyzed }} {{ draws_analyzed }}
+        </span>
+      </div>
+    </div>
+
+    <div class="test-results">
+      <div class="metric-row">
+        <div class="metric">
+          <div class="metric-label">{{ periods_analyzed }}</div>
+          <div class="metric-value">{{ num_periods }}</div>
+          <div class="metric-desc">{{ period_type }}: {{ periods|join(', ')|truncate(50) }}</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">{{ strongly_trending }}</div>
+          <div class="metric-value">{{ summary.strongly_trending }}</div>
+          <div class="metric-desc">{{ numbers_with_strong_trend }}</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">{{ stable_numbers }}</div>
+          <div class="metric-value">{{ summary.stable_numbers }}</div>
+          <div class="metric-desc">{{ numbers_without_trend }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trending Numbers Card -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>🔥 {{ hot_and_cold_trends }}</h3>
+    </div>
+
+    <div class="trend-numbers-grid">
+      <!-- Increasing Numbers -->
+      <div class="trend-section increasing">
+        <h4>📈 {{ increasing_label }}</h4>
+        <p class="trend-desc">{{ increasing_desc }}</p>
+        {% if increasing_numbers %}
+          <div class="trend-balls">
+            {% for item in increasing_numbers %}
+            <div class="trend-ball-card">
+              <span class="number-ball hot">{{ item.number }}</span>
+              <div class="trend-stats">
+                <span class="trend-direction">↑ {{ "%.2f"|format(item.slope * 100) }}%</span>
+                <span class="trend-confidence">R² = {{ "%.2f"|format(item.r_squared) }}</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="no-data">{{ no_increasing_trends }}</p>
+        {% endif %}
+      </div>
+
+      <!-- Decreasing Numbers -->
+      <div class="trend-section decreasing">
+        <h4>📉 {{ decreasing_label }}</h4>
+        <p class="trend-desc">{{ decreasing_desc }}</p>
+        {% if decreasing_numbers %}
+          <div class="trend-balls">
+            {% for item in decreasing_numbers %}
+            <div class="trend-ball-card">
+              <span class="number-ball cold">{{ item.number }}</span>
+              <div class="trend-stats">
+                <span class="trend-direction">↓ {{ "%.2f"|format(item.slope * 100|abs) }}%</span>
+                <span class="trend-confidence">R² = {{ "%.2f"|format(item.r_squared) }}</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="no-data">{{ no_decreasing_trends }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Time Series Chart Card -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>{{ time_series_chart }}</h3>
+      <div class="chart-info">
+        <span class="info-text">{{ chart_info }}</span>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <div id="trends-chart" class="trends-chart"></div>
+    </div>
+  </div>
+
+  <!-- Streak Analysis Card -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>🔥 {{ streak_analysis_title }}</h3>
+    </div>
+
+    <div class="streak-grid">
+      <!-- Hot Streaks -->
+      <div class="streak-section">
+        <h4>{{ hot_streaks }}</h4>
+        <p class="streak-desc">{{ hot_streaks_desc }}</p>
+        {% if streak_analysis.hot_streak_numbers %}
+          <div class="streak-list">
+            {% for streak in streak_analysis.hot_streak_numbers %}
+            <div class="streak-item hot">
+              <span class="number-ball hot">{{ streak.number }}</span>
+              <div class="streak-info">
+                <span class="streak-count">{{ streak.current_appearance_streak }} {{ consecutive_draws }}</span>
+                <span class="streak-max">{{ max_streak }}: {{ streak.max_appearance_streak }}</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="no-data">{{ no_hot_streaks }}</p>
+        {% endif %}
+      </div>
+
+      <!-- Cold Streaks -->
+      <div class="streak-section">
+        <h4>{{ cold_streaks }}</h4>
+        <p class="streak-desc">{{ cold_streaks_desc }}</p>
+        {% if streak_analysis.cold_streak_numbers %}
+          <div class="streak-list">
+            {% for streak in streak_analysis.cold_streak_numbers %}
+            <div class="streak-item cold">
+              <span class="number-ball cold">{{ streak.number }}</span>
+              <div class="streak-info">
+                <span class="streak-count">{{ streak.current_absence_streak }} {{ draws_absent }}</span>
+                <span class="streak-max">{{ max_absence }}: {{ streak.max_absence_streak }}</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="no-data">{{ no_cold_streaks }}</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Record Streaks -->
+    <div class="record-streaks">
+      <div class="record-item">
+        <h5>🏆 {{ longest_appearance }}</h5>
+        {% if streak_analysis.longest_appearance_streak %}
+          <div class="record-content">
+            <span class="number-ball">{{ streak_analysis.longest_appearance_streak.number }}</span>
+            <span class="record-value">{{ streak_analysis.longest_appearance_streak.max_appearance_streak }} {{ consecutive_draws }}</span>
+          </div>
+        {% endif %}
+      </div>
+      <div class="record-item">
+        <h5>❄️ {{ longest_absence }}</h5>
+        {% if streak_analysis.longest_absence_streak %}
+          <div class="record-content">
+            <span class="number-ball cold">{{ streak_analysis.longest_absence_streak.number }}</span>
+            <span class="record-value">{{ streak_analysis.longest_absence_streak.max_absence_streak }} {{ draws_absent }}</span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Analysis Insights Card -->
+  <div class="analysis-card">
+    <div class="card-header">
+      <h3>{{ insights_title }}</h3>
+    </div>
+
+    <div class="insights-content">
+      <div class="insight-item">
+        <h4>🎯 {{ trend_interpretation }}</h4>
+        <p><strong>{{ increasing_trend }}:</strong> {{ increasing_interpretation }}</p>
+        <p><strong>{{ decreasing_trend }}:</strong> {{ decreasing_interpretation }}</p>
+        <p><strong>{{ stable_trend }}:</strong> {{ stable_interpretation }}</p>
+      </div>
+
+      <div class="insight-item">
+        <h4>🔬 {{ statistical_method }}</h4>
+        <p>{{ trend_method_desc }}</p>
+        <p>{{ r_squared_desc }}</p>
+      </div>
+
+      <div class="insight-item">
+        <h4>⚠️ {{ important_note }}</h4>
+        <p>{{ gambler_fallacy_warning }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const chartData = {{ chart_data|tojson }};
+  
+  if (chartData && chartData.periods && chartData.series) {
+    renderTrendsChart(chartData);
+  }
+});
+
+function renderTrendsChart(data) {
+  const traces = data.series.map(series => ({
+    x: data.periods,
+    y: series.values,
+    name: `{{ number_label }} ${series.number} (${series.trend})`,
+    type: 'scatter',
+    mode: 'lines+markers',
+    line: {
+      width: 2,
+      dash: series.trend === 'stable' ? 'dot' : 'solid'
+    },
+    marker: {
+      size: 6
+    }
+  }));
+
+  const layout = {
+    title: '{{ frequency_over_time }}',
+    xaxis: {
+      title: '{{ period_label }}',
+      tickangle: -45
+    },
+    yaxis: {
+      title: '{{ frequency_label }}',
+      rangemode: 'tozero'
+    },
+    legend: {
+      orientation: 'h',
+      y: -0.3
+    },
+    margin: {
+      l: 60,
+      r: 30,
+      t: 50,
+      b: 100
+    },
+    hovermode: 'x unified'
+  };
+
+  const config = {
+    responsive: true,
+    displayModeBar: true,
+    modeBarButtonsToRemove: ['lasso2d', 'select2d']
+  };
+
+  Plotly.newPlot('trends-chart', traces, layout, config);
+}
+</script>
+
+
