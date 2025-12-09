@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{ title }}</title>
     <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/main.css?v=4" />
     <script src="https://unpkg.com/htmx.org@1.9.12" defer></script>
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" defer></script>
-    <script src="/static/js/app.js" defer></script>
+    <script src="/static/js/app.js?v=2" defer></script>
   </head>
   <body>
     <header class="header">
       <div class="header-content">
         <div style="display: flex; align-items: center;">
           <div class="logo-section">
-            <div class="logo">Λ</div>
+            <div class="logo">L</div>
             <div class="site-title">{{ site_title }}</div>
           </div>
           <nav class="nav-tabs">
@@ -82,6 +82,61 @@
         <h1>{{ statistical_analysis }}</h1>
         <p class="subtitle">{{ explore_frequency }}</p>
 
+        <section class="content-section">
+          <h2>{{ key_metrics }}</h2>
+          <div class="stats-grid" id="stats-grid" hx-get="/partials/stats" hx-trigger="load">
+            <div class="stat-card"><div class="stat-label">—</div><div class="stat-value">—</div><div class="stat-description">{{ loading }}</div></div>
+            <div class="stat-card"><div class="stat-label">—</div><div class="stat-value">—</div><div class="stat-description">{{ loading }}</div></div>
+            <div class="stat-card"><div class="stat-label">—</div><div class="stat-value">—</div><div class="stat-description">{{ loading }}</div></div>
+            <div class="stat-card"><div class="stat-label">—</div><div class="stat-value">—</div><div class="stat-description">{{ loading }}</div></div>
+            <div class="stat-card"><div class="stat-label">—</div><div class="stat-value">—</div><div class="stat-description">{{ loading }}</div></div>
+            <div class="stat-card"><div class="stat-label">—</div><div class="stat-value">—</div><div class="stat-description">{{ loading }}</div></div>
+          </div>
+        </section>
+
+        <section class="content-section">
+          <h2>{{ formula_section_title }}</h2>
+          <div class="formula-grid">
+            <div class="formula-box">
+              <h3>{{ formula_chi_square_title }}</h3>
+              <div class="formula">{{ formula_chi_square }}</div>
+              <p class="formula-desc">{{ formula_chi_square_desc }}</p>
+            </div>
+            <div class="formula-box">
+              <h3>{{ formula_entropy_title }}</h3>
+              <div class="formula">{{ formula_entropy }}</div>
+              <p class="formula-desc">{{ formula_entropy_desc }}</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="interactive-demo" id="monte-carlo-demo">
+          <div class="demo-title">🎲 {{ monte_carlo_title }}</div>
+          <p class="demo-description">{{ monte_carlo_desc }}</p>
+          
+          <div class="slider-container">
+            <label>{{ num_simulations }}: <span id="sim-count">1,000</span></label>
+            <input type="range" min="100" max="10000" value="1000" step="100" class="slider" id="sim-slider">
+          </div>
+          
+          <button class="btn-demo" id="run-monte-carlo" data-label="{{ run_simulation }}" onclick="window.runMonteCarlo && window.runMonteCarlo()">{{ run_simulation }}</button>
+          
+          <div class="demo-results">
+            <div class="demo-result-item">
+              <div class="demo-result-label">{{ sim_chi_square }}</div>
+              <div class="demo-result-value" id="mc-chi-square">—</div>
+            </div>
+            <div class="demo-result-item">
+              <div class="demo-result-label">{{ sim_p_value }}</div>
+              <div class="demo-result-value" id="mc-p-value">—</div>
+            </div>
+            <div class="demo-result-item">
+              <div class="demo-result-label">{{ sim_random_pct }}</div>
+              <div class="demo-result-value" id="mc-random-pct">—</div>
+            </div>
+          </div>
+        </section>
+
         <section id="frequency" hx-get="/partials/frequency" hx-trigger="load" class="card">
           {{ loading }}
         </section>
@@ -96,6 +151,30 @@
           <div class="info-card">
             <div class="info-card-title">💡 {{ tip }}</div>
             <div class="info-card-text">{{ tip_window }}</div>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-title">{{ on_this_page }}</div>
+          <nav>
+            <ul class="page-toc">
+              <li><a href="#stats-grid" class="active">{{ key_metrics }}</a></li>
+              <li><a href="#frequency">{{ formula_section_title }}</a></li>
+              <li><a href="#frequency">{{ frequency_analysis }}</a></li>
+              <li><a href="#recent-draws">{{ recent_draws }}</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-title">{{ related_topics }}</div>
+          <div class="related-card">
+            <div class="related-card-title">📚 {{ additional_materials }}</div>
+            <ul class="related-list">
+              <li>{{ binomial_distribution }}</li>
+              <li>{{ law_of_large_numbers }}</li>
+              <li>{{ central_limit_theorem }}</li>
+            </ul>
           </div>
         </div>
         
@@ -113,6 +192,15 @@
           </div>
         </div>
       </aside>
+    </div>
+
+    <div class="progress-section">
+      <button class="btn btn-secondary" id="prev-topic">{{ prev_topic }}</button>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <span class="progress-text"><span id="current-topic">1</span> {{ progress_text }}</span>
+      <button class="btn btn-primary" id="next-topic">{{ next_topic }}</button>
     </div>
 
     <footer class="site-footer">

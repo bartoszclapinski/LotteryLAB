@@ -1,0 +1,30 @@
+<div class="stat-card">
+  <div class="stat-label">{{ stat_sample_size }}</div>
+  <div class="stat-value">{{ "{:,}".format(total_draws) }}</div>
+  <div class="stat-description">{{ stat_sample_desc }}</div>
+</div>
+<div class="stat-card">
+  <div class="stat-label">{{ stat_observations }}</div>
+  <div class="stat-value">{{ "{:,}".format(total_observations) }}</div>
+  <div class="stat-description">{{ stat_observations_desc }}</div>
+</div>
+<div class="stat-card">
+  <div class="stat-label">{{ stat_chi_square }}</div>
+  <div class="stat-value">χ² = {{ "%.2f"|format(chi_square) }}</div>
+  <div class="stat-description">p = {{ "%.4f"|format(p_value) }}{% if is_random %} ✓{% endif %}</div>
+</div>
+<div class="stat-card">
+  <div class="stat-label">{{ stat_entropy }}</div>
+  <div class="stat-value">{{ "%.3f"|format(entropy) }}</div>
+  <div class="stat-description">{{ stat_entropy_unit }}</div>
+</div>
+<div class="stat-card">
+  <div class="stat-label">{{ stat_coverage }}</div>
+  <div class="stat-value">{{ "%.1f"|format(coverage) }}%</div>
+  <div class="stat-description">{{ stat_coverage_desc }}</div>
+</div>
+<div class="stat-card">
+  <div class="stat-label">{{ stat_confidence }}</div>
+  <div class="stat-value">±{{ "%.1f"|format(confidence_interval) }}%</div>
+  <div class="stat-description">{{ stat_confidence_desc }}</div>
+</div>
