@@ -217,6 +217,64 @@ async def frequency_partial(request: Request, game_type: str = "lotto", window_d
     return templates.TemplateResponse("partials/frequency.html", ctx)
 
 
+@app.get("/partials/stats", response_class=HTMLResponse)
+async def stats_partial(request: Request, game_type: str = "lotto", window_days: int = 365):
+    """Get HTML partial for key metrics display."""
+    import math
+    
+    with SessionLocal() as session:
+        # Get basic data
+        num_draws = count_draws(session, game_type=game_type, window_days=window_days)
+        
+        # Get randomness analysis for chi-square and entropy
+        result = analyze_number_randomness(
+            session=session,
+            game_type=game_type,
+            window_days=window_days,
+        )
+    
+    # Extract values - correct keys!
+    chi_square_test = result.get("chi_square_test", {})
+    chi_square = chi_square_test.get("chi_square_statistic", 0)
+    p_value = chi_square_test.get("p_value", 1.0)
+    df = chi_square_test.get("degrees_of_freedom", 48)
+    is_random = chi_square_test.get("is_random", True)
+    
+    entropy_data = result.get("entropy", {})
+    entropy = entropy_data.get("shannon_entropy", 0)
+    max_entropy = entropy_data.get("max_possible_entropy", 5.614)
+    normalized_entropy = entropy_data.get("normalized_entropy", 0)
+    
+    sample_data = result.get("sample_size", {})
+    total_observations = sample_data.get("total_observations", 0)
+    coverage = sample_data.get("coverage_percentage", 0)
+    
+    # Calculate 95% confidence interval for frequency
+    # Using formula: CI = 1.96 * sqrt(p*(1-p)/n) where p = 6/49
+    p = 6/49
+    if num_draws > 0:
+        se = math.sqrt(p * (1 - p) / (num_draws * 6))  # num_draws * 6 total numbers drawn
+        confidence_interval = 1.96 * se * 100  # Convert to percentage
+    else:
+        confidence_interval = 0
+    
+    ctx = get_template_context(
+        request,
+        total_draws=num_draws,
+        total_observations=total_observations,
+        chi_square=chi_square,
+        p_value=p_value,
+        df=df,
+        is_random=is_random,
+        entropy=entropy,
+        max_entropy=max_entropy,
+        normalized_entropy=normalized_entropy,
+        coverage=coverage,
+        confidence_interval=confidence_interval
+    )
+    return templates.TemplateResponse("partials/stats.html", ctx)
+
+
 @app.get("/partials/recent-draws", response_class=HTMLResponse)
 async def recent_draws_partial(request: Request):
     with SessionLocal() as session:
