@@ -16,13 +16,13 @@ Timeboxes are indicative. Adjust based on API access and findings.
   - Repo scaffolding, config, data schema, CSV import path
 - Sprint 001 — MVP — 2 weeks ✅
   - DB models+migrations, ingestion (CSV first), frequency analysis, basic API, FastAPI + Jinja2 + HTMX UI scaffold, packaging, comprehensive tests
-- Sprint 002 — Core Analyses — 2 weeks
-  - Randomness tests (chi-square, KS, runs, autocorr, entropy), pattern basics, advanced charts
-- Sprint 003 — ML Baseline — 3 weeks
+- Sprint 002 — Core Analyses — 2 weeks ✅
+  - Randomness tests (chi-square, KS, runs, autocorr, entropy), pattern detection, correlation heatmap, time series trends, PDF/Excel export, i18n (PL/EN)
+- Sprint 003 — ML Baseline — 3 weeks 📋
   - Feature prep, baseline models (RF/XGB/MLP), cross-validation, feature importance, backtesting
-- Sprint 004 — Advanced/Research — 3 weeks
+- Sprint 004 — Advanced/Research — 3 weeks 📋
   - Chaos metrics, Monte Carlo simulations, exploratory notebooks
-- Sprint 005 — Production — 2 weeks
+- Sprint 005 — Production — 2 weeks 📋
   - Tests, docs, Docker, CI/CD, deployment
 
 ## 🎯 Milestones
@@ -38,3 +38,12 @@ Timeboxes are indicative. Adjust based on API access and findings.
 ## 🔗 Sprint index
 - See `sprint000/plan.md`
 - See `sprint001/plan.md`
+- See `sprint002/plan.md`
+
+## 📈 Current Status (as of 2025-12-10)
+| Sprint | Status | Key Deliverables |
+|--------|--------|------------------|
+| 000 | ✅ Done | Scaffolding, DB schema, CSV import |
+| 001 | ✅ Done | MVP UI, API, frequency analysis, tests |
+| 002 | ✅ Done | Randomness tests, patterns, correlation, trends, export, i18n |
+| 003 | 📋 Next | ML baseline (educational) |
