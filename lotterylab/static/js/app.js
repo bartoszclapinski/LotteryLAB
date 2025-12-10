@@ -22,8 +22,7 @@
     '/partials/generator',
     '/partials/patterns',
     '/partials/correlation',
-    '/partials/trends',
-    '/partials/hypothesis'  // placeholder
+    '/partials/trends'
   ];
   let currentIndex = 0;
 
@@ -64,9 +63,14 @@
     if (nextBtn) nextBtn.addEventListener('click', () => navigateToTopic(currentIndex + 1));
     
     // Sidebar item clicks
-    document.querySelectorAll('.sidebar-item[hx-get]').forEach((item, i) => {
+    const sidebarItems = document.querySelectorAll('.sidebar-item[hx-get]');
+    sidebarItems.forEach((item, i) => {
       item.addEventListener('click', () => {
         currentIndex = i;
+        // Update active state on all sidebar items
+        sidebarItems.forEach((el, idx) => {
+          el.classList.toggle('active', idx === i);
+        });
         updateProgress();
       });
     });

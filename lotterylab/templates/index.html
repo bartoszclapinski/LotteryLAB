@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/static/css/main.css?v=4" />
     <script src="https://unpkg.com/htmx.org@1.9.12" defer></script>
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" defer></script>
-    <script src="/static/js/app.js?v=2" defer></script>
+    <script src="/static/js/app.js?v=4" defer></script>
   </head>
   <body>
     <header class="header">
@@ -66,7 +66,6 @@
           <a href="#" class="sidebar-item" hx-get="/partials/patterns" hx-target="#main-content" hx-swap="innerHTML"><span>🔍</span><span>{{ pattern_analysis }}</span><span class="duration">15 min</span></a>
           <a href="#" class="sidebar-item" hx-get="/partials/correlation" hx-target="#main-content" hx-swap="innerHTML"><span>🔗</span><span>{{ correlation_heatmap }}</span><span class="duration">12 min</span></a>
           <a href="#" class="sidebar-item" hx-get="/partials/trends" hx-target="#main-content" hx-swap="innerHTML"><span>📊</span><span>{{ time_series }}</span><span class="duration">10 min</span></a>
-          <a href="#" class="sidebar-item"><span>🧪</span><span>{{ hypothesis_tests }}</span><span class="duration">20 min</span></a>
         </div>
       </aside>
 

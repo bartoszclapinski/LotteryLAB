@@ -356,6 +356,7 @@ async def patterns_partial(request: Request, game_type: str = "lotto", window_da
 
     # Remove keys that conflict with template context
     result.pop("game_type", None)
+    result.pop("window_days", None)
     
     ctx = get_template_context(
         request,
@@ -378,6 +379,7 @@ async def correlation_partial(request: Request, game_type: str = "lotto", window
 
     # Remove keys that conflict with template context
     result.pop("game_type", None)
+    result.pop("window_days", None)
     
     ctx = get_template_context(
         request,
@@ -525,6 +527,8 @@ async def trends_partial(
 
     # Remove keys that conflict with template context
     result.pop("game_type", None)
+    result.pop("period", None)
+    result.pop("num_periods", None)
     chart_data.pop("game_type", None)
     
     ctx = get_template_context(

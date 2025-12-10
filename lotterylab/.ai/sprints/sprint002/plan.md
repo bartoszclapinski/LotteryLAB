@@ -63,3 +63,15 @@
 - ✅ Excel export with OpenPyXL (multi-sheet workbooks with frequency, randomness, patterns, draws)
 - ✅ Export buttons in UI sidebar with download links
 - ✅ Full i18n support for trends and export features (PL/EN)
+
+### 2025-12-10 - Bug Fixes & Polish
+- ✅ Fixed template context conflicts (window_days, period, num_periods collisions)
+- ✅ Fixed sidebar active state toggle in JavaScript
+- ✅ Removed duplicate "Testy hipotez" section (functionality already in "Testy losowości")
+- ✅ Updated topics array in app.js to match 6 sidebar items
+- ✅ All UI components verified working: frequency, randomness, generator, patterns, correlation, trends
+
+### Sprint 002 Final Status: ✅ COMPLETED
+- All acceptance criteria met
+- All deliverables shipped
+- Ready for Sprint 003 (ML Baseline)
