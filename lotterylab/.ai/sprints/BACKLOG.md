@@ -34,31 +34,44 @@ Status: ✅ Completed, 🚧 In Progress, 📋 Planned
 24. [P1][E7][S:S] ✅ Auto-update on server startup (lifespan handler)
 25. [P1][E3][S:M] ✅ UI alignment with design mockup (Stats Grid, Formula Box, Progress Bar, Monte Carlo demo)
 
-## Sprint 003 — ML Baseline 📋 (NEXT)
-26. [P2][E5][S:L] 📋 Feature engineering for ML models
-27. [P2][E5][S:L] 📋 Baseline models (Random Forest, XGBoost, MLP)
-28. [P2][E5][S:M] 📋 Cross-validation framework
-29. [P2][E5][S:M] 📋 Feature importance analysis
-30. [P2][E5][S:M] 📋 Backtesting on historical data
-31. [P2][E5][S:S] 📋 Educational disclaimer & limitations documentation
+## Sprint 002.5 — UI Redesign 🚧 (CURRENT)
+26. [P1][E8][S:M] 🚧 Design System: CSS variables, tokens, themes
+27. [P1][E8][S:M] 📋 Homepage landing page (hero, features, how-it-works)
+28. [P1][E8][S:M] 📋 Methodology overview page (all methods grid)
+29. [P1][E8][S:L] 📋 Methodology detail pages (chi-square, KS, runs, autocorr, entropy, monte-carlo)
+30. [P1][E8][S:S] 📋 Dark/Light theme toggle with localStorage
+31. [P1][E8][S:S] 📋 Cleanup test data (999997/999998)
+32. [P2][E8][S:M] 📋 Move analyzer to /app route
+33. [P2][E8][S:M] 📋 Multi-lottery selector UI
+34. [P2][E8][S:S] 📋 URL-based i18n (/pl/..., /en/...)
+35. [P2][E8][S:S] 📋 Expand translations for new pages
 
-## Sprint 004+ — Advanced/Research 📋
-32. [P3][E6][S:M] 📋 Chaos metrics prototype (Lyapunov exponent, fractal dimension)
-33. [P3][E6][S:M] 📋 Advanced Monte Carlo simulation framework
-34. [P3][E7][S:S] 📋 Redis cache for common queries
-35. [P3][E7][S:S] 📋 Rate limiting & access logging
+## Sprint 003 — ML Baseline 📋
+36. [P2][E5][S:L] 📋 Feature engineering for ML models
+37. [P2][E5][S:L] 📋 Baseline models (Random Forest, XGBoost, MLP)
+38. [P2][E5][S:M] 📋 Cross-validation framework
+39. [P2][E5][S:M] 📋 Feature importance analysis
+40. [P2][E5][S:M] 📋 Backtesting on historical data
+41. [P2][E5][S:S] 📋 Educational disclaimer & limitations documentation
+
+## Sprint 004 — Advanced/Research 📋
+42. [P3][E6][S:M] 📋 Chaos metrics prototype (Lyapunov exponent, fractal dimension)
+43. [P3][E6][S:M] 📋 Advanced Monte Carlo simulation framework
+44. [P3][E7][S:S] 📋 Redis cache for common queries
+45. [P3][E7][S:S] 📋 Rate limiting & access logging
 
 ## Sprint 005 — Production 📋
-36. [P2][E7][S:M] 📋 Docker containerization
-37. [P2][E7][S:M] 📋 CI/CD pipeline (GitHub Actions)
-38. [P2][E7][S:M] 📋 Deployment (Railway/Render)
-39. [P2][E7][S:S] 📋 Comprehensive documentation
+46. [P2][E7][S:M] 📋 Docker containerization
+47. [P2][E7][S:M] 📋 CI/CD pipeline (GitHub Actions)
+48. [P2][E7][S:M] 📋 Deployment (Railway/Render)
+49. [P2][E7][S:S] 📋 Comprehensive documentation
 
 ## Nice-to-have (Future)
-40. [P4][E3][S:S] 📋 Dark mode theme polish
-41. [P4][E3][S:S] 📋 Mobile-first responsive improvements
-42. [P4][E4][S:S] 📋 WebSocket for real-time updates
-43. [P4][E1][S:M] 📋 Lotto API integration (when key available)
+50. [P4][E3][S:S] 📋 Mobile-first responsive improvements (beyond basic)
+51. [P4][E4][S:S] 📋 WebSocket for real-time updates
+52. [P4][E1][S:M] 📋 Lotto API integration (when key available)
+53. [P4][E8][S:M] 📋 Additional lotteries (UK, US, EU)
+54. [P4][E8][S:S] 📋 PWA support (offline mode)
 
 ## Notes
 - API client work is blocked pending Lotto OpenAPI key; using CSV/MBNet ✅
