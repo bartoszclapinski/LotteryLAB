@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodologia — Lottery Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-elevated: #1a1a24;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --accent-indigo: #6366f1;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #1e293b;
+            --gradient-1: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+            --gradient-2: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-green) 100%);
+            --gradient-3: linear-gradient(135deg, var(--accent-amber) 0%, var(--accent-rose) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 0%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 32px;
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover, .nav a.active {
+            color: var(--text-primary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .lang-switch {
+            display: flex;
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .lang-switch button {
+            padding: 6px 12px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-switch button.active {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Main Content */
+        .main {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 32px 80px;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent-purple);
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 32px;
+        }
+
+        /* Quick Stats */
+        .quick-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            padding: 24px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 64px;
+        }
+
+        .quick-stat {
+            text-align: center;
+        }
+
+        .quick-stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .quick-stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Hypothesis Box */
+        .hypothesis-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 64px;
+            text-align: center;
+        }
+
+        .hypothesis-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent-purple);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .hypothesis-text {
+            font-size: 28px;
+            font-weight: 500;
+            line-height: 1.4;
+            max-width: 800px;
+            margin: 0 auto 24px;
+        }
+
+        .hypothesis-text em {
+            color: var(--accent-cyan);
+            font-style: normal;
+        }
+
+        .hypothesis-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Section Header */
+        .section-header {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        /* Methods Grid */
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 64px;
+        }
+
+        .method-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .method-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .method-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .method-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .method-icon.purple { background: rgba(139, 92, 246, 0.15); }
+        .method-icon.blue { background: rgba(59, 130, 246, 0.15); }
+        .method-icon.cyan { background: rgba(6, 182, 212, 0.15); }
+        .method-icon.green { background: rgba(16, 185, 129, 0.15); }
+        .method-icon.amber { background: rgba(245, 158, 11, 0.15); }
+        .method-icon.rose { background: rgba(244, 63, 94, 0.15); }
+
+        .method-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .method-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .method-question {
+            font-size: 15px;
+            color: var(--accent-cyan);
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        .method-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .method-formula {
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .method-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .method-result {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .method-result-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .method-result-dot.green { background: var(--accent-green); }
+        .method-result-dot.amber { background: var(--accent-amber); }
+
+        .method-result-text {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .method-link {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Workflow Section */
+        .workflow {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 48px;
+            margin-bottom: 64px;
+        }
+
+        .workflow-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .workflow-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .workflow-steps::before {
+            content: '';
+            position: absolute;
+            top: 32px;
+            left: 80px;
+            right: 80px;
+            height: 2px;
+            background: var(--border);
+        }
+
+        .workflow-step {
+            text-align: center;
+            position: relative;
+            flex: 1;
+        }
+
+        .workflow-step-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--bg-elevated);
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .workflow-step.active .workflow-step-icon {
+            background: var(--gradient-1);
+            border-color: transparent;
+        }
+
+        .workflow-step-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .workflow-step-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            max-width: 150px;
+            margin: 0 auto;
+        }
+
+        /* Lottery Support */
+        .lottery-support {
+            margin-bottom: 64px;
+        }
+
+        .lottery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .lottery-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .lottery-card:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .lottery-card.coming-soon {
+            opacity: 0.5;
+        }
+
+        .lottery-flag {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .lottery-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .lottery-format {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .lottery-status {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .lottery-status.active {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+        }
+
+        .lottery-status.soon {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-amber);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            padding: 48px;
+            text-align: center;
+        }
+
+        .cta-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .cta-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 80px;
+            padding: 32px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .methods-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lottery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .workflow-steps {
+                flex-direction: column;
+                gap: 32px;
+            }
+
+            .workflow-steps::before {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .quick-stats {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .lottery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                <div class="logo-icon">Λ</div>
+                <div class="logo-text">Lottery Lab</div>
+            </a>
+            <nav class="nav">
+                <a href="/">Strona główna</a>
+                <a href="/methodology" class="active">Metodologia</a>
+                <a href="/app">Analizator</a>
+                <a href="/docs">Dokumentacja</a>
+            </nav>
+            <div class="header-actions">
+                <div class="lang-switch">
+                    <button class="active">PL</button>
+                    <button>EN</button>
+                </div>
+                <a href="/app" class="btn btn-primary">
+                    Otwórz analizator →
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <main class="main">
+        <!-- Hero -->
+        <section class="hero">
+            <span class="hero-tag">
+                <span>🔬</span>
+                Naukowe podejście do analizy
+            </span>
+            <h1>Metodologia badawcza</h1>
+            <p>
+                Poznaj metody statystyczne, które pozwalają rzetelnie zbadać 
+                losowość wyników loterii. Każda metoda oparta na uznanej teorii matematycznej.
+            </p>
+        </section>
+
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+            <div class="quick-stat">
+                <div class="quick-stat-value">6</div>
+                <div class="quick-stat-label">Metod statystycznych</div>
+            </div>
+            <div class="quick-stat">
+                <div class="quick-stat-value">α = 0.05</div>
+                <div class="quick-stat-label">Poziom istotności</div>
+            </div>
+            <div class="quick-stat">
+                <div class="quick-stat-value">68 lat</div>
+                <div class="quick-stat-label">Danych historycznych</div>
+            </div>
+        </div>
+
+        <!-- Hypothesis Box -->
+        <div class="hypothesis-box">
+            <div class="hypothesis-label">Hipoteza zerowa (H₀)</div>
+            <p class="hypothesis-text">
+                "Wyniki loterii są <em>całkowicie losowe</em> i <em>niezależne</em> — 
+                każda liczba ma takie samo prawdopodobieństwo wylosowania."
+            </p>
+            <p class="hypothesis-desc">
+                To właśnie testujemy. Jeśli dane nie dają podstaw do odrzucenia H₀, 
+                loteria działa prawidłowo. I właśnie to obserwujemy!
+            </p>
+        </div>
+
+        <!-- Methods Section -->
+        <section class="section-header">
+            <h2 class="section-title">Metody analizy</h2>
+            <p class="section-subtitle">
+                Kliknij na kartę, aby poznać szczegóły danej metody
+            </p>
+        </section>
+
+        <div class="methods-grid">
+            <!-- Chi-square -->
+            <a href="/methodology/chi-square" class="method-card">
+                <div class="method-header">
+                    <div class="method-icon purple">📊</div>
+                    <div class="method-badge">
+                        <span>📖</span>
+                        <span>8 min</span>
+                    </div>
+                </div>
+                <h3 class="method-title">Test Chi-kwadrat</h3>
+                <p class="method-question">"Czy rozkład częstości jest równomierny?"</p>
+                <p class="method-desc">
+                    Porównuje obserwowane częstości z oczekiwanymi. 
+                    Sprawdza, czy odchylenia są w granicach naturalnej zmienności losowej.
+                </p>
+                <div class="method-formula">χ² = Σ (O - E)² / E</div>
+                <div class="method-footer">
+                    <div class="method-result">
+                        <div class="method-result-dot green"></div>
+                        <span class="method-result-text">p = 0.52 dla Lotto PL</span>
+                    </div>
+                    <span class="method-link">Czytaj więcej →</span>
+                </div>
+            </a>
+
+            <!-- Kolmogorov-Smirnov -->
+            <a href="/methodology/kolmogorov-smirnov" class="method-card">
+                <div class="method-header">
+                    <div class="method-icon blue">📈</div>
+                    <div class="method-badge">
+                        <span>📖</span>
+                        <span>10 min</span>
+                    </div>
+                </div>
+                <h3 class="method-title">Test Kołmogorowa-Smirnowa</h3>
+                <p class="method-question">"Czy dystrybuanta pasuje do teoretycznej?"</p>
+                <p class="method-desc">
+                    Porównuje empiryczną dystrybuantę z teoretyczną. 
+                    Czuły na różnice w kształcie rozkładu, nie tylko średniej.
+                </p>
+                <div class="method-formula">D = max |Fₙ(x) - F(x)|</div>
+                <div class="method-footer">
+                    <div class="method-result">
+                        <div class="method-result-dot green"></div>
+                        <span class="method-result-text">p = 0.78 dla Lotto PL</span>
+                    </div>
+                    <span class="method-link">Czytaj więcej →</span>
+                </div>
+            </a>
+
+            <!-- Runs Test -->
+            <a href="/methodology/runs-test" class="method-card">
+                <div class="method-header">
+                    <div class="method-icon cyan">🔄</div>
+                    <div class="method-badge">
+                        <span>📖</span>
+                        <span>7 min</span>
+                    </div>
+                </div>
+                <h3 class="method-title">Test serii (Runs Test)</h3>
+                <p class="method-question">"Czy sekwencje są losowe?"</p>
+                <p class="method-desc">
+                    Sprawdza czy występują zbyt długie serie (np. same wysokie liczby z rzędu). 
+                    Wykrywa ukryte wzorce w kolejności wyników.
+                </p>
+                <div class="method-formula">Z = (R - μᵣ) / σᵣ</div>
+                <div class="method-footer">
+                    <div class="method-result">
+                        <div class="method-result-dot green"></div>
+                        <span class="method-result-text">p = 0.41 dla Lotto PL</span>
+                    </div>
+                    <span class="method-link">Czytaj więcej →</span>
+                </div>
+            </a>
+
+            <!-- Autocorrelation -->
+            <a href="/methodology/autocorrelation" class="method-card">
+                <div class="method-header">
+                    <div class="method-icon green">⏱️</div>
+                    <div class="method-badge">
+                        <span>📖</span>
+                        <span>6 min</span>
+                    </div>
+                </div>
+                <h3 class="method-title">Autokorelacja</h3>
+                <p class="method-question">"Czy przeszłość wpływa na przyszłość?"</p>
+                <p class="method-desc">
+                    Mierzy zależności między wynikami oddalonymi w czasie. 
+                    Jeśli loteria jest losowa, autokorelacja powinna być bliska zeru.
+                </p>
+                <div class="method-formula">rₖ = Σ(xᵢ - μ)(xᵢ₊ₖ - μ) / Σ(xᵢ - μ)²</div>
+                <div class="method-footer">
+                    <div class="method-result">
+                        <div class="method-result-dot green"></div>
+                        <span class="method-result-text">Brak istotnych lagów</span>
+                    </div>
+                    <span class="method-link">Czytaj więcej →</span>
+                </div>
+            </a>
+
+            <!-- Shannon Entropy -->
+            <a href="/methodology/entropy" class="method-card">
+                <div class="method-header">
+                    <div class="method-icon amber">🎲</div>
+                    <div class="method-badge">
+                        <span>📖</span>
+                        <span>5 min</span>
+                    </div>
+                </div>
+                <h3 class="method-title">Entropia Shannona</h3>
+                <p class="method-question">"Jak nieprzewidywalne są wyniki?"</p>
+                <p class="method-desc">
+                    Mierzy "ilość zaskoczenia" w danych. Maksymalna entropia = maksymalna losowość. 
+                    Dla Lotto 6/49: max = 5.61 bitów.
+                </p>
+                <div class="method-formula">H = -Σ p(x) · log₂ p(x)</div>
+                <div class="method-footer">
+                    <div class="method-result">
+                        <div class="method-result-dot green"></div>
+                        <span class="method-result-text">H = 5.58 / 5.61 (99.5%)</span>
+                    </div>
+                    <span class="method-link">Czytaj więcej →</span>
+                </div>
+            </a>
+
+            <!-- Monte Carlo -->
+            <a href="/methodology/monte-carlo" class="method-card">
+                <div class="method-header">
+                    <div class="method-icon rose">🎰</div>
+                    <div class="method-badge">
+                        <span>📖</span>
+                        <span>12 min</span>
+                    </div>
+                </div>
+                <h3 class="method-title">Symulacje Monte Carlo</h3>
+                <p class="method-question">"Co gdybyśmy powtórzyli 10,000 razy?"</p>
+                <p class="method-desc">
+                    Generujemy tysiące sztucznych losowań i porównujemy z rzeczywistymi. 
+                    Pokazuje, że prawdziwe dane mieszczą się w granicach symulacji.
+                </p>
+                <div class="method-formula">Symulacja → Porównanie → Wnioski</div>
+                <div class="method-footer">
+                    <div class="method-result">
+                        <div class="method-result-dot green"></div>
+                        <span class="method-result-text">Dane w 95% CI</span>
+                    </div>
+                    <span class="method-link">Czytaj więcej →</span>
+                </div>
+            </a>
+        </div>
+
+        <!-- Workflow -->
+        <div class="workflow">
+            <h3 class="workflow-title">Jak przeprowadzamy analizę?</h3>
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <div class="workflow-step-icon">📥</div>
+                    <h4 class="workflow-step-title">1. Zbieramy dane</h4>
+                    <p class="workflow-step-desc">Historyczne wyniki z oficjalnych źródeł</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="workflow-step-icon">🧹</div>
+                    <h4 class="workflow-step-title">2. Walidujemy</h4>
+                    <p class="workflow-step-desc">Sprawdzamy poprawność i kompletność</p>
+                </div>
+                <div class="workflow-step active">
+                    <div class="workflow-step-icon">🧪</div>
+                    <h4 class="workflow-step-title">3. Testujemy</h4>
+                    <p class="workflow-step-desc">Stosujemy wszystkie 6 metod statystycznych</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="workflow-step-icon">📊</div>
+                    <h4 class="workflow-step-title">4. Wizualizujemy</h4>
+                    <p class="workflow-step-desc">Prezentujemy wyniki w przystępny sposób</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lottery Support -->
+        <section class="lottery-support">
+            <div class="section-header">
+                <h2 class="section-title">Obsługiwane loterie</h2>
+                <p class="section-subtitle">
+                    Metodologia jest uniwersalna — działa dla każdej loterii liczbowej
+                </p>
+            </div>
+
+            <div class="lottery-grid">
+                <div class="lottery-card">
+                    <div class="lottery-flag">🇵🇱</div>
+                    <div class="lottery-name">Lotto</div>
+                    <div class="lottery-format">6/49</div>
+                    <span class="lottery-status active">Aktywne</span>
+                </div>
+                <div class="lottery-card">
+                    <div class="lottery-flag">🇵🇱</div>
+                    <div class="lottery-name">Lotto Plus</div>
+                    <div class="lottery-format">6/49</div>
+                    <span class="lottery-status active">Aktywne</span>
+                </div>
+                <div class="lottery-card">
+                    <div class="lottery-flag">🇵🇱</div>
+                    <div class="lottery-name">Mini Lotto</div>
+                    <div class="lottery-format">5/42</div>
+                    <span class="lottery-status soon">Wkrótce</span>
+                </div>
+                <div class="lottery-card">
+                    <div class="lottery-flag">🇪🇺</div>
+                    <div class="lottery-name">Eurojackpot</div>
+                    <div class="lottery-format">5/50 + 2/12</div>
+                    <span class="lottery-status soon">Wkrótce</span>
+                </div>
+                <div class="lottery-card coming-soon">
+                    <div class="lottery-flag">🇬🇧</div>
+                    <div class="lottery-name">UK Lotto</div>
+                    <div class="lottery-format">6/59</div>
+                    <span class="lottery-status soon">Planowane</span>
+                </div>
+                <div class="lottery-card coming-soon">
+                    <div class="lottery-flag">🇺🇸</div>
+                    <div class="lottery-name">Powerball</div>
+                    <div class="lottery-format">5/69 + 1/26</div>
+                    <span class="lottery-status soon">Planowane</span>
+                </div>
+                <div class="lottery-card coming-soon">
+                    <div class="lottery-flag">🇺🇸</div>
+                    <div class="lottery-name">Mega Millions</div>
+                    <div class="lottery-format">5/70 + 1/25</div>
+                    <span class="lottery-status soon">Planowane</span>
+                </div>
+                <div class="lottery-card coming-soon">
+                    <div class="lottery-flag">🇪🇺</div>
+                    <div class="lottery-name">EuroMillions</div>
+                    <div class="lottery-format">5/50 + 2/12</div>
+                    <span class="lottery-status soon">Planowane</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <h3 class="cta-title">Gotowy na analizę?</h3>
+            <p class="cta-desc">
+                Wypróbuj wszystkie metody na rzeczywistych danych. 
+                Przekonaj się sam, że loteria jest uczciwa!
+            </p>
+            <div class="cta-buttons">
+                <a href="/app" class="btn btn-primary">
+                    🔬 Otwórz analizator
+                </a>
+                <a href="/methodology/chi-square" class="btn btn-ghost">
+                    📖 Zacznij od podstaw
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">
+                © 2025 Lottery Lab — Badania i Edukacja. 
+                Projekt open-source na licencji MIT.
+            </p>
+        </footer>
+    </main>
+</body>
+</html>
+

@@ -344,3 +344,6 @@ make update  # lub: python scripts/update_mbnet.py
 
 *Ostatnia aktualizacja: 2025-12-10*
 
+
+
+

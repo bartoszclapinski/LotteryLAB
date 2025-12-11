@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lottery Lab — Gdzie szczęście spotyka naukę</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-elevated: #1a1a24;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #1e293b;
+            --gradient-1: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+            --gradient-2: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-green) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(6, 182, 212, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 32px;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .logo-text span {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover {
+            color: var(--text-primary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .lang-switch {
+            display: flex;
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .lang-switch button {
+            padding: 6px 12px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-switch button.active {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 32px 80px;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        .hero-text h1 .gradient {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text .subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 500px;
+        }
+
+        .hero-disclaimer {
+            background: rgba(244, 63, 94, 0.1);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .hero-disclaimer .icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .hero-disclaimer p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .hero-disclaimer strong {
+            color: var(--accent-rose);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+        }
+
+        .stat {
+            text-align: left;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            position: relative;
+        }
+
+        .lottery-balls {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+            perspective: 1000px;
+        }
+
+        .ball {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-elevated);
+            border: 2px solid var(--border);
+            color: var(--text-muted);
+            transition: all 0.3s;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .ball:nth-child(odd) {
+            animation-delay: -1.5s;
+        }
+
+        .ball.hot {
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .ball.cold {
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 4px 20px rgba(6, 182, 212, 0.4);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateX(0); }
+            50% { transform: translateY(-10px) rotateX(5deg); }
+        }
+
+        .visual-stats {
+            margin-top: 32px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .mini-stat {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .mini-stat-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .mini-stat-icon {
+            font-size: 16px;
+        }
+
+        .mini-stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .mini-stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .mini-stat-value.green { color: var(--accent-green); }
+        .mini-stat-value.amber { color: var(--accent-amber); }
+        .mini-stat-value.blue { color: var(--accent-blue); }
+        .mini-stat-value.purple { color: var(--accent-purple); }
+
+        /* Features Section */
+        .features {
+            position: relative;
+            z-index: 1;
+            padding: 80px 32px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .feature-icon.blue { background: rgba(59, 130, 246, 0.15); }
+        .feature-icon.purple { background: rgba(139, 92, 246, 0.15); }
+        .feature-icon.cyan { background: rgba(6, 182, 212, 0.15); }
+        .feature-icon.green { background: rgba(16, 185, 129, 0.15); }
+        .feature-icon.amber { background: rgba(245, 158, 11, 0.15); }
+        .feature-icon.rose { background: rgba(244, 63, 94, 0.15); }
+
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .feature-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .feature-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        .feature-link:hover {
+            text-decoration: underline;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            position: relative;
+            z-index: 1;
+            padding: 80px 32px;
+            background: var(--bg-card);
+        }
+
+        .steps {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            top: 40px;
+            font-size: 24px;
+            color: var(--text-muted);
+        }
+
+        .step-number {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        .step-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .step-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Live Preview */
+        .live-preview {
+            position: relative;
+            z-index: 1;
+            padding: 80px 32px;
+        }
+
+        .preview-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .preview-header {
+            padding: 16px 24px;
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .preview-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .preview-dot.red { background: #f43f5e; }
+        .preview-dot.yellow { background: #f59e0b; }
+        .preview-dot.green { background: #10b981; }
+
+        .preview-title {
+            margin-left: 12px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .preview-content {
+            padding: 32px;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-placeholder {
+            text-align: center;
+        }
+
+        .preview-placeholder .icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+        }
+
+        .preview-placeholder h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .preview-placeholder p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        /* Footer */
+        .footer {
+            position: relative;
+            z-index: 1;
+            padding: 48px 32px;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-text {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .step:not(:last-child)::after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-text h1 {
+                font-size: 36px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">
+                <div class="logo-icon">Λ</div>
+                <div class="logo-text">Lottery <span>Lab</span></div>
+            </a>
+            <nav class="nav">
+                <a href="#features">Funkcje</a>
+                <a href="#how-it-works">Jak to działa</a>
+                <a href="#methods">Metodologia</a>
+                <a href="#docs">Dokumentacja</a>
+            </nav>
+            <div class="header-actions">
+                <div class="lang-switch">
+                    <button class="active">PL</button>
+                    <button>EN</button>
+                </div>
+                <a href="/app" class="btn btn-primary">
+                    Otwórz analizator →
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>
+                    Gdzie <span class="gradient">szczęście</span><br>
+                    spotyka naukę
+                </h1>
+                <p class="subtitle">
+                    Poznaj matematyczne tajniki loterii. Analizuj 68 lat historycznych danych, 
+                    testuj hipotezy statystyczne i odkryj, dlaczego losowość jest piękna.
+                </p>
+                
+                <div class="hero-disclaimer">
+                    <span class="icon">⚠️</span>
+                    <p>
+                        <strong>To nie jest system do przewidywania wyników.</strong><br>
+                        Lottery Lab to narzędzie edukacyjne do analizy statystycznej. 
+                        Wyniki loterii są losowe i nieprzewidywalne — i właśnie to badamy.
+                    </p>
+                </div>
+
+                <div class="hero-cta">
+                    <a href="/app" class="btn btn-primary">
+                        🔬 Rozpocznij analizę
+                    </a>
+                    <a href="#how-it-works" class="btn btn-ghost">
+                        📖 Dowiedz się więcej
+                    </a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-value">9,300+</div>
+                        <div class="stat-label">Historycznych losowań</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">68 lat</div>
+                        <div class="stat-label">Danych od 1957</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Metod statystycznych</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="lottery-balls">
+                    <div class="ball">7</div>
+                    <div class="ball hot">13</div>
+                    <div class="ball">21</div>
+                    <div class="ball cold">28</div>
+                    <div class="ball">33</div>
+                    <div class="ball hot">36</div>
+                    <div class="ball">42</div>
+                    
+                    <div class="ball cold">3</div>
+                    <div class="ball">11</div>
+                    <div class="ball hot">17</div>
+                    <div class="ball">25</div>
+                    <div class="ball">31</div>
+                    <div class="ball cold">38</div>
+                    <div class="ball">45</div>
+                    
+                    <div class="ball">5</div>
+                    <div class="ball">14</div>
+                    <div class="ball hot">20</div>
+                    <div class="ball cold">27</div>
+                    <div class="ball">34</div>
+                    <div class="ball">41</div>
+                    <div class="ball hot">49</div>
+                </div>
+
+                <div class="visual-stats">
+                    <div class="mini-stat">
+                        <div class="mini-stat-header">
+                            <span class="mini-stat-icon">🔥</span>
+                            <span class="mini-stat-label">Najczęstsza</span>
+                        </div>
+                        <div class="mini-stat-value amber">36</div>
+                    </div>
+                    <div class="mini-stat">
+                        <div class="mini-stat-header">
+                            <span class="mini-stat-icon">❄️</span>
+                            <span class="mini-stat-label">Najrzadsza</span>
+                        </div>
+                        <div class="mini-stat-value blue">41</div>
+                    </div>
+                    <div class="mini-stat">
+                        <div class="mini-stat-header">
+                            <span class="mini-stat-icon">📊</span>
+                            <span class="mini-stat-label">Test χ²</span>
+                        </div>
+                        <div class="mini-stat-value green">p = 0.52</div>
+                    </div>
+                    <div class="mini-stat">
+                        <div class="mini-stat-header">
+                            <span class="mini-stat-icon">🎲</span>
+                            <span class="mini-stat-label">Entropia</span>
+                        </div>
+                        <div class="mini-stat-value purple">5.61 bit</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="section-header">
+            <span class="section-tag">Funkcje</span>
+            <h2 class="section-title">Co możesz zbadać?</h2>
+            <p class="section-subtitle">
+                Zestaw narzędzi statystycznych do rzetelnej analizy danych loteryjnych
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon blue">📊</div>
+                <h3 class="feature-title">Analiza częstości</h3>
+                <p class="feature-desc">
+                    Sprawdź jak często wypadają poszczególne liczby. Porównaj z rozkładem teoretycznym 
+                    i zobacz "gorące" oraz "zimne" numery.
+                </p>
+                <a href="/app/frequency" class="feature-link">
+                    Eksploruj →
+                </a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon purple">🧪</div>
+                <h3 class="feature-title">Testy losowości</h3>
+                <p class="feature-desc">
+                    Chi-kwadrat, Kołmogorow-Smirnow, test serii — sprawdź czy losowania 
+                    rzeczywiście są losowe.
+                </p>
+                <a href="/app/randomness" class="feature-link">
+                    Testuj →
+                </a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon cyan">🔍</div>
+                <h3 class="feature-title">Wzorce i sekwencje</h3>
+                <p class="feature-desc">
+                    Szukaj sekwencji kolejnych liczb, ciągów arytmetycznych, 
+                    i innych potencjalnych wzorców.
+                </p>
+                <a href="/app/patterns" class="feature-link">
+                    Analizuj →
+                </a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon green">🌡️</div>
+                <h3 class="feature-title">Mapa korelacji</h3>
+                <p class="feature-desc">
+                    Wizualizacja zależności między liczbami. Czy niektóre pary 
+                    pojawiają się razem częściej niż losowo?
+                </p>
+                <a href="/app/correlation" class="feature-link">
+                    Zobacz mapę →
+                </a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon amber">📈</div>
+                <h3 class="feature-title">Trendy czasowe</h3>
+                <p class="feature-desc">
+                    Analiza zmian w czasie — tygodniowe, miesięczne i kwartalne 
+                    trendy częstości występowania.
+                </p>
+                <a href="/app/trends" class="feature-link">
+                    Obserwuj trendy →
+                </a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon rose">🎲</div>
+                <h3 class="feature-title">Generator liczb</h3>
+                <p class="feature-desc">
+                    Losuj zestawy liczb z różnymi strategiami. 
+                    Pamiętaj: każda kombinacja ma takie samo prawdopodobieństwo!
+                </p>
+                <a href="/app/generator" class="feature-link">
+                    Generuj →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="section-header">
+            <span class="section-tag">Metodologia</span>
+            <h2 class="section-title">Jak to działa?</h2>
+            <p class="section-subtitle">
+                Rzetelne podejście naukowe w 4 krokach
+            </p>
+        </div>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3 class="step-title">Zbieramy dane</h3>
+                <p class="step-desc">
+                    Historyczne wyniki od 1957 roku, aktualizowane automatycznie po każdym losowaniu.
+                </p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3 class="step-title">Formułujemy hipotezę</h3>
+                <p class="step-desc">
+                    H₀: "Wyniki loterii są całkowicie losowe" — to badamy statystycznie.
+                </p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3 class="step-title">Przeprowadzamy testy</h3>
+                <p class="step-desc">
+                    Stosujemy uznane metody statystyczne: chi-kwadrat, KS, autokorelacja, entropia.
+                </p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3 class="step-title">Interpretujemy wyniki</h3>
+                <p class="step-desc">
+                    Czy dane wspierają losowość? (Spoiler: tak — i to jest dobra wiadomość!)
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Preview -->
+    <section class="live-preview">
+        <div class="section-header">
+            <span class="section-tag">Demo</span>
+            <h2 class="section-title">Zobacz na żywo</h2>
+            <p class="section-subtitle">
+                Interaktywny podgląd analizy ostatnich losowań
+            </p>
+        </div>
+
+        <div class="preview-container">
+            <div class="preview-header">
+                <div class="preview-dot red"></div>
+                <div class="preview-dot yellow"></div>
+                <div class="preview-dot green"></div>
+                <span class="preview-title">Lottery Lab — Analiza częstości (ostatnie 365 dni)</span>
+            </div>
+            <div class="preview-content">
+                <div class="preview-placeholder">
+                    <div class="icon">📊</div>
+                    <h3>Interaktywny podgląd</h3>
+                    <p>Kliknij aby zobaczyć wykres częstości dla ostatnich losowań</p>
+                    <a href="/app" class="btn btn-primary">
+                        Otwórz pełną wersję →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-text">
+                © 2025 Lottery Lab — Badania i Edukacja. 
+                Projekt open-source na licencji MIT.
+            </p>
+            <div class="footer-links">
+                <a href="https://github.com/username/lotterylab">GitHub</a>
+                <a href="/docs">Dokumentacja</a>
+                <a href="/methodology">Metodologia</a>
+                <a href="/privacy">Prywatność</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+
+
