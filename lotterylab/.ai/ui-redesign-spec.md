@@ -565,3 +565,6 @@ lotterylab/
 *Dokument przygotowany: Grudzień 2025*  
 *Do akceptacji przez: Product Owner*
 
+
+
+
