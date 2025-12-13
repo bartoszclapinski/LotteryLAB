@@ -68,13 +68,13 @@ async def lifespan(app: FastAPI):
         skipped = result.get("skipped", 0)
         if inserted > 0:
             logger.info(f"✅ Auto-update: {inserted} new draws imported, {skipped} skipped")
-            print(f"🎲 Auto-update: {inserted} new draws imported")
+            print(f"[UPDATE] Auto-update: {inserted} new draws imported")
         else:
             logger.info(f"ℹ️ Auto-update: No new draws (database up to date)")
-            print("🎲 Auto-update: Database already up to date")
+            print("[UPDATE] Auto-update: Database already up to date")
     except Exception as e:
         logger.warning(f"⚠️ Auto-update failed: {e}")
-        print(f"⚠️ Auto-update failed: {e} (continuing without update)")
+        print(f"[WARNING] Auto-update failed: {e} (continuing without update)")
     
     yield  # Application runs here
     
