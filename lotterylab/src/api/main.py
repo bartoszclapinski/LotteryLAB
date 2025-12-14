@@ -68,13 +68,13 @@ async def lifespan(app: FastAPI):
         skipped = result.get("skipped", 0)
         if inserted > 0:
             logger.info(f"✅ Auto-update: {inserted} new draws imported, {skipped} skipped")
-            print(f"🎲 Auto-update: {inserted} new draws imported")
+            print(f"[UPDATE] Auto-update: {inserted} new draws imported")
         else:
             logger.info(f"ℹ️ Auto-update: No new draws (database up to date)")
-            print("🎲 Auto-update: Database already up to date")
+            print("[UPDATE] Auto-update: Database already up to date")
     except Exception as e:
         logger.warning(f"⚠️ Auto-update failed: {e}")
-        print(f"⚠️ Auto-update failed: {e} (continuing without update)")
+        print(f"[WARNING] Auto-update failed: {e} (continuing without update)")
     
     yield  # Application runs here
     
@@ -192,7 +192,45 @@ async def set_language(request: Request, lang: str = DEFAULT_LANGUAGE):
 
 
 @app.get("/", response_class=HTMLResponse)
-async def index(request: Request):
+async def home(request: Request):
+    """Landing page with overview of Lottery Lab."""
+    lang = get_lang_from_request(request)
+    texts = get_all_texts(lang)
+    
+    # Generate sample balls for visual
+    sample_balls = [
+        {"number": 7, "class": ""}, {"number": 13, "class": "hot"}, {"number": 21, "class": ""},
+        {"number": 28, "class": "cold"}, {"number": 33, "class": ""}, {"number": 36, "class": "hot"},
+        {"number": 42, "class": ""}, {"number": 3, "class": "cold"}, {"number": 11, "class": ""},
+        {"number": 17, "class": "hot"}, {"number": 25, "class": ""}, {"number": 31, "class": ""},
+        {"number": 38, "class": "cold"}, {"number": 45, "class": ""}, {"number": 5, "class": ""},
+        {"number": 14, "class": ""}, {"number": 20, "class": "hot"}, {"number": 27, "class": "cold"},
+        {"number": 34, "class": ""}, {"number": 41, "class": ""}, {"number": 49, "class": "hot"},
+    ]
+    
+    ctx = {
+        "request": request,
+        "title": "Lottery Lab — " + texts.get("tagline", "Where Luck Meets Science"),
+        "lang": lang,
+        "supported_languages": SUPPORTED_LANGUAGES,
+        "i18n": texts,
+        "sample_balls": sample_balls,
+        "stats": {
+            "total_draws": "9,300+",
+            "years": "68",
+            "methods": "12",
+        },
+        "hot_number": "36",
+        "cold_number": "41",
+        "chi_p_value": "0.52",
+        "entropy_value": "5.61",
+    }
+    return templates.TemplateResponse("home.html", ctx)
+
+
+@app.get("/app", response_class=HTMLResponse)
+async def app_dashboard(request: Request):
+    """Main application dashboard with analysis tools."""
     ctx = get_template_context(request, title="Lottery Lab", game_type="lotto")
     return templates.TemplateResponse("index.html", ctx)
 

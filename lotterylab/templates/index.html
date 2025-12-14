@@ -1,14 +1,24 @@
 <!doctype html>
-<html lang="{{ lang }}">
+<html lang="{{ lang }}" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{ title }}</title>
     <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="/static/css/main.css?v=4" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="/static/css/design-system.css?v=1" />
+    <link rel="stylesheet" href="/static/css/components.css?v=1" />
+    <link rel="stylesheet" href="/static/css/main.css?v=5" />
+    <!-- Theme toggle (load early to prevent flash) -->
+    <script src="/static/js/theme-toggle.js?v=1"></script>
+    <!-- Other scripts -->
     <script src="https://unpkg.com/htmx.org@1.9.12" defer></script>
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" defer></script>
-    <script src="/static/js/app.js?v=4" defer></script>
+    <script src="/static/js/app.js?v=5" defer></script>
   </head>
   <body>
     <header class="header">
@@ -34,6 +44,10 @@
             </a>
             {% endfor %}
           </div>
+          <button id="theme-toggle" class="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
+            <span class="icon-sun">☀️</span>
+            <span class="icon-moon">🌙</span>
+          </button>
           <button class="btn btn-primary">{{ new_study }}</button>
         </div>
       </div>
