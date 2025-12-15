@@ -254,6 +254,41 @@ async def methodology(request: Request):
     return templates.TemplateResponse("methodology.html", ctx)
 
 
+# Methodology detail pages
+METHODS = [
+    {"slug": "chi-square", "template": "methodology/chi-square.html", "index": 1},
+    {"slug": "kolmogorov-smirnov", "template": "methodology/kolmogorov-smirnov.html", "index": 2},
+    {"slug": "runs-test", "template": "methodology/runs-test.html", "index": 3},
+    {"slug": "autocorrelation", "template": "methodology/autocorrelation.html", "index": 4},
+    {"slug": "entropy", "template": "methodology/entropy.html", "index": 5},
+    {"slug": "monte-carlo", "template": "methodology/monte-carlo.html", "index": 6},
+]
+
+
+@app.get("/methodology/{method_slug}", response_class=HTMLResponse)
+async def methodology_detail(request: Request, method_slug: str):
+    """Methodology detail page for a specific statistical method."""
+    # Find method config
+    method = next((m for m in METHODS if m["slug"] == method_slug), None)
+    if not method:
+        raise HTTPException(status_code=404, detail="Method not found")
+    
+    lang = get_lang_from_request(request)
+    texts = get_all_texts(lang)
+    
+    ctx = {
+        "request": request,
+        "title": f"{method_slug.replace('-', ' ').title()} — Lottery Lab",
+        "lang": lang,
+        "supported_languages": SUPPORTED_LANGUAGES,
+        "i18n": texts,
+        "method_slug": method_slug,
+        "method_index": method["index"],
+        "progress_pct": int((method["index"] / 6) * 100),
+    }
+    return templates.TemplateResponse(method["template"], ctx)
+
+
 @app.get("/partials/frequency", response_class=HTMLResponse)
 async def frequency_partial(request: Request, game_type: str = "lotto", window_days: int = 365):
     with SessionLocal() as session:
