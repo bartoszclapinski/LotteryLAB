@@ -1,0 +1,510 @@
+/**
+ * Methodology Page Styles
+ * Extends the design system for methodology overview and detail pages
+ */
+
+/* Main Content */
+.main {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 120px 32px 80px;
+}
+
+/* Hero */
+.hero {
+    text-align: center;
+    margin-bottom: 64px;
+    /* Override home.css defaults */
+    min-height: auto;
+    display: block;
+    padding: 0;
+}
+
+.hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--accent-purple-transparent, rgba(139, 92, 246, 0.15));
+    border: 1px solid var(--accent-purple-border, rgba(139, 92, 246, 0.3));
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent-purple);
+    margin-bottom: 24px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+}
+
+.hero p {
+    font-size: 20px;
+    color: var(--text-secondary);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Quick Stats */
+.quick-stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    padding: 24px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+}
+
+.quick-stat {
+    text-align: center;
+}
+
+.quick-stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.quick-stat-label {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* Hypothesis Box */
+.hypothesis-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 64px;
+    text-align: center;
+}
+
+.hypothesis-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent-purple);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+}
+
+.hypothesis-text {
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.4;
+    max-width: 800px;
+    margin: 0 auto 24px;
+    color: var(--text-primary);
+}
+
+.hypothesis-text em {
+    color: var(--accent-cyan);
+    font-style: normal;
+}
+
+.hypothesis-desc {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Section Header */
+.section-header {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+.section-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+/* Methods Grid */
+.methods-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 64px;
+}
+
+.method-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    transition: all 0.3s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.method-card:hover {
+    border-color: var(--accent-blue);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.method-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.method-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+.method-icon.purple { background: rgba(139, 92, 246, 0.15); }
+.method-icon.blue { background: rgba(59, 130, 246, 0.15); }
+.method-icon.cyan { background: rgba(6, 182, 212, 0.15); }
+.method-icon.green { background: rgba(16, 185, 129, 0.15); }
+.method-icon.amber { background: rgba(245, 158, 11, 0.15); }
+.method-icon.rose { background: rgba(244, 63, 94, 0.15); }
+
+.method-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: var(--bg-elevated);
+    border-radius: 12px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.method-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+.method-question {
+    font-size: 15px;
+    color: var(--accent-cyan);
+    margin-bottom: 12px;
+    font-style: italic;
+}
+
+.method-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.method-formula {
+    background: var(--bg-elevated);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.method-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.method-result {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.method-result-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.method-result-dot.green { background: var(--accent-green); }
+.method-result-dot.amber { background: var(--accent-amber); }
+
+.method-result-text {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.method-link {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent-blue);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Workflow Section */
+.workflow {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 48px;
+    margin-bottom: 64px;
+}
+
+.workflow-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 32px;
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.workflow-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.workflow-steps::before {
+    content: '';
+    position: absolute;
+    top: 32px;
+    left: 80px;
+    right: 80px;
+    height: 2px;
+    background: var(--border);
+}
+
+.workflow-step {
+    text-align: center;
+    position: relative;
+    flex: 1;
+}
+
+.workflow-step-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--bg-elevated);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 16px;
+    position: relative;
+    z-index: 1;
+}
+
+.workflow-step.active .workflow-step-icon {
+    background: var(--gradient-primary);
+    border-color: transparent;
+}
+
+.workflow-step-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.workflow-step-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    max-width: 150px;
+    margin: 0 auto;
+}
+
+/* Lottery Support */
+.lottery-support {
+    margin-bottom: 64px;
+}
+
+.lottery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.lottery-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.lottery-card:hover {
+    border-color: var(--accent-blue);
+}
+
+.lottery-card.coming-soon {
+    opacity: 0.5;
+}
+
+.lottery-flag {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.lottery-name {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.lottery-format {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.lottery-status {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.lottery-status.active {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--accent-green);
+}
+
+.lottery-status.soon {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--accent-amber);
+}
+
+/* CTA Section */
+.cta-section {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 20px;
+    padding: 48px;
+    text-align: center;
+}
+
+.cta-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.cta-desc {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+/* Footer override for methodology page */
+.footer {
+    margin-top: 80px;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+    .methods-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lottery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .workflow-steps {
+        flex-direction: column;
+        gap: 32px;
+    }
+
+    .workflow-steps::before {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .main {
+        padding: 100px 16px 60px;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .quick-stats {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .hypothesis-box {
+        padding: 24px;
+    }
+
+    .hypothesis-text {
+        font-size: 20px;
+    }
+
+    .lottery-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .method-card {
+        padding: 24px;
+    }
+
+    .cta-section {
+        padding: 32px 20px;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+    }
+}
+

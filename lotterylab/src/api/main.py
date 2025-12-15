@@ -235,6 +235,25 @@ async def app_dashboard(request: Request):
     return templates.TemplateResponse("index.html", ctx)
 
 
+@app.get("/methodology", response_class=HTMLResponse)
+async def methodology(request: Request):
+    """Methodology overview page with all statistical methods."""
+    lang = get_lang_from_request(request)
+    texts = get_all_texts(lang)
+    
+    ctx = {
+        "request": request,
+        "title": texts.get("methodology", "Methodology") + " — Lottery Lab",
+        "lang": lang,
+        "supported_languages": SUPPORTED_LANGUAGES,
+        "i18n": texts,
+        "stats": {
+            "years": "68",
+        },
+    }
+    return templates.TemplateResponse("methodology.html", ctx)
+
+
 @app.get("/partials/frequency", response_class=HTMLResponse)
 async def frequency_partial(request: Request, game_type: str = "lotto", window_days: int = 365):
     with SessionLocal() as session:
