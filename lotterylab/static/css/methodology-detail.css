@@ -322,6 +322,7 @@
 .info-card-icon.rose { background: rgba(244, 63, 94, 0.15); }
 .info-card-icon.blue { background: rgba(59, 130, 246, 0.15); }
 .info-card-icon.amber { background: rgba(245, 158, 11, 0.15); }
+.info-card-value.amber { color: var(--accent-amber); }
 
 .info-card-title {
     font-size: 14px;
@@ -449,7 +450,7 @@
 
 .demo-results {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 16px;
     margin-top: 24px;
 }
