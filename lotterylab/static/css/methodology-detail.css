@@ -801,6 +801,73 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
+   COMPARISON TABLE
+   ═══════════════════════════════════════════════════════════ */
+
+.comparison-table {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 24px 0;
+}
+
+.comparison-row {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.comparison-row:last-child {
+    border-bottom: none;
+}
+
+.comparison-row.header {
+    background: var(--bg-tertiary);
+}
+
+.comparison-row.header .comparison-cell {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.comparison-cell {
+    padding: 14px 16px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.comparison-cell.label {
+    font-weight: 500;
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CHART CONTAINER
+   ═══════════════════════════════════════════════════════════ */
+
+.ks-chart-container {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 24px;
+    height: 280px;
+}
+
+.ks-chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INFO CARD CYAN COLOR
+   ═══════════════════════════════════════════════════════════ */
+
+.info-card-icon.cyan { background: rgba(0, 212, 170, 0.15); }
+.info-card-value.cyan { color: var(--accent-cyan); }
+
+/* ═══════════════════════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════════════════════ */
 
