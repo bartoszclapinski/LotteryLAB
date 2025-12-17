@@ -375,24 +375,28 @@ print(f"{{ i18n.ac_code_print2 }}: {result['is_random']}")</code></pre>
           </div>
         </section>
 
-        <!-- Navigation -->
-        <div class="page-nav">
-          <a href="/methodology/runs-test" class="nav-prev">
-            ← {{ i18n.meth_runs_title }}
-          </a>
-          <div class="page-indicator">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot active"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="page-number">4 {{ i18n.meth_of }} 6</span>
+        <!-- Footer Navigation -->
+        <nav class="footer-nav">
+          <div class="footer-nav-content">
+            <a href="/methodology/runs-test" class="nav-btn">
+              ← {{ i18n.meth_runs_title }}
+            </a>
+            <div class="progress-indicator">
+              <div class="progress-dots">
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+              </div>
+              <span class="progress-label">4 {{ i18n.meth_of }} 6</span>
+            </div>
+            <a href="/methodology/entropy" class="nav-btn primary">
+              {{ i18n.meth_entropy_title }} →
+            </a>
           </div>
-          <a href="/methodology/entropy" class="nav-next">
-            {{ i18n.meth_entropy_title }} →
-          </a>
-        </div>
+        </nav>
       </main>
 
       <!-- Right panel -->
