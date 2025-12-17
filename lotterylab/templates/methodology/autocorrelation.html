@@ -336,42 +336,42 @@
           <div class="code-block">
             <div class="code-header">
               <span class="code-lang">Python</span>
-              <button class="code-copy" onclick="copyCode(this)">{{ i18n.copy_btn }}</button>
             </div>
-            <pre class="code-content"><code>import numpy as np
-from statsmodels.tsa.stattools import acf
+            <pre class="code-content"><code><span class="keyword">import</span> numpy <span class="keyword">as</span> np
+<span class="keyword">from</span> statsmodels.tsa.stattools <span class="keyword">import</span> acf
 
-def analyze_autocorrelation(numbers: list, max_lag: int = 10) -> dict:
-    """{{ i18n.ac_code_docstring }}"""
+<span class="keyword">def</span> <span class="function">analyze_autocorrelation</span>(numbers: <span class="function">list</span>, max_lag: <span class="function">int</span> = <span class="number">10</span>) -> <span class="function">dict</span>:
+    <span class="string">"""{{ i18n.ac_code_docstring }}"""</span>
     
-    # {{ i18n.ac_code_comment1 }}
+    <span class="comment"># {{ i18n.ac_code_comment1 }}</span>
     x = np.array(numbers)
-    n = len(x)
+    n = <span class="function">len</span>(x)
     
-    # {{ i18n.ac_code_comment2 }}
-    acf_values, confint = acf(x, nlags=max_lag, alpha=0.05)
+    <span class="comment"># {{ i18n.ac_code_comment2 }}</span>
+    acf_values, confint = acf(x, nlags=max_lag, alpha=<span class="number">0.05</span>)
     
-    # {{ i18n.ac_code_comment3 }}
-    ci_bound = 1.96 / np.sqrt(n)
+    <span class="comment"># {{ i18n.ac_code_comment3 }}</span>
+    ci_bound = <span class="number">1.96</span> / np.sqrt(n)
     
-    # {{ i18n.ac_code_comment4 }}
+    <span class="comment"># {{ i18n.ac_code_comment4 }}</span>
     significant = []
-    for lag in range(1, max_lag + 1):
-        if abs(acf_values[lag]) > ci_bound:
+    <span class="keyword">for</span> lag <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, max_lag + <span class="number">1</span>):
+        <span class="keyword">if</span> <span class="function">abs</span>(acf_values[lag]) > ci_bound:
             significant.append(lag)
     
-    return {
-        'acf_values': acf_values,
-        'ci_bound': ci_bound,
-        'significant_lags': significant,
-        'is_random': len(significant) == 0
+    <span class="keyword">return</span> {
+        <span class="string">'acf_values'</span>: acf_values,
+        <span class="string">'ci_bound'</span>: ci_bound,
+        <span class="string">'significant_lags'</span>: significant,
+        <span class="string">'is_random'</span>: <span class="function">len</span>(significant) == <span class="number">0</span>
     }
 
-# {{ i18n.ac_code_usage }}
-numbers = [5, 12, 23, 8, 31, 17, 42, 3, 28, 15, ...]
+<span class="comment"># {{ i18n.ac_code_usage }}</span>
+numbers = [<span class="number">5</span>, <span class="number">12</span>, <span class="number">23</span>, <span class="number">8</span>, <span class="number">31</span>, <span class="number">17</span>, <span class="number">42</span>, <span class="number">3</span>, <span class="number">28</span>, <span class="number">15</span>, ...]
 result = analyze_autocorrelation(numbers)
-print(f"{{ i18n.ac_code_print1 }}: {result['significant_lags']}")
-print(f"{{ i18n.ac_code_print2 }}: {result['is_random']}")</code></pre>
+<span class="function">print</span>(<span class="string">"{{ i18n.ac_code_print1 }}:"</span>, result[<span class="string">'significant_lags'</span>])
+<span class="function">print</span>(<span class="string">"{{ i18n.ac_code_print2 }}:"</span>, result[<span class="string">'is_random'</span>])</code></pre>
+            <button class="code-copy" onclick="copyCode(this)">{{ i18n.copy_btn }}</button>
           </div>
         </section>
 
