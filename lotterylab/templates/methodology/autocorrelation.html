@@ -311,20 +311,20 @@
             {{ i18n.ac_interpret_title }}
           </h2>
 
-          <div class="result-card success">
-            <div class="result-icon">✓</div>
-            <div class="result-content">
-              <div class="result-title">{{ i18n.ac_lotto_result }}</div>
-              <p>{{ i18n.ac_lotto_result_desc }}</p>
+          <div class="interpretation">
+            <div class="interpretation-header">
+              <span>✓</span>
+              <span>{{ i18n.ac_lotto_result }}</span>
             </div>
+            <p>{{ i18n.ac_lotto_result_desc }}</p>
           </div>
 
-          <div class="result-card info">
-            <div class="result-icon">💡</div>
-            <div class="result-content">
-              <div class="result-title">{{ i18n.ac_key_insight }}</div>
-              <p>{{ i18n.ac_key_insight_desc }}</p>
+          <div class="warning-box">
+            <div class="warning-header">
+              <span>💡</span>
+              <span>{{ i18n.ac_key_insight }}</span>
             </div>
+            <p>{{ i18n.ac_key_insight_desc }}</p>
           </div>
         </section>
 
@@ -401,41 +401,44 @@ result = analyze_autocorrelation(numbers)
         </nav>
       </main>
 
-      <!-- Right panel -->
+      <!-- Right Panel -->
       <aside class="right-panel">
-        <div class="toc">
-          <div class="toc-title">{{ i18n.ac_on_this_page }}</div>
-          <nav class="toc-nav">
-            <a href="#intuition" class="toc-link active">{{ i18n.ac_intuition_title }}</a>
-            <a href="#formula" class="toc-link">{{ i18n.ac_formula_title }}</a>
-            <a href="#demo" class="toc-link">{{ i18n.ac_demo_title }}</a>
-            <a href="#interpretation" class="toc-link">{{ i18n.ac_interpret_title }}</a>
-            <a href="#code" class="toc-link">{{ i18n.ac_code_title }}</a>
-          </nav>
+        <div class="panel-section">
+          <div class="panel-title">{{ i18n.ac_on_this_page }}</div>
+          <a href="#intuition" class="toc-link active">{{ i18n.ac_intuition_title }}</a>
+          <a href="#formula" class="toc-link">{{ i18n.ac_formula_title }}</a>
+          <a href="#demo" class="toc-link">{{ i18n.ac_demo_title }}</a>
+          <a href="#interpretation" class="toc-link">{{ i18n.ac_interpret_title }}</a>
+          <a href="#code" class="toc-link">{{ i18n.ac_code_title }}</a>
         </div>
 
-        <div class="tip-box">
-          <div class="tip-header">
-            <span class="icon">💡</span>
-            Pro tip
+        <div class="panel-section">
+          <div class="panel-title">{{ i18n.tip }}</div>
+          <div class="tip-card">
+            <div class="tip-header">
+              <span>💡</span>
+              <span>Pro tip</span>
+            </div>
+            <p class="tip-text">{{ i18n.ac_tip_text }}</p>
           </div>
-          <p class="tip-text">{{ i18n.ac_tip_text }}</p>
         </div>
 
-        <div class="related-box">
-          <div class="related-title">{{ i18n.ac_related }}</div>
-          <a href="/methodology/runs-test" class="related-link">
-            <span class="icon">🔄</span>
-            {{ i18n.meth_runs_title }}
-          </a>
-          <a href="/methodology/entropy" class="related-link">
-            <span class="icon">🎲</span>
-            {{ i18n.meth_entropy_title }}
-          </a>
-          <a href="/methodology/chi-square" class="related-link">
-            <span class="icon">📊</span>
-            {{ i18n.meth_chi_title }}
-          </a>
+        <div class="panel-section">
+          <div class="panel-title">{{ i18n.ac_related }}</div>
+          <div class="related-links">
+            <a href="/methodology/runs-test" class="related-link">
+              <span>🔄</span>
+              {{ i18n.meth_runs_title }}
+            </a>
+            <a href="/methodology/entropy" class="related-link">
+              <span>🎲</span>
+              {{ i18n.meth_entropy_title }}
+            </a>
+            <a href="/methodology/chi-square" class="related-link">
+              <span>📊</span>
+              {{ i18n.meth_chi_title }}
+            </a>
+          </div>
         </div>
       </aside>
     </div>
