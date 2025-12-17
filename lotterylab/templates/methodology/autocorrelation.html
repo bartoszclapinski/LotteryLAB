@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="{{ lang }}" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ i18n.meth_autocorr_title }} — Lottery Lab</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/design-system.css?v=3" />
+    <link rel="stylesheet" href="/static/css/components.css?v=3" />
+    <link rel="stylesheet" href="/static/css/home.css?v=3" />
+    <link rel="stylesheet" href="/static/css/methodology-detail.css?v=3" />
+    <!-- Theme toggle (load early to prevent flash) -->
+    <script src="/static/js/theme-toggle.js?v=3"></script>
+  </head>
+  <body>
+    <div class="bg-pattern"></div>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <a href="/" class="logo">
+          <div class="logo-icon">Λ</div>
+          <div class="logo-text">Lottery <span>Lab</span></div>
+        </a>
+        <nav class="breadcrumb">
+          <a href="/">{{ i18n.home }}</a>
+          <span class="separator">›</span>
+          <a href="/methodology">{{ i18n.methodology }}</a>
+          <span class="separator">›</span>
+          <span>{{ i18n.meth_autocorr_title }}</span>
+        </nav>
+        <div class="header-actions">
+          <div class="switch-group">
+            {% for supported_lang in supported_languages %}
+            <a href="/set-language?lang={{ supported_lang }}" 
+               class="{% if lang == supported_lang %}active{% endif %}">
+              {{ supported_lang|upper }}
+            </a>
+            {% endfor %}
+          </div>
+          <button id="theme-toggle" class="theme-toggle" title="{{ i18n.toggle_theme }}" aria-label="{{ i18n.toggle_theme }}">
+            <span class="icon-sun">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+              </svg>
+            </span>
+            <span class="icon-moon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            </span>
+          </button>
+          <a href="/app" class="btn btn-primary">{{ i18n.open_analyzer }} →</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Layout -->
+    <div class="layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-title">{{ i18n.meth_tests_title }}</div>
+          <nav class="sidebar-nav">
+            <a href="/methodology/chi-square" class="sidebar-link">
+              <span class="icon">📊</span>
+              <span>{{ i18n.meth_chi_title }}</span>
+              <span class="badge">8 min</span>
+            </a>
+            <a href="/methodology/kolmogorov-smirnov" class="sidebar-link">
+              <span class="icon">📈</span>
+              <span>{{ i18n.meth_ks_title }}</span>
+              <span class="badge">10 min</span>
+            </a>
+            <a href="/methodology/runs-test" class="sidebar-link">
+              <span class="icon">🔄</span>
+              <span>{{ i18n.meth_runs_title }}</span>
+              <span class="badge">7 min</span>
+            </a>
+            <a href="/methodology/autocorrelation" class="sidebar-link active">
+              <span class="icon">⏱️</span>
+              <span>{{ i18n.meth_autocorr_title }}</span>
+              <span class="badge">6 min</span>
+            </a>
+            <a href="/methodology/entropy" class="sidebar-link">
+              <span class="icon">🎲</span>
+              <span>{{ i18n.meth_entropy_title }}</span>
+              <span class="badge">5 min</span>
+            </a>
+            <a href="/methodology/monte-carlo" class="sidebar-link">
+              <span class="icon">🎰</span>
+              <span>{{ i18n.meth_monte_title }}</span>
+              <span class="badge">12 min</span>
+            </a>
+          </nav>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">{{ i18n.your_progress }}</div>
+          <div class="progress-indicator">
+            <div class="progress-bar" style="width: 66%"></div>
+          </div>
+          <div class="progress-text">4 {{ i18n.of }} 6 {{ i18n.chapters }}</div>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <main class="main-content">
+        <div class="content-badge">
+          <span class="icon">⏱️</span>
+          {{ i18n.meth_tests_title }}
+        </div>
+        
+        <h1 class="page-title">{{ i18n.meth_autocorr_title }}</h1>
+        
+        <!-- Section: Intuition -->
+        <section class="section" id="intuition">
+          <h2 class="section-title">
+            <span class="icon">💡</span>
+            {{ i18n.ac_intuition_title }}
+          </h2>
+          <div class="prose">
+            <p>{{ i18n.ac_intuition_p1 }}</p>
+            <p>{{ i18n.ac_intuition_p2 }}</p>
+            <p><strong>{{ i18n.ac_intuition_question }}</strong> {{ i18n.ac_intuition_answer }}</p>
+          </div>
+
+          <!-- Visual: Lag concept -->
+          <div class="lag-visual">
+            <div class="lag-example">
+              <div class="lag-label">{{ i18n.ac_lag_example }}</div>
+              <div class="lag-rows">
+                <div class="lag-row">
+                  <span class="lag-title">{{ i18n.ac_original }}:</span>
+                  <div class="lag-values">
+                    <span class="lag-value">5</span>
+                    <span class="lag-value">12</span>
+                    <span class="lag-value">23</span>
+                    <span class="lag-value">8</span>
+                    <span class="lag-value">31</span>
+                    <span class="lag-value">17</span>
+                  </div>
+                </div>
+                <div class="lag-row">
+                  <span class="lag-title">{{ i18n.ac_lag_1 }}:</span>
+                  <div class="lag-values">
+                    <span class="lag-value faded">—</span>
+                    <span class="lag-value">5</span>
+                    <span class="lag-value">12</span>
+                    <span class="lag-value">23</span>
+                    <span class="lag-value">8</span>
+                    <span class="lag-value">31</span>
+                  </div>
+                </div>
+                <div class="lag-row">
+                  <span class="lag-title">{{ i18n.ac_lag_2 }}:</span>
+                  <div class="lag-values">
+                    <span class="lag-value faded">—</span>
+                    <span class="lag-value faded">—</span>
+                    <span class="lag-value">5</span>
+                    <span class="lag-value">12</span>
+                    <span class="lag-value">23</span>
+                    <span class="lag-value">8</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="info-card-header">
+                <div class="info-card-icon emerald">📈</div>
+                <div class="info-card-title">{{ i18n.ac_positive }}</div>
+              </div>
+              <div class="info-card-value emerald">{{ i18n.ac_trending }}</div>
+              <div class="info-card-desc">{{ i18n.ac_positive_desc }}</div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header">
+                <div class="info-card-icon rose">📉</div>
+                <div class="info-card-title">{{ i18n.ac_negative }}</div>
+              </div>
+              <div class="info-card-value rose">{{ i18n.ac_oscillating }}</div>
+              <div class="info-card-desc">{{ i18n.ac_negative_desc }}</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Formula -->
+        <section class="section" id="formula">
+          <h2 class="section-title">
+            <span class="icon">📐</span>
+            {{ i18n.ac_formula_title }}
+          </h2>
+          
+          <div class="formula-box">
+            <div class="formula-label">{{ i18n.ac_acf_formula }}</div>
+            <div class="formula">r<sub>k</sub> = Σ(x<sub>t</sub> - x̄)(x<sub>t+k</sub> - x̄) / Σ(x<sub>t</sub> - x̄)²</div>
+            <div class="formula-desc">
+              <code>r<sub>k</sub></code> = {{ i18n.ac_acf_at_lag }} k, 
+              <code>x̄</code> = {{ i18n.ac_mean }},
+              <code>k</code> = {{ i18n.ac_lag }}
+            </div>
+          </div>
+
+          <div class="formula-box">
+            <div class="formula-label">{{ i18n.ac_confidence_band }}</div>
+            <div class="formula">± 1.96 / √n</div>
+            <div class="formula-desc">
+              <code>n</code> = {{ i18n.ac_sample_size }}, 
+              {{ i18n.ac_95_ci }}
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>{{ i18n.ac_formula_explanation }}</p>
+          </div>
+
+          <div class="steps-list">
+            <div class="step-item">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <div class="step-title">{{ i18n.ac_step1_title }}</div>
+                <div class="step-desc">{{ i18n.ac_step1_desc }}</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <div class="step-title">{{ i18n.ac_step2_title }}</div>
+                <div class="step-desc">{{ i18n.ac_step2_desc }}</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <div class="step-title">{{ i18n.ac_step3_title }}</div>
+                <div class="step-desc">{{ i18n.ac_step3_desc }}</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <div class="step-title">{{ i18n.ac_step4_title }}</div>
+                <div class="step-desc">{{ i18n.ac_step4_desc }}</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Interactive Demo -->
+        <section class="section" id="demo">
+          <h2 class="section-title">
+            <span class="icon">🧪</span>
+            {{ i18n.ac_demo_title }}
+          </h2>
+
+          <div class="demo-box">
+            <div class="demo-header">
+              <h3 class="demo-title">{{ i18n.ac_simulator_title }}</h3>
+              <p class="demo-desc">{{ i18n.ac_simulator_desc }}</p>
+            </div>
+            
+            <div class="demo-controls">
+              <div class="control-group">
+                <label>{{ i18n.ac_sequence_length }}</label>
+                <input type="range" id="acSequenceLength" min="20" max="100" value="50">
+                <span id="acSequenceLengthValue">50</span>
+              </div>
+              <div class="control-group">
+                <label>{{ i18n.ac_max_lag }}</label>
+                <input type="range" id="acMaxLag" min="5" max="20" value="10">
+                <span id="acMaxLagValue">10</span>
+              </div>
+              <button class="btn btn-primary" id="generateAcBtn">{{ i18n.ac_generate }}</button>
+            </div>
+
+            <!-- ACF Chart -->
+            <div class="acf-chart" id="acfChart">
+              <div class="acf-placeholder">{{ i18n.ac_click_generate }}</div>
+            </div>
+            
+            <div class="demo-results">
+              <div class="demo-result">
+                <div class="demo-result-label">{{ i18n.ac_max_acf }}</div>
+                <div class="demo-result-value neutral" id="maxAcf">—</div>
+              </div>
+              <div class="demo-result">
+                <div class="demo-result-label">{{ i18n.ac_significant_lags }}</div>
+                <div class="demo-result-value neutral" id="significantLags">—</div>
+              </div>
+              <div class="demo-result">
+                <div class="demo-result-label">{{ i18n.ac_verdict }}</div>
+                <div class="demo-result-value neutral" id="acVerdict">—</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Interpretation -->
+        <section class="section" id="interpretation">
+          <h2 class="section-title">
+            <span class="icon">🔍</span>
+            {{ i18n.ac_interpret_title }}
+          </h2>
+
+          <div class="result-card success">
+            <div class="result-icon">✓</div>
+            <div class="result-content">
+              <div class="result-title">{{ i18n.ac_lotto_result }}</div>
+              <p>{{ i18n.ac_lotto_result_desc }}</p>
+            </div>
+          </div>
+
+          <div class="result-card info">
+            <div class="result-icon">💡</div>
+            <div class="result-content">
+              <div class="result-title">{{ i18n.ac_key_insight }}</div>
+              <p>{{ i18n.ac_key_insight_desc }}</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Code Example -->
+        <section class="section" id="code">
+          <h2 class="section-title">
+            <span class="icon">💻</span>
+            {{ i18n.ac_code_title }}
+          </h2>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Python</span>
+              <button class="code-copy" onclick="copyCode(this)">{{ i18n.copy }}</button>
+            </div>
+            <pre class="code-content"><code>import numpy as np
+from statsmodels.tsa.stattools import acf
+
+def analyze_autocorrelation(numbers: list, max_lag: int = 10) -> dict:
+    """{{ i18n.ac_code_docstring }}"""
+    
+    # {{ i18n.ac_code_comment1 }}
+    x = np.array(numbers)
+    n = len(x)
+    
+    # {{ i18n.ac_code_comment2 }}
+    acf_values, confint = acf(x, nlags=max_lag, alpha=0.05)
+    
+    # {{ i18n.ac_code_comment3 }}
+    ci_bound = 1.96 / np.sqrt(n)
+    
+    # {{ i18n.ac_code_comment4 }}
+    significant = []
+    for lag in range(1, max_lag + 1):
+        if abs(acf_values[lag]) > ci_bound:
+            significant.append(lag)
+    
+    return {
+        'acf_values': acf_values,
+        'ci_bound': ci_bound,
+        'significant_lags': significant,
+        'is_random': len(significant) == 0
+    }
+
+# {{ i18n.ac_code_usage }}
+numbers = [5, 12, 23, 8, 31, 17, 42, 3, 28, 15, ...]
+result = analyze_autocorrelation(numbers)
+print(f"{{ i18n.ac_code_print1 }}: {result['significant_lags']}")
+print(f"{{ i18n.ac_code_print2 }}: {result['is_random']}")</code></pre>
+          </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="page-nav">
+          <a href="/methodology/runs-test" class="nav-prev">
+            ← {{ i18n.meth_runs_title }}
+          </a>
+          <div class="page-indicator">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="page-number">4 {{ i18n.of }} 6</span>
+          </div>
+          <a href="/methodology/entropy" class="nav-next">
+            {{ i18n.meth_entropy_title }} →
+          </a>
+        </div>
+      </main>
+
+      <!-- Right panel -->
+      <aside class="right-panel">
+        <div class="toc">
+          <div class="toc-title">{{ i18n.ac_on_this_page }}</div>
+          <nav class="toc-nav">
+            <a href="#intuition" class="toc-link active">{{ i18n.ac_intuition_title }}</a>
+            <a href="#formula" class="toc-link">{{ i18n.ac_formula_title }}</a>
+            <a href="#demo" class="toc-link">{{ i18n.ac_demo_title }}</a>
+            <a href="#interpretation" class="toc-link">{{ i18n.ac_interpret_title }}</a>
+            <a href="#code" class="toc-link">{{ i18n.ac_code_title }}</a>
+          </nav>
+        </div>
+
+        <div class="tip-box">
+          <div class="tip-header">
+            <span class="icon">💡</span>
+            Pro tip
+          </div>
+          <p class="tip-text">{{ i18n.ac_tip_text }}</p>
+        </div>
+
+        <div class="related-box">
+          <div class="related-title">{{ i18n.ac_related }}</div>
+          <a href="/methodology/runs-test" class="related-link">
+            <span class="icon">🔄</span>
+            {{ i18n.meth_runs_title }}
+          </a>
+          <a href="/methodology/entropy" class="related-link">
+            <span class="icon">🎲</span>
+            {{ i18n.meth_entropy_title }}
+          </a>
+          <a href="/methodology/chi-square" class="related-link">
+            <span class="icon">📊</span>
+            {{ i18n.meth_chi_title }}
+          </a>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-text">© 2024 Lottery Lab</div>
+        <div class="footer-links">
+          <a href="https://github.com/bartoszclapinski/LotteryLAB">GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      // Range slider updates
+      document.getElementById('acSequenceLength').addEventListener('input', function() {
+        document.getElementById('acSequenceLengthValue').textContent = this.value;
+      });
+      document.getElementById('acMaxLag').addEventListener('input', function() {
+        document.getElementById('acMaxLagValue').textContent = this.value;
+      });
+
+      // Autocorrelation function
+      function calculateACF(data, maxLag) {
+        const n = data.length;
+        const mean = data.reduce((a, b) => a + b, 0) / n;
+        const variance = data.reduce((sum, x) => sum + Math.pow(x - mean, 2), 0);
+        
+        const acfValues = [1]; // lag 0 = 1
+        for (let k = 1; k <= maxLag; k++) {
+          let sum = 0;
+          for (let t = 0; t < n - k; t++) {
+            sum += (data[t] - mean) * (data[t + k] - mean);
+          }
+          acfValues.push(sum / variance);
+        }
+        return acfValues;
+      }
+
+      // Generate demo
+      document.getElementById('generateAcBtn').addEventListener('click', function() {
+        const seqLength = parseInt(document.getElementById('acSequenceLength').value);
+        const maxLag = parseInt(document.getElementById('acMaxLag').value);
+        
+        // Generate random sequence
+        const data = [];
+        for (let i = 0; i < seqLength; i++) {
+          data.push(Math.floor(Math.random() * 49) + 1);
+        }
+        
+        // Calculate ACF
+        const acfValues = calculateACF(data, maxLag);
+        const ciBound = 1.96 / Math.sqrt(seqLength);
+        
+        // Find significant lags
+        const significantLags = [];
+        for (let k = 1; k <= maxLag; k++) {
+          if (Math.abs(acfValues[k]) > ciBound) {
+            significantLags.push(k);
+          }
+        }
+        
+        // Render ACF chart
+        renderACFChart(acfValues, ciBound, maxLag);
+        
+        // Update results
+        const maxAcf = Math.max(...acfValues.slice(1).map(Math.abs));
+        document.getElementById('maxAcf').textContent = maxAcf.toFixed(3);
+        document.getElementById('significantLags').textContent = significantLags.length > 0 ? significantLags.join(', ') : '{{ i18n.none }}';
+        
+        const isRandom = significantLags.length === 0;
+        const verdictEl = document.getElementById('acVerdict');
+        verdictEl.textContent = isRandom ? '{{ i18n.ac_random }}' : '{{ i18n.ac_pattern }}';
+        verdictEl.className = 'demo-result-value ' + (isRandom ? 'success' : 'warning');
+      });
+
+      // Render ACF bar chart
+      function renderACFChart(acfValues, ciBound, maxLag) {
+        const chart = document.getElementById('acfChart');
+        let html = '<div class="acf-bars">';
+        
+        for (let k = 1; k <= maxLag; k++) {
+          const value = acfValues[k];
+          const isSignificant = Math.abs(value) > ciBound;
+          const heightPercent = Math.abs(value) * 100;
+          const direction = value >= 0 ? 'positive' : 'negative';
+          const significance = isSignificant ? 'significant' : '';
+          
+          html += `
+            <div class="acf-bar-container">
+              <div class="acf-bar ${direction} ${significance}" style="height: ${Math.min(heightPercent, 100)}%"></div>
+              <div class="acf-label">${k}</div>
+            </div>
+          `;
+        }
+        
+        html += `<div class="acf-ci-line" style="bottom: ${ciBound * 100}%"></div>`;
+        html += `<div class="acf-ci-line negative" style="bottom: ${ciBound * 100}%"></div>`;
+        html += '</div>';
+        html += `<div class="acf-legend">{{ i18n.ac_lag_label }} | {{ i18n.ac_ci_95 }}: ±${ciBound.toFixed(3)}</div>`;
+        
+        chart.innerHTML = html;
+      }
+
+      // Copy code functionality
+      function copyCode(btn) {
+        const code = btn.closest('.code-block').querySelector('code').textContent;
+        navigator.clipboard.writeText(code);
+        btn.textContent = '{{ i18n.copied }}';
+        setTimeout(() => btn.textContent = '{{ i18n.copy }}', 2000);
+      }
+
+      // Table of contents active state
+      document.querySelectorAll('.section').forEach(section => {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
+              document.querySelector(`.toc-link[href="#${section.id}"]`)?.classList.add('active');
+            }
+          });
+        }, { threshold: 0.3 });
+        observer.observe(section);
+      });
+    </script>
+  </body>
+</html>
+

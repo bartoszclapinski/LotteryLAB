@@ -1034,6 +1034,149 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
+   AUTOCORRELATION PAGE STYLES
+   ═══════════════════════════════════════════════════════════ */
+
+/* Lag visual */
+.lag-visual {
+    margin: 24px 0;
+}
+
+.lag-example {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.lag-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
+
+.lag-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.lag-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.lag-title {
+    width: 80px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.lag-values {
+    display: flex;
+    gap: 8px;
+}
+
+.lag-value {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.lag-value.faded {
+    opacity: 0.3;
+    color: var(--text-muted);
+}
+
+/* ACF Chart */
+.acf-chart {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+    padding: 24px;
+    min-height: 200px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.acf-placeholder {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.acf-bars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    width: 100%;
+    height: 160px;
+    position: relative;
+    padding-bottom: 24px;
+}
+
+.acf-bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    max-width: 40px;
+}
+
+.acf-bar {
+    width: 20px;
+    background: var(--accent-blue);
+    border-radius: 3px 3px 0 0;
+    transition: height 0.3s ease;
+}
+
+.acf-bar.positive {
+    background: var(--accent-emerald);
+}
+
+.acf-bar.negative {
+    background: var(--accent-rose);
+    transform: rotate(180deg);
+    border-radius: 0 0 3px 3px;
+}
+
+.acf-bar.significant {
+    box-shadow: 0 0 12px rgba(var(--accent-rose-rgb, 236, 72, 153), 0.5);
+}
+
+.acf-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 8px;
+}
+
+.acf-ci-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    border-top: 2px dashed var(--accent-amber);
+    opacity: 0.5;
+}
+
+.acf-legend {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 16px;
+}
+
+/* ═══════════════════════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════════════════════ */
 
