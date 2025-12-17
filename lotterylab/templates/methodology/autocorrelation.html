@@ -104,7 +104,7 @@
           <div class="progress-indicator">
             <div class="progress-bar" style="width: 66%"></div>
           </div>
-          <div class="progress-text">4 {{ i18n.of }} 6 {{ i18n.chapters }}</div>
+          <div class="progress-text">4 {{ i18n.meth_of }} 6 {{ i18n.meth_chapters }}</div>
         </div>
       </aside>
 
@@ -336,7 +336,7 @@
           <div class="code-block">
             <div class="code-header">
               <span class="code-lang">Python</span>
-              <button class="code-copy" onclick="copyCode(this)">{{ i18n.copy }}</button>
+              <button class="code-copy" onclick="copyCode(this)">{{ i18n.copy_btn }}</button>
             </div>
             <pre class="code-content"><code>import numpy as np
 from statsmodels.tsa.stattools import acf
@@ -387,7 +387,7 @@ print(f"{{ i18n.ac_code_print2 }}: {result['is_random']}")</code></pre>
             <span class="dot active"></span>
             <span class="dot"></span>
             <span class="dot"></span>
-            <span class="page-number">4 {{ i18n.of }} 6</span>
+            <span class="page-number">4 {{ i18n.meth_of }} 6</span>
           </div>
           <a href="/methodology/entropy" class="nav-next">
             {{ i18n.meth_entropy_title }} →
@@ -540,8 +540,8 @@ print(f"{{ i18n.ac_code_print2 }}: {result['is_random']}")</code></pre>
       function copyCode(btn) {
         const code = btn.closest('.code-block').querySelector('code').textContent;
         navigator.clipboard.writeText(code);
-        btn.textContent = '{{ i18n.copied }}';
-        setTimeout(() => btn.textContent = '{{ i18n.copy }}', 2000);
+        btn.textContent = '{{ i18n.copied_btn }}';
+        setTimeout(() => btn.textContent = '{{ i18n.copy_btn }}', 2000);
       }
 
       // Table of contents active state
