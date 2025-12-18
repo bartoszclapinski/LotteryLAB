@@ -240,7 +240,7 @@ async def methodology(request: Request):
     """Methodology overview page with all statistical methods."""
     lang = get_lang_from_request(request)
     texts = get_all_texts(lang)
-    
+
     ctx = {
         "request": request,
         "title": texts.get("methodology", "Methodology") + " — Lottery Lab",
@@ -254,39 +254,41 @@ async def methodology(request: Request):
     return templates.TemplateResponse("methodology.html", ctx)
 
 
-# Methodology detail pages
-METHODS = [
-    {"slug": "chi-square", "template": "methodology/chi-square.html", "index": 1},
-    {"slug": "kolmogorov-smirnov", "template": "methodology/kolmogorov-smirnov.html", "index": 2},
-    {"slug": "runs-test", "template": "methodology/runs-test.html", "index": 3},
-    {"slug": "autocorrelation", "template": "methodology/autocorrelation.html", "index": 4},
-    {"slug": "entropy", "template": "methodology/entropy.html", "index": 5},
-    {"slug": "monte-carlo", "template": "methodology/monte-carlo.html", "index": 6},
-]
-
-
 @app.get("/methodology/{method_slug}", response_class=HTMLResponse)
 async def methodology_detail(request: Request, method_slug: str):
-    """Methodology detail page for a specific statistical method."""
-    # Find method config
-    method = next((m for m in METHODS if m["slug"] == method_slug), None)
-    if not method:
-        raise HTTPException(status_code=404, detail="Method not found")
-    
+    """
+    Detail pages for individual statistical methods (chi-square, KS, runs, etc.).
+    """
+    # Supported methods and their order for progress indicator
+    methods_order = [
+        "chi-square",
+        "kolmogorov-smirnov",
+        "runs-test",
+        "autocorrelation",
+        "entropy",
+        "monte-carlo",
+    ]
+
+    if method_slug not in methods_order:
+        raise HTTPException(status_code=404, detail="Unknown methodology page")
+
     lang = get_lang_from_request(request)
     texts = get_all_texts(lang)
-    
+
+    # Simple linear progress (1/6, 2/6, ..., 6/6)
+    index = methods_order.index(method_slug)
+    progress_pct = int((index + 1) / len(methods_order) * 100)
+
     ctx = {
         "request": request,
-        "title": f"{method_slug.replace('-', ' ').title()} — Lottery Lab",
         "lang": lang,
         "supported_languages": SUPPORTED_LANGUAGES,
         "i18n": texts,
-        "method_slug": method_slug,
-        "method_index": method["index"],
-        "progress_pct": int((method["index"] / 6) * 100),
+        "progress_pct": progress_pct,
     }
-    return templates.TemplateResponse(method["template"], ctx)
+
+    template_name = f"methodology/{method_slug}.html"
+    return templates.TemplateResponse(template_name, ctx)
 
 
 @app.get("/partials/frequency", response_class=HTMLResponse)
