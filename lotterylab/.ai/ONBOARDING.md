@@ -294,12 +294,20 @@ Zawsze sprawdź czy `<script>` ma zamykający tag!
 
 ---
 
-## 📊 Aktualny Status (Grudzień 2025)
+## 📊 Aktualny Status (Styczeń 2025)
 
 ### Ukończone Sprinty
 - ✅ **Sprint 000** — Scaffolding, DB, import CSV
 - ✅ **Sprint 001** — MVP (UI, API, frequency analysis)
 - ✅ **Sprint 002** — Core Analyses (randomness, patterns, correlation, trends, export)
+
+### Aktualny Sprint
+- 🚧 **Sprint 002.5** — UI Redesign (~90% complete)
+  - ✅ Design System (design-system.css, components.css)
+  - ✅ Homepage landing page (home.html)
+  - ✅ Methodology overview + 5/6 detail pages
+  - ✅ Dark/Light theme toggle
+  - 📋 Brakuje: monte-carlo.html, cleanup danych testowych
 
 ### Następny Sprint
 - 📋 **Sprint 003** — ML Baseline (feature engineering, RF/XGB/MLP, backtesting)
@@ -309,6 +317,7 @@ Zawsze sprawdź czy `<script>` ma zamykający tag!
 - 🧪 78+ testów, 79% coverage
 - 🌍 i18n: Polski (default) + English
 - 📱 Responsywne UI (desktop-first)
+- 🎨 Dark/Light themes z localStorage
 
 ---
 
@@ -342,7 +351,15 @@ make update  # lub: python scripts/update_mbnet.py
 
 ---
 
-*Ostatnia aktualizacja: 2025-12-10*
+*Ostatnia aktualizacja: 2025-01-06*
+
+
+
+
+
+
+
+
 
 
 

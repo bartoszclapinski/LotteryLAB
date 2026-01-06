@@ -5,6 +5,7 @@
 - **Scope:** 
   - IN: Design system, homepage, metodologia, themes, cleanup, i18n
   - OUT: Nowe funkcje analityczne, ML, deployment
+- **Status:** 🚧 ~90% Complete
 
 ---
 
@@ -12,92 +13,101 @@
 
 | # | Deliverable | Priority | Status |
 |---|-------------|----------|--------|
-| D1 | Design System CSS (variables, components, themes) | P1 | 📋 |
-| D2 | Homepage landing page | P1 | 📋 |
-| D3 | Methodology overview page | P1 | 📋 |
-| D4 | Methodology detail pages (6 metod) | P1 | 📋 |
-| D5 | Dark/Light theme toggle | P1 | 📋 |
-| D6 | Test data cleanup (999997/999998) | P1 | 📋 |
-| D7 | App route restructure (/app) | P2 | 📋 |
-| D8 | Multi-lottery selector UI | P2 | 📋 |
-| D9 | URL-based i18n | P2 | 📋 |
+| D1 | Design System CSS (variables, components, themes) | P1 | ✅ Done |
+| D2 | Homepage landing page | P1 | ✅ Done |
+| D3 | Methodology overview page | P1 | ✅ Done |
+| D4 | Methodology detail pages (6 metod) | P1 | 🚧 5/6 Done |
+| D5 | Dark/Light theme toggle | P1 | ✅ Done |
+| D6 | Test data cleanup (999997/999998) | P1 | 📋 Pending |
+| D7 | App route restructure (/app) | P2 | ✅ Done |
+| D8 | Multi-lottery selector UI | P2 | 📋 Pending |
+| D9 | URL-based i18n | P2 | 📋 Pending |
 
 ---
 
 ## 🔧 Tasks Breakdown
 
-### Phase 1: Design System (Days 1-2)
+### Phase 1: Design System (Days 1-2) ✅ COMPLETE
 
-- [ ] **T1.1** Create `static/css/design-system.css`
+- [x] **T1.1** Create `static/css/design-system.css`
   - CSS variables for colors, typography, spacing
   - Dark theme tokens
   - Light theme tokens
+  - 430+ lines of design tokens
   
-- [ ] **T1.2** Create `static/css/components.css`
-  - Button variants (primary, ghost, icon)
+- [x] **T1.2** Create `static/css/components.css`
+  - Button variants (primary, secondary, ghost, outline, icon)
   - Card variants (feature, method, stat, info)
-  - Form components (switch, select, slider)
-  - Navigation components
+  - Form components (switch-group, theme-toggle, select, input, slider)
+  - Navigation components (header, logo, nav, breadcrumb, sidebar)
+  - Lottery balls, formula box, code blocks
+  - 842+ lines of components
   
-- [ ] **T1.3** Create `static/js/theme-toggle.js`
+- [x] **T1.3** Create `static/js/theme-toggle.js`
   - Theme switching logic
   - localStorage persistence
   - System preference detection
+  - 127 lines
   
-- [ ] **T1.4** Update `templates/base.html`
+- [x] **T1.4** Update templates with `data-theme`
   - Add `data-theme` attribute to `<html>`
   - Include new CSS files
   - Add theme toggle to header
 
-### Phase 2: Homepage (Days 3-4)
+### Phase 2: Homepage (Days 3-4) ✅ COMPLETE
 
-- [ ] **T2.1** Create route `/` for homepage
+- [x] **T2.1** Create route `/` for homepage
   - Separate from `/app` (current analyzer)
   
-- [ ] **T2.2** Create `templates/home.html`
+- [x] **T2.2** Create `templates/home.html`
   - Hero section with headline, disclaimer, CTAs
-  - Lottery balls visual (animated)
+  - Lottery balls visual
   - Mini stats (hot/cold, χ², entropy)
+  - 283 lines
   
-- [ ] **T2.3** Features section
+- [x] **T2.3** Features section
   - 6 feature cards with icons
-  - Links to /app/frequency, /app/randomness, etc.
+  - Links to /app
   
-- [ ] **T2.4** How It Works section
+- [x] **T2.4** How It Works section
   - 4 steps: Collect → Validate → Test → Interpret
   
-- [ ] **T2.5** Footer with links
+- [x] **T2.5** Footer with links
 
-### Phase 3: Methodology Pages (Days 5-8)
+### Phase 3: Methodology Pages (Days 5-8) 🚧 5/6 COMPLETE
 
-- [ ] **T3.1** Create `templates/methodology/index.html`
+- [x] **T3.1** Create `templates/methodology.html` (overview)
   - Hero with "Metodologia badawcza"
   - Hypothesis box (H₀)
   - 6 method cards with questions, formulas, results
-  - Lottery support grid (flags)
+  - Lottery support grid (8 lotteries with flags)
+  - Workflow steps
+  - CTA section
+  - 365 lines
   
-- [ ] **T3.2** Create `templates/methodology/_base.html`
+- [x] **T3.2** Create methodology detail layout
   - 3-column layout (sidebar, content, TOC)
   - Prev/Next navigation
   - Progress indicator
+  - Breadcrumbs
   
-- [ ] **T3.3** Create methodology detail pages:
-  - [ ] `chi-square.html` — Test Chi-kwadrat
-  - [ ] `ks-test.html` — Kołmogorow-Smirnow
-  - [ ] `runs-test.html` — Test serii
-  - [ ] `autocorrelation.html` — Autokorelacja
-  - [ ] `entropy.html` — Entropia Shannona
-  - [ ] `monte-carlo.html` — Monte Carlo
+- [x] **T3.3** Create methodology detail pages:
+  - [x] `chi-square.html` — Test Chi-kwadrat (469 lines, interactive demo!)
+  - [x] `kolmogorov-smirnov.html` — Test Kołmogorowa-Smirnowa
+  - [x] `runs-test.html` — Test serii
+  - [x] `autocorrelation.html` — Autokorelacja
+  - [x] `entropy.html` — Entropia Shannona
+  - [ ] `monte-carlo.html` — Monte Carlo ❌ MISSING
   
-- [ ] **T3.4** Create API routes:
+- [x] **T3.4** Create API routes:
   - `GET /methodology` → overview
   - `GET /methodology/<method>` → detail
 
-### Phase 4: App Restructure (Days 9-10)
+### Phase 4: App Restructure (Days 9-10) 🚧 PARTIAL
 
-- [ ] **T4.1** Move current analyzer to `/app`
-  - Update routes in `main.py`
-  - Update all internal links
+- [x] **T4.1** Move current analyzer to `/app`
+  - Routes updated in `main.py`
+  - Internal links updated
   
 - [ ] **T4.2** Add lottery selector
   - Dropdown in sidebar
@@ -107,13 +117,13 @@
   - SQL script to remove draw_number > 900000
   - Verify data integrity
   
-- [ ] **T4.4** Update navigation
+- [x] **T4.4** Update navigation
   - Header: Home | Methodology | Analyzer | Docs
-  - Sidebar: method-specific navigation
+  - Sidebar navigation on methodology pages
 
-### Phase 5: I18n & Polish (Days 11-14)
+### Phase 5: I18n & Polish (Days 11-14) 🚧 PARTIAL
 
-- [ ] **T5.1** Expand `i18n.py`
+- [x] **T5.1** Expand `i18n.py`
   - Add translations for all new pages
   - Hero texts, method descriptions, UI labels
   
@@ -122,7 +132,7 @@
   - Language detection middleware
   - Cookie/localStorage fallback
   
-- [ ] **T5.3** Translate content
+- [x] **T5.3** Translate content
   - Homepage (PL/EN)
   - Methodology overview (PL/EN)
   - Method details (PL/EN)
@@ -137,28 +147,28 @@
 ## ✅ Acceptance Criteria
 
 1. **Homepage exists** at `/` with:
-   - Clear value proposition
-   - Visible disclaimer
-   - Working CTAs to analyzer
+   - [x] Clear value proposition
+   - [x] Visible disclaimer
+   - [x] Working CTAs to analyzer
 
 2. **Methodology section** at `/methodology` with:
-   - Overview of all 6 methods
-   - Detail page for each method
-   - Interactive demos where applicable
+   - [x] Overview of all 6 methods
+   - [ ] Detail page for each method (5/6 done, monte-carlo missing)
+   - [x] Interactive demos where applicable
 
 3. **Theme toggle** works:
-   - Dark/Light switch in header
-   - Preference saved in localStorage
-   - All pages respect theme
+   - [x] Dark/Light switch in header
+   - [x] Preference saved in localStorage
+   - [x] All pages respect theme
 
 4. **No test data visible**:
-   - Draw numbers 999997, 999998 removed
-   - Only real historical data shown
+   - [ ] Draw numbers 999997, 999998 removed
+   - [ ] Only real historical data shown
 
 5. **i18n works**:
-   - `/pl/...` shows Polish
-   - `/en/...` shows English
-   - Language toggle in header
+   - [ ] `/pl/...` shows Polish (not implemented - using query params)
+   - [ ] `/en/...` shows English
+   - [x] Language toggle in header
 
 ---
 
@@ -166,12 +176,12 @@
 
 | Test | Description | Status |
 |------|-------------|--------|
-| Visual regression | Compare with design mockups | 📋 |
-| Theme persistence | Toggle, refresh, verify | 📋 |
-| Responsive | Test on mobile, tablet, desktop | 📋 |
-| i18n coverage | All strings translated | 📋 |
-| Links | No broken internal links | 📋 |
-| Lighthouse | Performance > 90, A11y > 95 | 📋 |
+| Visual regression | Compare with design mockups | ✅ Done |
+| Theme persistence | Toggle, refresh, verify | ✅ Done |
+| Responsive | Test on mobile, tablet, desktop | 📋 Pending |
+| i18n coverage | All strings translated | ✅ Done |
+| Links | No broken internal links | 🚧 1 broken (monte-carlo) |
+| Lighthouse | Performance > 90, A11y > 95 | 📋 Pending |
 
 ---
 
@@ -187,10 +197,10 @@
 
 ## 📊 Definition of Done
 
-- [ ] All tasks completed
-- [ ] Design mockups matched
-- [ ] Theme toggle working
-- [ ] i18n for PL/EN
+- [ ] All tasks completed (90% done)
+- [x] Design mockups matched
+- [x] Theme toggle working
+- [x] i18n for PL/EN (query-based, not URL-based)
 - [ ] No test data visible
 - [ ] Lighthouse scores met
 - [ ] PR reviewed and merged
@@ -213,12 +223,42 @@
 - ✅ Updated BACKLOG with UI tasks
 - ✅ Created this sprint plan
 - ✅ Design mockups ready: homepage, methodology overview, methodology detail
-- 📋 Next: Start implementing design system CSS
+
+### Days 2-10 (2025-12-12 → 2025-12-20)
+- ✅ **Phase 1 Complete:** Design System CSS
+  - `design-system.css` (430+ lines) — full design tokens
+  - `components.css` (842+ lines) — reusable components
+  - `theme-toggle.js` (127 lines) — theme switching
+- ✅ **Phase 2 Complete:** Homepage
+  - `home.html` (283 lines) — full landing page
+  - Hero, features grid, how-it-works, footer
+- ✅ **Phase 3 Mostly Complete:** Methodology Pages
+  - `methodology.html` (365 lines) — overview page
+  - `methodology/chi-square.html` (469 lines) — with interactive demo!
+  - `methodology/kolmogorov-smirnov.html` — detail page
+  - `methodology/runs-test.html` — detail page
+  - `methodology/autocorrelation.html` — detail page
+  - `methodology/entropy.html` — detail page
+  - ❌ `methodology/monte-carlo.html` — **NOT CREATED**
+- ✅ **App restructure:** `/app` route working
+- ✅ **Translations:** i18n expanded for all new pages
+
+### Day 11 (2025-01-06)
+- ✅ Documentation audit — discovered sprint is ~90% complete
+- ✅ Updated sprint plan, BACKLOG, ROADMAP, log.md to reflect actual state
+- 📋 Next: Create monte-carlo.html, cleanup test data
+
+---
+
+## 📌 Remaining Work
+
+1. **Create `monte-carlo.html`** — ~2 hours
+2. **Cleanup test data** (999997/999998) — ~30 min
+3. **URL-based i18n** (optional, P2) — ~4 hours
+4. **Multi-lottery selector** (optional, P2) — ~3 hours
+5. **Lighthouse audit** — ~1 hour
 
 ---
 
 *Sprint created: 2025-12-11*
-
-
-
-
+*Last updated: 2025-01-06*
