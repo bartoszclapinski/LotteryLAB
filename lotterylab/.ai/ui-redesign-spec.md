@@ -1,8 +1,8 @@
 # 🎨 UI Redesign Specification — Lottery Lab v2
 
-**Wersja:** 1.0  
-**Data:** Grudzień 2025  
-**Status:** Draft → Review
+**Wersja:** 1.1  
+**Data:** Grudzień 2025 (Updated: Styczeń 2025)  
+**Status:** ~90% Implemented ✅
 
 ---
 
@@ -470,33 +470,37 @@ LOTTERY_CONFIG = {
 
 ## 8. IMPLEMENTATION PLAN
 
-### Phase 1: Design System & Shared CSS (3 days)
-- [ ] Create `static/css/design-system.css` with variables
-- [ ] Create `static/css/components.css` with reusable components
-- [ ] Create `static/css/themes.css` with dark/light variants
-- [ ] Add theme toggle to existing UI
+### Phase 1: Design System & Shared CSS (3 days) ✅ COMPLETE
+- [x] Create `static/css/design-system.css` with variables (430+ lines)
+- [x] Create `static/css/components.css` with reusable components (842+ lines)
+- [x] Theme support built into design-system.css (dark/light variants)
+- [x] Add theme toggle with `static/js/theme-toggle.js` (127 lines)
 
-### Phase 2: Homepage (2 days)
-- [ ] Create `templates/home.html` (new landing page)
-- [ ] Add route `/` → homepage (separate from `/app`)
-- [ ] Implement hero, features, how-it-works sections
+### Phase 2: Homepage (2 days) ✅ COMPLETE
+- [x] Create `templates/home.html` (new landing page, 283 lines)
+- [x] Add route `/` → homepage (separate from `/app`)
+- [x] Implement hero, features, how-it-works sections
 
-### Phase 3: Methodology Pages (3 days)
-- [ ] Create `templates/methodology/index.html` (overview)
-- [ ] Create `templates/methodology/detail.html` (base template)
-- [ ] Create content for each method (chi-square, KS, runs...)
-- [ ] Add sidebar navigation
+### Phase 3: Methodology Pages (3 days) ✅ 5/6 COMPLETE
+- [x] Create `templates/methodology.html` (overview, 365 lines)
+- [x] Create `templates/methodology/chi-square.html` (detail, 469 lines with interactive demo)
+- [x] Create `templates/methodology/kolmogorov-smirnov.html`
+- [x] Create `templates/methodology/runs-test.html`
+- [x] Create `templates/methodology/autocorrelation.html`
+- [x] Create `templates/methodology/entropy.html`
+- [ ] Create `templates/methodology/monte-carlo.html` ❌ MISSING
+- [x] Add sidebar navigation
 
-### Phase 4: App Improvements (2 days)
-- [ ] Move current UI to `/app` route
+### Phase 4: App Improvements (2 days) 🚧 PARTIAL
+- [x] Move current UI to `/app` route
 - [ ] Add lottery selector
 - [ ] Improve onboarding (tooltips, help)
 - [ ] Fix test data cleanup (999997/999998)
 
-### Phase 5: I18n Full Implementation (2 days)
-- [ ] Expand `i18n.py` with all new translations
+### Phase 5: I18n Full Implementation (2 days) 🚧 PARTIAL
+- [x] Expand `i18n.py` with all new translations
 - [ ] Add URL-based language switching (`/pl/...`, `/en/...`)
-- [ ] Translate all new pages
+- [x] Translate all new pages
 
 ---
 
@@ -555,15 +559,32 @@ lotterylab/
 
 | File | Description | Status |
 |------|-------------|--------|
-| `.design/homepage-v3-themes.html` | Homepage with theme toggle | ✅ Done |
-| `.design/methodology-overview-v2.html` | Methodology overview | ✅ Done |
-| `.design/methodology-v2.html` | Methodology detail (chi-square) | ✅ Done |
+| `.design/homepage-v3-themes.html` | Homepage with theme toggle | ✅ Mockup → ✅ Implemented |
+| `.design/methodology-overview-v2.html` | Methodology overview | ✅ Mockup → ✅ Implemented |
+| `.design/methodology-v2.html` | Methodology detail (chi-square) | ✅ Mockup → ✅ Implemented |
 | `.design/app-v2.html` | Analyzer redesign | 📋 TODO |
+
+## 12. IMPLEMENTATION STATUS
+
+| Component | Mockup | Implementation | Notes |
+|-----------|--------|----------------|-------|
+| Design System | ✅ | ✅ `design-system.css` | 430+ lines |
+| Components | ✅ | ✅ `components.css` | 842+ lines |
+| Theme Toggle | ✅ | ✅ `theme-toggle.js` | 127 lines |
+| Homepage | ✅ | ✅ `home.html` | 283 lines |
+| Methodology Overview | ✅ | ✅ `methodology.html` | 365 lines |
+| Chi-Square | ✅ | ✅ | 469 lines, interactive demo |
+| K-S Test | ✅ | ✅ | Full page |
+| Runs Test | ✅ | ✅ | Full page |
+| Autocorrelation | ✅ | ✅ | Full page |
+| Entropy | ✅ | ✅ | Full page |
+| Monte Carlo | ✅ | ❌ | **Not implemented** |
 
 ---
 
 *Dokument przygotowany: Grudzień 2025*  
-*Do akceptacji przez: Product Owner*
+*Zaktualizowany: Styczeń 2025*  
+*Status implementacji: ~90% Complete*
 
 
 

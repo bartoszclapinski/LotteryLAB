@@ -107,3 +107,29 @@ Conventions: [UTC ISO date] (optional sprint-day) — entry
 - 2025-12-11 — Updated BACKLOG.md with UI redesign tasks (#26-35) ✅
 - 2025-12-11 — Created Sprint 002.5 plan: `sprint002.5/plan.md` ✅
 - 2025-12-11 — Moved old designs to `.design/old/` folder for reference ✅
+
+- 2025-12-12 → 2025-12-20 — **Sprint 002.5 Implementation** (undocumented until audit)
+- ✅ Created `static/css/design-system.css` — 430+ lines of design tokens (colors, typography, spacing, shadows)
+- ✅ Created `static/css/components.css` — 842+ lines of reusable components (buttons, cards, forms, nav, lottery balls)
+- ✅ Created `static/css/home.css` — Homepage-specific styles
+- ✅ Created `static/css/methodology.css` — Methodology overview styles
+- ✅ Created `static/css/methodology-detail.css` — Methodology detail page styles
+- ✅ Created `static/js/theme-toggle.js` — 127 lines (dark/light toggle, localStorage, system preference)
+- ✅ Created `templates/home.html` — 283 lines (hero, features grid, how-it-works, footer)
+- ✅ Created `templates/methodology.html` — 365 lines (overview, hypothesis box, 6 method cards, workflow, lottery grid)
+- ✅ Created `templates/methodology/chi-square.html` — 469 lines (3-column layout, interactive demo, code examples)
+- ✅ Created `templates/methodology/kolmogorov-smirnov.html` — Full detail page
+- ✅ Created `templates/methodology/runs-test.html` — Full detail page
+- ✅ Created `templates/methodology/autocorrelation.html` — Full detail page
+- ✅ Created `templates/methodology/entropy.html` — Full detail page
+- ✅ Added routes: `/` (homepage), `/app` (analyzer), `/methodology`, `/methodology/{method}`
+- ✅ Expanded `i18n.py` with translations for all new pages
+- ❌ `templates/methodology/monte-carlo.html` — NOT CREATED (oversight)
+
+- 2025-01-06 — **Documentation Audit** 📝
+- ✅ Discovered Sprint 002.5 is ~90% complete but documentation was outdated
+- ✅ Updated `sprint002.5/plan.md` — marked completed tasks, identified remaining work
+- ✅ Updated `BACKLOG.md` — reflected actual completion status
+- ✅ Updated `ROADMAP.md` — updated milestone progress
+- ✅ Updated `log.md` — added missing implementation entries
+- 📋 Identified remaining work: monte-carlo.html, test data cleanup, URL-based i18n

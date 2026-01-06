@@ -3,6 +3,8 @@
 Legend: [P] Priority (1=highest), [E] Epic, [S] Size (t-shirt)
 Status: ✅ Completed, 🚧 In Progress, 📋 Planned
 
+---
+
 ## Sprint 000 — Completed ✅
 1. [P1][E1][S:M] ✅ CSV/Excel parser for historical draws (MBNet format)
 2. [P1][E1][S:M] ✅ SQLAlchemy models: `draws`, `number_statistics`, `analyses`
@@ -34,46 +36,72 @@ Status: ✅ Completed, 🚧 In Progress, 📋 Planned
 24. [P1][E7][S:S] ✅ Auto-update on server startup (lifespan handler)
 25. [P1][E3][S:M] ✅ UI alignment with design mockup (Stats Grid, Formula Box, Progress Bar, Monte Carlo demo)
 
-## Sprint 002.5 — UI Redesign 🚧 (CURRENT)
-26. [P1][E8][S:M] 🚧 Design System: CSS variables, tokens, themes
-27. [P1][E8][S:M] 📋 Homepage landing page (hero, features, how-it-works)
-28. [P1][E8][S:M] 📋 Methodology overview page (all methods grid)
-29. [P1][E8][S:L] 📋 Methodology detail pages (chi-square, KS, runs, autocorr, entropy, monte-carlo)
-30. [P1][E8][S:S] 📋 Dark/Light theme toggle with localStorage
-31. [P1][E8][S:S] 📋 Cleanup test data (999997/999998)
-32. [P2][E8][S:M] 📋 Move analyzer to /app route
-33. [P2][E8][S:M] 📋 Multi-lottery selector UI
-34. [P2][E8][S:S] 📋 URL-based i18n (/pl/..., /en/...)
-35. [P2][E8][S:S] 📋 Expand translations for new pages
+## Sprint 002.5 — UI Redesign 🚧 (~90% Complete)
+
+### Phase 1: Design System ✅
+26. [P1][E8][S:M] ✅ `design-system.css` — CSS variables, design tokens (430+ lines)
+27. [P1][E8][S:M] ✅ `components.css` — Reusable components (842+ lines)
+28. [P1][E8][S:S] ✅ `theme-toggle.js` — Dark/Light theme toggle with localStorage (127 lines)
+
+### Phase 2: Homepage ✅
+29. [P1][E8][S:M] ✅ `home.html` — Landing page with hero, features, how-it-works (283 lines)
+30. [P1][E8][S:S] ✅ Route `/` separate from `/app`
+
+### Phase 3: Methodology ✅ (5/6)
+31. [P1][E8][S:M] ✅ `methodology.html` — Overview page with 6 method cards (365 lines)
+32. [P1][E8][S:L] ✅ `methodology/chi-square.html` — Detail page with interactive demo (469 lines)
+33. [P1][E8][S:M] ✅ `methodology/kolmogorov-smirnov.html` — Detail page
+34. [P1][E8][S:M] ✅ `methodology/runs-test.html` — Detail page
+35. [P1][E8][S:M] ✅ `methodology/autocorrelation.html` — Detail page
+36. [P1][E8][S:M] ✅ `methodology/entropy.html` — Detail page
+37. [P1][E8][S:M] 📋 `methodology/monte-carlo.html` — Detail page **← MISSING**
+
+### Phase 4: App & Cleanup 🚧
+38. [P2][E8][S:M] ✅ Move analyzer to /app route
+39. [P2][E8][S:M] 📋 Multi-lottery selector UI
+40. [P1][E8][S:S] 📋 Cleanup test data (999997/999998)
+
+### Phase 5: I18n 🚧
+41. [P1][E8][S:M] ✅ Expand translations for new pages (homepage, methodology)
+42. [P2][E8][S:S] 📋 URL-based i18n (/pl/..., /en/...)
+
+---
 
 ## Sprint 003 — ML Baseline 📋
-36. [P2][E5][S:L] 📋 Feature engineering for ML models
-37. [P2][E5][S:L] 📋 Baseline models (Random Forest, XGBoost, MLP)
-38. [P2][E5][S:M] 📋 Cross-validation framework
-39. [P2][E5][S:M] 📋 Feature importance analysis
-40. [P2][E5][S:M] 📋 Backtesting on historical data
-41. [P2][E5][S:S] 📋 Educational disclaimer & limitations documentation
+43. [P2][E5][S:L] 📋 Feature engineering for ML models
+44. [P2][E5][S:L] 📋 Baseline models (Random Forest, XGBoost, MLP)
+45. [P2][E5][S:M] 📋 Cross-validation framework
+46. [P2][E5][S:M] 📋 Feature importance analysis
+47. [P2][E5][S:M] 📋 Backtesting on historical data
+48. [P2][E5][S:S] 📋 Educational disclaimer & limitations documentation
 
 ## Sprint 004 — Advanced/Research 📋
-42. [P3][E6][S:M] 📋 Chaos metrics prototype (Lyapunov exponent, fractal dimension)
-43. [P3][E6][S:M] 📋 Advanced Monte Carlo simulation framework
-44. [P3][E7][S:S] 📋 Redis cache for common queries
-45. [P3][E7][S:S] 📋 Rate limiting & access logging
+49. [P3][E6][S:M] 📋 Chaos metrics prototype (Lyapunov exponent, fractal dimension)
+50. [P3][E6][S:M] 📋 Advanced Monte Carlo simulation framework
+51. [P3][E7][S:S] 📋 Redis cache for common queries
+52. [P3][E7][S:S] 📋 Rate limiting & access logging
 
 ## Sprint 005 — Production 📋
-46. [P2][E7][S:M] 📋 Docker containerization
-47. [P2][E7][S:M] 📋 CI/CD pipeline (GitHub Actions)
-48. [P2][E7][S:M] 📋 Deployment (Railway/Render)
-49. [P2][E7][S:S] 📋 Comprehensive documentation
+53. [P2][E7][S:M] 📋 Docker containerization
+54. [P2][E7][S:M] 📋 CI/CD pipeline (GitHub Actions)
+55. [P2][E7][S:M] 📋 Deployment (Railway/Render)
+56. [P2][E7][S:S] 📋 Comprehensive documentation
 
 ## Nice-to-have (Future)
-50. [P4][E3][S:S] 📋 Mobile-first responsive improvements (beyond basic)
-51. [P4][E4][S:S] 📋 WebSocket for real-time updates
-52. [P4][E1][S:M] 📋 Lotto API integration (when key available)
-53. [P4][E8][S:M] 📋 Additional lotteries (UK, US, EU)
-54. [P4][E8][S:S] 📋 PWA support (offline mode)
+57. [P4][E3][S:S] 📋 Mobile-first responsive improvements (beyond basic)
+58. [P4][E4][S:S] 📋 WebSocket for real-time updates
+59. [P4][E1][S:M] 📋 Lotto API integration (when key available)
+60. [P4][E8][S:M] 📋 Additional lotteries (UK, US, EU)
+61. [P4][E8][S:S] 📋 PWA support (offline mode)
+
+---
 
 ## Notes
 - API client work is blocked pending Lotto OpenAPI key; using CSV/MBNet ✅
 - Maintain educational positioning; avoid "prediction" claims ✅
 - Current data: ~9300+ historical draws from 1957
+- Sprint 002.5 is ~90% complete — only monte-carlo.html and cleanup remaining
+
+---
+
+*Last updated: 2025-01-06*
