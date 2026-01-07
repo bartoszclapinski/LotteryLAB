@@ -54,7 +54,7 @@ Status: ✅ Completed, 🚧 In Progress, 📋 Planned
 34. [P1][E8][S:M] ✅ `methodology/runs-test.html` — Detail page
 35. [P1][E8][S:M] ✅ `methodology/autocorrelation.html` — Detail page
 36. [P1][E8][S:M] ✅ `methodology/entropy.html` — Detail page
-37. [P1][E8][S:M] 📋 `methodology/monte-carlo.html` — Detail page **← MISSING**
+37. [P1][E8][S:M] ✅ `methodology/monte-carlo.html` — Detail page (500+ lines, interactive demo)
 
 ### Phase 4: App & Cleanup 🚧
 38. [P2][E8][S:M] ✅ Move analyzer to /app route

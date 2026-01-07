@@ -5,7 +5,7 @@
 - **Scope:** 
   - IN: Design system, homepage, metodologia, themes, cleanup, i18n
   - OUT: Nowe funkcje analityczne, ML, deployment
-- **Status:** 🚧 ~90% Complete
+- **Status:** ✅ ~95% Complete (Methodology pages done!)
 
 ---
 
@@ -16,7 +16,7 @@
 | D1 | Design System CSS (variables, components, themes) | P1 | ✅ Done |
 | D2 | Homepage landing page | P1 | ✅ Done |
 | D3 | Methodology overview page | P1 | ✅ Done |
-| D4 | Methodology detail pages (6 metod) | P1 | 🚧 5/6 Done |
+| D4 | Methodology detail pages (6 metod) | P1 | ✅ Done |
 | D5 | Dark/Light theme toggle | P1 | ✅ Done |
 | D6 | Test data cleanup (999997/999998) | P1 | 📋 Pending |
 | D7 | App route restructure (/app) | P2 | ✅ Done |
@@ -74,7 +74,7 @@
   
 - [x] **T2.5** Footer with links
 
-### Phase 3: Methodology Pages (Days 5-8) 🚧 5/6 COMPLETE
+### Phase 3: Methodology Pages (Days 5-8) ✅ COMPLETE
 
 - [x] **T3.1** Create `templates/methodology.html` (overview)
   - Hero with "Metodologia badawcza"
@@ -97,7 +97,7 @@
   - [x] `runs-test.html` — Test serii
   - [x] `autocorrelation.html` — Autokorelacja
   - [x] `entropy.html` — Entropia Shannona
-  - [ ] `monte-carlo.html` — Monte Carlo ❌ MISSING
+  - [x] `monte-carlo.html` — Monte Carlo ✅ DONE
   
 - [x] **T3.4** Create API routes:
   - `GET /methodology` → overview
@@ -232,7 +232,7 @@
 - ✅ **Phase 2 Complete:** Homepage
   - `home.html` (283 lines) — full landing page
   - Hero, features grid, how-it-works, footer
-- ✅ **Phase 3 Mostly Complete:** Methodology Pages
+- ✅ **Phase 3 Complete:** Methodology Pages
   - `methodology.html` (365 lines) — overview page
   - `methodology/chi-square.html` (469 lines) — with interactive demo!
   - `methodology/kolmogorov-smirnov.html` — detail page
@@ -252,7 +252,7 @@
 
 ## 📌 Remaining Work
 
-1. **Create `monte-carlo.html`** — ~2 hours
+1. ~~**Create `monte-carlo.html`**~~ ✅ DONE (2025-01-07)
 2. **Cleanup test data** (999997/999998) — ~30 min
 3. **URL-based i18n** (optional, P2) — ~4 hours
 4. **Multi-lottery selector** (optional, P2) — ~3 hours
