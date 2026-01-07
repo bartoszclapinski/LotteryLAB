@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="{{ lang }}" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ i18n.meth_monte_title }} — Lottery Lab</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/design-system.css?v=4" />
+    <link rel="stylesheet" href="/static/css/components.css?v=4" />
+    <link rel="stylesheet" href="/static/css/home.css?v=4" />
+    <link rel="stylesheet" href="/static/css/methodology-detail.css?v=4" />
+    <!-- Theme toggle (load early to prevent flash) -->
+    <script src="/static/js/theme-toggle.js?v=4"></script>
+  </head>
+  <body>
+    <div class="bg-pattern"></div>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <a href="/" class="logo">
+          <div class="logo-icon">Λ</div>
+          <div class="logo-text">Lottery <span>Lab</span></div>
+        </a>
+        <nav class="breadcrumb">
+          <a href="/">{{ i18n.home }}</a>
+          <span class="separator">›</span>
+          <a href="/methodology">{{ i18n.methodology }}</a>
+          <span class="separator">›</span>
+          <span>{{ i18n.meth_monte_title }}</span>
+        </nav>
+        <div class="header-actions">
+          <div class="switch-group">
+            {% for supported_lang in supported_languages %}
+            <a href="/set-language?lang={{ supported_lang }}" 
+               class="{% if lang == supported_lang %}active{% endif %}">
+              {{ supported_lang|upper }}
+            </a>
+            {% endfor %}
+          </div>
+          <button id="theme-toggle" class="theme-toggle" title="{{ i18n.toggle_theme }}" aria-label="{{ i18n.toggle_theme }}">
+            <span class="icon-sun">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+              </svg>
+            </span>
+            <span class="icon-moon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            </span>
+          </button>
+          <a href="/app" class="btn btn-primary">{{ i18n.open_analyzer }} →</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Layout -->
+    <div class="layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-title">{{ i18n.meth_tests_title }}</div>
+          <nav class="sidebar-nav">
+            <a href="/methodology/chi-square" class="sidebar-link">
+              <span class="icon">📊</span>
+              <span>{{ i18n.meth_chi_title }}</span>
+              <span class="badge">8 min</span>
+            </a>
+            <a href="/methodology/kolmogorov-smirnov" class="sidebar-link">
+              <span class="icon">📈</span>
+              <span>{{ i18n.meth_ks_title }}</span>
+              <span class="badge">10 min</span>
+            </a>
+            <a href="/methodology/runs-test" class="sidebar-link">
+              <span class="icon">🔄</span>
+              <span>{{ i18n.meth_runs_title }}</span>
+              <span class="badge">7 min</span>
+            </a>
+            <a href="/methodology/autocorrelation" class="sidebar-link">
+              <span class="icon">⏱️</span>
+              <span>{{ i18n.meth_autocorr_title }}</span>
+              <span class="badge">6 min</span>
+            </a>
+            <a href="/methodology/entropy" class="sidebar-link">
+              <span class="icon">🎲</span>
+              <span>{{ i18n.meth_entropy_title }}</span>
+              <span class="badge">5 min</span>
+            </a>
+            <a href="/methodology/monte-carlo" class="sidebar-link active">
+              <span class="icon">🎰</span>
+              <span>{{ i18n.meth_monte_title }}</span>
+              <span class="badge">12 min</span>
+            </a>
+          </nav>
+        </div>
+        <div class="sidebar-progress">
+          <div class="progress-label">{{ i18n.meth_your_progress }}</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 100%;"></div>
+          </div>
+          <div class="progress-text">6 {{ i18n.meth_of }} 6 {{ i18n.meth_chapters }}</div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="page-header">
+          <span class="page-tag">
+            <span>🎰</span>
+            {{ i18n.meth_tests_title }}
+          </span>
+          <h1 class="page-title">{{ i18n.meth_monte_title }}</h1>
+          <p class="page-subtitle">{{ i18n.monte_subtitle }}</p>
+        </div>
+
+        <!-- Section: Intuition -->
+        <section class="section" id="intuition">
+          <h2 class="section-title">
+            <span class="icon">💡</span>
+            {{ i18n.monte_intuition_title }}
+          </h2>
+          <div class="prose">
+            <p>{{ i18n.monte_intuition_p1 }}</p>
+            <p>{{ i18n.monte_intuition_p2 }}</p>
+            <p><strong>{{ i18n.monte_intuition_question }}</strong> {{ i18n.monte_intuition_answer }}</p>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="info-card-header">
+                <div class="info-card-icon green">✓</div>
+                <div class="info-card-title">{{ i18n.monte_inside_ci }}</div>
+              </div>
+              <div class="info-card-value green">p ∈ [2.5%, 97.5%]</div>
+              <div class="info-card-desc">{{ i18n.monte_inside_ci_desc }}</div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header">
+                <div class="info-card-icon rose">✗</div>
+                <div class="info-card-title">{{ i18n.monte_outside_ci }}</div>
+              </div>
+              <div class="info-card-value rose">p < 2.5% or p > 97.5%</div>
+              <div class="info-card-desc">{{ i18n.monte_outside_ci_desc }}</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Method -->
+        <section class="section" id="method">
+          <h2 class="section-title">
+            <span class="icon">📐</span>
+            {{ i18n.monte_formula_title }}
+          </h2>
+
+          <div class="formula-box">
+            <div class="formula-label">{{ i18n.monte_formula_label }}</div>
+            <div class="formula">{{ i18n.monte_formula_desc }}</div>
+            <div class="formula-desc">
+              {{ i18n.meth_monte_question }}
+            </div>
+          </div>
+
+          <div class="steps-list">
+            <div class="step-item">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h4>{{ i18n.monte_step1_title }}</h4>
+                <p>{{ i18n.monte_step1_desc }}</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h4>{{ i18n.monte_step2_title }}</h4>
+                <p>{{ i18n.monte_step2_desc }}</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h4>{{ i18n.monte_step3_title }}</h4>
+                <p>{{ i18n.monte_step3_desc }}</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h4>{{ i18n.monte_step4_title }}</h4>
+                <p>{{ i18n.monte_step4_desc }}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Interactive Demo -->
+        <section class="section" id="demo">
+          <h2 class="section-title">
+            <span class="icon">🧪</span>
+            {{ i18n.monte_demo_title }}
+          </h2>
+
+          <div class="demo-box">
+            <div class="demo-header">
+              <div class="demo-icon">🎰</div>
+              <div>
+                <div class="demo-title">{{ i18n.meth_monte_title }}</div>
+                <div class="demo-subtitle">{{ i18n.monte_demo_subtitle }}</div>
+              </div>
+            </div>
+
+            <div class="demo-controls">
+              <div class="demo-slider">
+                <label>{{ i18n.monte_demo_simulations }}: <strong id="simCountValue">1000</strong></label>
+                <input type="range" min="100" max="10000" step="100" value="1000" id="simCountSlider">
+              </div>
+              <div class="demo-slider">
+                <label>{{ i18n.monte_demo_draws_per_sim }}: <strong id="drawsPerSimValue">100</strong></label>
+                <input type="range" min="50" max="500" step="50" value="100" id="drawsPerSimSlider">
+              </div>
+              <button class="demo-btn" id="runMonteCarloDemo">
+                ▶ {{ i18n.monte_demo_run_button }}
+              </button>
+            </div>
+
+            <div class="demo-results">
+              <div class="demo-result">
+                <div class="demo-result-label">{{ i18n.monte_result_mean_chi }}</div>
+                <div class="demo-result-value neutral" id="meanChiValue">—</div>
+              </div>
+              <div class="demo-result">
+                <div class="demo-result-label">{{ i18n.monte_result_real_chi }}</div>
+                <div class="demo-result-value neutral" id="realChiValue">—</div>
+              </div>
+              <div class="demo-result">
+                <div class="demo-result-label">{{ i18n.monte_result_percentile }}</div>
+                <div class="demo-result-value neutral" id="percentileValue">—</div>
+              </div>
+              <div class="demo-result">
+                <div class="demo-result-label">{{ i18n.monte_result_verdict }}</div>
+                <div class="demo-result-value neutral" id="monteVerdict">—</div>
+              </div>
+            </div>
+
+            <!-- Progress indicator during simulation -->
+            <div class="demo-progress" id="demoProgress" style="display: none;">
+              <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+              </div>
+              <div class="progress-text" id="progressText">Running simulations...</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Interpretation -->
+        <section class="section" id="interpretation">
+          <h2 class="section-title">
+            <span class="icon">🔍</span>
+            {{ i18n.monte_interpret_title }}
+          </h2>
+
+          <div class="interpretation">
+            <div class="interpretation-header">
+              <span>✓</span>
+              <span>{{ i18n.monte_lotto_result }}</span>
+            </div>
+            <p>{{ i18n.monte_lotto_result_desc }}</p>
+          </div>
+
+          <div class="warning-box">
+            <div class="warning-header">
+              <span>💡</span>
+              <span>{{ i18n.monte_key_insight }}</span>
+            </div>
+            <p>{{ i18n.monte_key_insight_desc }}</p>
+          </div>
+        </section>
+
+        <!-- Section: Code Example -->
+        <section class="section" id="code">
+          <h2 class="section-title">
+            <span class="icon">💻</span>
+            {{ i18n.monte_code_title }}
+          </h2>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Python</span>
+            </div>
+            <pre class="code-content"><code><span class="keyword">import</span> numpy <span class="keyword">as</span> np
+<span class="keyword">from</span> scipy.stats <span class="keyword">import</span> chi2
+
+<span class="keyword">def</span> <span class="function">monte_carlo_lottery</span>(n_simulations: <span class="function">int</span>, draws_per_sim: <span class="function">int</span>, real_chi: <span class="function">float</span>) -> <span class="function">dict</span>:
+    <span class="string">"""{{ i18n.monte_code_docstring }}"""</span>
+    
+    chi_values = []
+    
+    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="function">range</span>(n_simulations):
+        <span class="comment"># {{ i18n.monte_code_comment1 }}</span>
+        draws = np.random.randint(<span class="number">1</span>, <span class="number">50</span>, size=(draws_per_sim, <span class="number">6</span>))
+        
+        <span class="comment"># {{ i18n.monte_code_comment2 }}</span>
+        counts = np.bincount(draws.flatten(), minlength=<span class="number">50</span>)[<span class="number">1</span>:]
+        expected = draws_per_sim * <span class="number">6</span> / <span class="number">49</span>
+        chi_sq = np.<span class="function">sum</span>((counts - expected) ** <span class="number">2</span> / expected)
+        chi_values.append(chi_sq)
+    
+    chi_values = np.array(chi_values)
+    
+    <span class="comment"># {{ i18n.monte_code_comment3 }}</span>
+    percentile = np.<span class="function">sum</span>(chi_values <= real_chi) / n_simulations * <span class="number">100</span>
+    
+    <span class="keyword">return</span> {
+        <span class="string">'mean_chi'</span>: np.mean(chi_values),
+        <span class="string">'std_chi'</span>: np.std(chi_values),
+        <span class="string">'percentile'</span>: percentile,
+        <span class="string">'in_95_ci'</span>: <span class="number">2.5</span> <= percentile <= <span class="number">97.5</span>
+    }</code></pre>
+            <button class="code-copy" onclick="copyCode(this)">{{ i18n.copy_btn }}</button>
+          </div>
+        </section>
+
+        <!-- Footer Navigation -->
+        <nav class="footer-nav">
+          <div class="footer-nav-content">
+            <a href="/methodology/entropy" class="nav-btn">
+              ← {{ i18n.meth_entropy_title }}
+            </a>
+            <div class="progress-indicator">
+              <div class="progress-dots">
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot active"></div>
+              </div>
+              <span class="progress-label">6 {{ i18n.meth_of }} 6</span>
+            </div>
+            <a href="/app" class="nav-btn primary">
+              {{ i18n.open_analyzer }} →
+            </a>
+          </div>
+        </nav>
+      </main>
+
+      <!-- Right Panel -->
+      <aside class="right-panel">
+        <div class="panel-section">
+          <div class="panel-title">{{ i18n.monte_on_this_page }}</div>
+          <a href="#intuition" class="toc-link active">{{ i18n.monte_intuition_title }}</a>
+          <a href="#method" class="toc-link">{{ i18n.monte_formula_title }}</a>
+          <a href="#demo" class="toc-link">{{ i18n.monte_demo_title }}</a>
+          <a href="#interpretation" class="toc-link">{{ i18n.monte_interpret_title }}</a>
+          <a href="#code" class="toc-link">{{ i18n.monte_code_title }}</a>
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-title">{{ i18n.tip }}</div>
+          <div class="tip-card">
+            <div class="tip-header">
+              <span>💡</span>
+              <span>Pro tip</span>
+            </div>
+            <p class="tip-text">{{ i18n.monte_tip_text }}</p>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-title">{{ i18n.monte_related }}</div>
+          <div class="related-links">
+            <a href="/methodology/chi-square" class="related-link">
+              <span>📊</span>
+              {{ i18n.meth_chi_title }}
+            </a>
+            <a href="/methodology/entropy" class="related-link">
+              <span>🎲</span>
+              {{ i18n.meth_entropy_title }}
+            </a>
+            <a href="/app" class="related-link">
+              <span>🔬</span>
+              {{ i18n.open_analyzer }}
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+      const simSlider = document.getElementById('simCountSlider');
+      const simValue = document.getElementById('simCountValue');
+      const drawsSlider = document.getElementById('drawsPerSimSlider');
+      const drawsValue = document.getElementById('drawsPerSimValue');
+      const runBtn = document.getElementById('runMonteCarloDemo');
+
+      const meanChiEl = document.getElementById('meanChiValue');
+      const realChiEl = document.getElementById('realChiValue');
+      const percentileEl = document.getElementById('percentileValue');
+      const verdictEl = document.getElementById('monteVerdict');
+      const progressDiv = document.getElementById('demoProgress');
+      const progressFill = document.getElementById('progressFill');
+      const progressText = document.getElementById('progressText');
+
+      simSlider.addEventListener('input', function() {
+        simValue.textContent = this.value;
+      });
+
+      drawsSlider.addEventListener('input', function() {
+        drawsValue.textContent = this.value;
+      });
+
+      function computeChiSquare(counts, expected) {
+        let chi = 0;
+        for (let i = 0; i < counts.length; i++) {
+          chi += Math.pow(counts[i] - expected, 2) / expected;
+        }
+        return chi;
+      }
+
+      function simulateLottery(drawsPerSim) {
+        const counts = new Array(49).fill(0);
+        
+        for (let d = 0; d < drawsPerSim; d++) {
+          const drawn = new Set();
+          while (drawn.size < 6) {
+            drawn.add(Math.floor(Math.random() * 49));
+          }
+          drawn.forEach(idx => counts[idx]++);
+        }
+        
+        const expected = drawsPerSim * 6 / 49;
+        return computeChiSquare(counts, expected);
+      }
+
+      async function runSimulation() {
+        const nSim = parseInt(simSlider.value, 10);
+        const drawsPerSim = parseInt(drawsSlider.value, 10);
+        
+        progressDiv.style.display = 'block';
+        runBtn.disabled = true;
+        
+        const chiValues = [];
+        const batchSize = 100;
+        
+        for (let i = 0; i < nSim; i += batchSize) {
+          const end = Math.min(i + batchSize, nSim);
+          for (let j = i; j < end; j++) {
+            chiValues.push(simulateLottery(drawsPerSim));
+          }
+          
+          const progress = (end / nSim) * 100;
+          progressFill.style.width = progress + '%';
+          progressText.textContent = `${end} / ${nSim} simulations...`;
+          
+          // Yield to UI
+          await new Promise(resolve => setTimeout(resolve, 0));
+        }
+        
+        // Calculate statistics
+        const meanChi = chiValues.reduce((a, b) => a + b, 0) / chiValues.length;
+        
+        // Generate a "real" chi value (simulating real lottery data)
+        const realChi = simulateLottery(drawsPerSim * 10); // Use more draws for "real" data
+        
+        // Calculate percentile
+        chiValues.sort((a, b) => a - b);
+        let percentile = 0;
+        for (let i = 0; i < chiValues.length; i++) {
+          if (chiValues[i] <= realChi) {
+            percentile = ((i + 1) / chiValues.length) * 100;
+          }
+        }
+        
+        // Display results
+        meanChiEl.textContent = meanChi.toFixed(2);
+        realChiEl.textContent = realChi.toFixed(2);
+        percentileEl.textContent = percentile.toFixed(1) + '%';
+        
+        let verdictText, verdictClass;
+        if (percentile >= 2.5 && percentile <= 97.5) {
+          verdictText = '{{ i18n.monte_verdict_normal }}';
+          verdictClass = 'demo-result-value success';
+        } else if (percentile >= 1 && percentile <= 99) {
+          verdictText = '{{ i18n.monte_verdict_unusual }}';
+          verdictClass = 'demo-result-value warning';
+        } else {
+          verdictText = '{{ i18n.monte_verdict_suspicious }}';
+          verdictClass = 'demo-result-value danger';
+        }
+        
+        verdictEl.textContent = verdictText;
+        verdictEl.className = verdictClass;
+        
+        progressDiv.style.display = 'none';
+        runBtn.disabled = false;
+      }
+
+      runBtn.addEventListener('click', runSimulation);
+
+      // Copy code functionality
+      function copyCode(btn) {
+        const code = btn.closest('.code-block').querySelector('code').textContent;
+        navigator.clipboard.writeText(code);
+        btn.textContent = '{{ i18n.copied_btn }}';
+        setTimeout(() => btn.textContent = '{{ i18n.copy_btn }}', 2000);
+      }
+
+      // Table of contents active state
+      document.querySelectorAll('.section').forEach(section => {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
+              document.querySelector(`.toc-link[href="#${section.id}"]`)?.classList.add('active');
+            }
+          });
+        }, { threshold: 0.3 });
+        observer.observe(section);
+      });
+    </script>
+  </body>
+</html>
+
