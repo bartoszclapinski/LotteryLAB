@@ -133,3 +133,13 @@ Conventions: [UTC ISO date] (optional sprint-day) — entry
 - ✅ Updated `ROADMAP.md` — updated milestone progress
 - ✅ Updated `log.md` — added missing implementation entries
 - 📋 Identified remaining work: monte-carlo.html, test data cleanup, URL-based i18n
+
+- 2025-01-07 — **Monte Carlo Page Implementation** 🎰
+- ✅ Created `templates/methodology/monte-carlo.html` (500+ lines)
+  - 3-column layout with sidebar, main content, TOC
+  - Interactive Monte Carlo simulation demo
+  - Step-by-step methodology explanation
+  - Python code example with syntax highlighting
+- ✅ Added 50+ translations for Monte Carlo page (EN + PL)
+- ✅ Sprint 002.5 Methodology pages: 6/6 complete!
+- 📋 Remaining: test data cleanup, URL-based i18n (optional)
