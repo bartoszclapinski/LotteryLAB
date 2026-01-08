@@ -1,0 +1,430 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   LOTTERY LAB — Design System v2.0
+   ═══════════════════════════════════════════════════════════════════════════
+   
+   This file contains all design tokens (CSS custom properties) for the
+   Lottery Lab application. It supports both Dark and Light themes.
+   
+   Usage:
+   - Include this file BEFORE other stylesheets
+   - Set data-theme="dark" or data-theme="light" on <html> element
+   - Use variables like: color: var(--text-primary);
+   
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   1. DARK THEME (Default)
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root,
+[data-theme="dark"] {
+    /* ═══ COLORS: Backgrounds ═══ */
+    --bg-primary: #0a0a0f;          /* Main page background */
+    --bg-secondary: #12121a;        /* Cards, panels */
+    --bg-tertiary: #1a1a24;         /* Hover states, inputs */
+    --bg-elevated: #22222e;         /* Tooltips, dropdowns, popovers */
+    
+    /* ═══ COLORS: Text ═══ */
+    --text-primary: #f8fafc;        /* Headings, important content */
+    --text-secondary: #94a3b8;      /* Body text, descriptions */
+    --text-muted: #64748b;          /* Labels, hints, disabled */
+    --text-inverse: #0a0a0f;        /* Text on light backgrounds */
+    
+    /* ═══ COLORS: Borders ═══ */
+    --border-primary: #1e293b;      /* Card borders, dividers */
+    --border-secondary: #334155;    /* Input borders, stronger dividers */
+    --border-focus: #3b82f6;        /* Focus rings */
+    
+    /* ═══ COLORS: Accents ═══ */
+    --accent-blue: #3b82f6;         /* Primary actions, links */
+    --accent-blue-hover: #2563eb;   /* Hover state */
+    --accent-blue-muted: rgba(59, 130, 246, 0.15);
+    
+    --accent-purple: #8b5cf6;       /* Methodology, secondary */
+    --accent-purple-hover: #7c3aed;
+    --accent-purple-muted: rgba(139, 92, 246, 0.15);
+    
+    --accent-cyan: #06b6d4;         /* Highlights, cold numbers */
+    --accent-cyan-hover: #0891b2;
+    --accent-cyan-muted: rgba(6, 182, 212, 0.15);
+    
+    --accent-green: #10b981;        /* Success, positive, accept */
+    --accent-green-hover: #059669;
+    --accent-green-muted: rgba(16, 185, 129, 0.15);
+    
+    --accent-amber: #f59e0b;        /* Warning, hot numbers */
+    --accent-amber-hover: #d97706;
+    --accent-amber-muted: rgba(245, 158, 11, 0.15);
+    
+    --accent-rose: #f43f5e;         /* Error, danger, disclaimer */
+    --accent-rose-hover: #e11d48;
+    --accent-rose-muted: rgba(244, 63, 94, 0.15);
+    
+    /* ═══ SHADOWS ═══ */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+    
+    /* ═══ GRADIENTS ═══ */
+    --gradient-primary: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+    --gradient-secondary: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-green) 100%);
+    --gradient-warning: linear-gradient(135deg, var(--accent-amber) 0%, var(--accent-rose) 100%);
+    
+    /* ═══ BACKGROUND PATTERNS ═══ */
+    --bg-pattern-1: rgba(59, 130, 246, 0.08);
+    --bg-pattern-2: rgba(139, 92, 246, 0.08);
+    --bg-pattern-3: rgba(6, 182, 212, 0.05);
+    
+    /* ═══ SPECIAL: Lottery Balls ═══ */
+    --ball-default-bg: var(--bg-tertiary);
+    --ball-default-border: var(--border-primary);
+    --ball-default-text: var(--text-muted);
+    --ball-hot-gradient: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+    --ball-cold-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+    
+    /* ═══ OVERLAY ═══ */
+    --overlay-dark: rgba(0, 0, 0, 0.6);
+    --overlay-light: rgba(255, 255, 255, 0.1);
+    
+    /* ═══ SCROLLBAR ═══ */
+    --scrollbar-track: var(--bg-secondary);
+    --scrollbar-thumb: var(--border-secondary);
+    --scrollbar-thumb-hover: var(--text-muted);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   2. LIGHT THEME
+   ───────────────────────────────────────────────────────────────────────────── */
+
+[data-theme="light"] {
+    /* ═══ COLORS: Backgrounds ═══ */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-tertiary: #f1f5f9;
+    --bg-elevated: #e2e8f0;
+    
+    /* ═══ COLORS: Text ═══ */
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --text-inverse: #ffffff;
+    
+    /* ═══ COLORS: Borders ═══ */
+    --border-primary: #e2e8f0;
+    --border-secondary: #cbd5e1;
+    --border-focus: #2563eb;
+    
+    /* ═══ COLORS: Accents (slightly darker for contrast) ═══ */
+    --accent-blue: #2563eb;
+    --accent-blue-hover: #1d4ed8;
+    --accent-blue-muted: rgba(37, 99, 235, 0.1);
+    
+    --accent-purple: #7c3aed;
+    --accent-purple-hover: #6d28d9;
+    --accent-purple-muted: rgba(124, 58, 237, 0.1);
+    
+    --accent-cyan: #0891b2;
+    --accent-cyan-hover: #0e7490;
+    --accent-cyan-muted: rgba(8, 145, 178, 0.1);
+    
+    --accent-green: #059669;
+    --accent-green-hover: #047857;
+    --accent-green-muted: rgba(5, 150, 105, 0.1);
+    
+    --accent-amber: #d97706;
+    --accent-amber-hover: #b45309;
+    --accent-amber-muted: rgba(217, 119, 6, 0.1);
+    
+    --accent-rose: #e11d48;
+    --accent-rose-hover: #be123c;
+    --accent-rose-muted: rgba(225, 29, 72, 0.1);
+    
+    /* ═══ SHADOWS (lighter) ═══ */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.12);
+    
+    /* ═══ BACKGROUND PATTERNS ═══ */
+    --bg-pattern-1: rgba(59, 130, 246, 0.04);
+    --bg-pattern-2: rgba(139, 92, 246, 0.04);
+    --bg-pattern-3: rgba(6, 182, 212, 0.03);
+    
+    /* ═══ SPECIAL: Lottery Balls ═══ */
+    --ball-default-bg: #ffffff;
+    --ball-default-border: var(--border-secondary);
+    --ball-default-text: var(--text-muted);
+    
+    /* ═══ OVERLAY ═══ */
+    --overlay-dark: rgba(0, 0, 0, 0.4);
+    --overlay-light: rgba(255, 255, 255, 0.8);
+    
+    /* ═══ SCROLLBAR ═══ */
+    --scrollbar-track: var(--bg-tertiary);
+    --scrollbar-thumb: var(--border-secondary);
+    --scrollbar-thumb-hover: var(--text-muted);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   3. TYPOGRAPHY
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+    /* ═══ Font Families ═══ */
+    --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    
+    /* ═══ Font Sizes ═══ */
+    --text-xs: 0.75rem;      /* 12px */
+    --text-sm: 0.875rem;     /* 14px */
+    --text-base: 1rem;       /* 16px */
+    --text-lg: 1.125rem;     /* 18px */
+    --text-xl: 1.25rem;      /* 20px */
+    --text-2xl: 1.5rem;      /* 24px */
+    --text-3xl: 2rem;        /* 32px */
+    --text-4xl: 2.5rem;      /* 40px */
+    --text-5xl: 3rem;        /* 48px */
+    --text-6xl: 3.5rem;      /* 56px */
+    
+    /* ═══ Font Weights ═══ */
+    --font-light: 300;
+    --font-normal: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+    
+    /* ═══ Line Heights ═══ */
+    --leading-none: 1;
+    --leading-tight: 1.1;
+    --leading-snug: 1.3;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.625;
+    --leading-loose: 1.75;
+    
+    /* ═══ Letter Spacing ═══ */
+    --tracking-tight: -0.025em;
+    --tracking-normal: 0;
+    --tracking-wide: 0.025em;
+    --tracking-wider: 0.05em;
+    --tracking-widest: 0.1em;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   4. SPACING
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+    --space-0: 0;
+    --space-1: 0.25rem;      /* 4px */
+    --space-2: 0.5rem;       /* 8px */
+    --space-3: 0.75rem;      /* 12px */
+    --space-4: 1rem;         /* 16px */
+    --space-5: 1.25rem;      /* 20px */
+    --space-6: 1.5rem;       /* 24px */
+    --space-8: 2rem;         /* 32px */
+    --space-10: 2.5rem;      /* 40px */
+    --space-12: 3rem;        /* 48px */
+    --space-16: 4rem;        /* 64px */
+    --space-20: 5rem;        /* 80px */
+    --space-24: 6rem;        /* 96px */
+    --space-32: 8rem;        /* 128px */
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   5. BORDER RADIUS
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+    --radius-none: 0;
+    --radius-sm: 0.25rem;    /* 4px */
+    --radius-md: 0.5rem;     /* 8px */
+    --radius-lg: 0.75rem;    /* 12px */
+    --radius-xl: 1rem;       /* 16px */
+    --radius-2xl: 1.25rem;   /* 20px */
+    --radius-3xl: 1.5rem;    /* 24px */
+    --radius-full: 9999px;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   6. TRANSITIONS
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+    --transition-fast: 150ms ease;
+    --transition-base: 200ms ease;
+    --transition-slow: 300ms ease;
+    --transition-slower: 500ms ease;
+    
+    /* Specific transitions */
+    --transition-colors: color 200ms ease, background-color 200ms ease, border-color 200ms ease;
+    --transition-transform: transform 200ms ease;
+    --transition-opacity: opacity 200ms ease;
+    --transition-shadow: box-shadow 200ms ease;
+    --transition-all: all 200ms ease;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   7. Z-INDEX SCALE
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+    --z-base: 0;
+    --z-dropdown: 10;
+    --z-sticky: 20;
+    --z-fixed: 30;
+    --z-modal-backdrop: 40;
+    --z-modal: 50;
+    --z-popover: 60;
+    --z-tooltip: 70;
+    --z-toast: 80;
+    --z-max: 9999;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   8. BREAKPOINTS (as custom properties for reference)
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+    /* 
+     * Note: CSS custom properties can't be used in media queries directly.
+     * These are for reference and JS usage.
+     * 
+     * Mobile-first breakpoints:
+     * --bp-sm: 640px;   // Small devices
+     * --bp-md: 768px;   // Tablets
+     * --bp-lg: 1024px;  // Laptops
+     * --bp-xl: 1280px;  // Desktops
+     * --bp-2xl: 1536px; // Large screens
+     */
+    
+    --container-sm: 640px;
+    --container-md: 768px;
+    --container-lg: 1024px;
+    --container-xl: 1280px;
+    --container-2xl: 1400px;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   9. BASE RESET & DEFAULTS
+   ───────────────────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+body {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: var(--font-normal);
+    line-height: var(--leading-normal);
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    transition: background-color var(--transition-slow), color var(--transition-slow);
+}
+
+/* Smooth theme transitions */
+body * {
+    transition: background-color var(--transition-base), 
+                border-color var(--transition-base),
+                box-shadow var(--transition-base);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   10. SCROLLBAR STYLING
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   11. SELECTION STYLING
+   ───────────────────────────────────────────────────────────────────────────── */
+
+::selection {
+    background-color: var(--accent-blue);
+    color: white;
+}
+
+::-moz-selection {
+    background-color: var(--accent-blue);
+    color: white;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   12. FOCUS STYLES
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:focus {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 2px;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   13. UTILITY: Background Pattern
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.bg-pattern {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(ellipse at 20% 20%, var(--bg-pattern-1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, var(--bg-pattern-2) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, var(--bg-pattern-3) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+    transition: background var(--transition-slow);
+}
+

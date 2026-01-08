@@ -2,6 +2,29 @@
   <h2>🎲 {{ randomness_title }}</h2>
   <p class="analysis-subtitle">{{ randomness_subtitle }}</p>
 
+  <!-- Hypothesis Test Cards -->
+  <div class="content-section">
+    <h3 style="font-size: 20px; font-weight: 500; margin-bottom: 16px;">{{ hypothesis_test_title }}</h3>
+    <div class="results-container">
+      <div class="result-box">
+        <div class="result-label">{{ null_hypothesis }}</div>
+        <div class="result-value">{{ h0_value }}</div>
+        <p class="result-description">{{ h0_desc }}</p>
+        <span class="result-status {{ 'status-accept' if chi_square_test.is_random else 'status-reject' }}">
+          {{ fail_to_reject if chi_square_test.is_random else rejected }}
+        </span>
+      </div>
+      <div class="result-box">
+        <div class="result-label">{{ alt_hypothesis }}</div>
+        <div class="result-value">{{ h1_value }}</div>
+        <p class="result-description">{{ h1_desc }}</p>
+        <span class="result-status {{ 'status-reject' if chi_square_test.is_random else 'status-accept' }}">
+          {{ rejected if chi_square_test.is_random else 'SIGNIFICANT' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
   <!-- Main Results Card -->
   <div class="analysis-card">
     <div class="card-header">

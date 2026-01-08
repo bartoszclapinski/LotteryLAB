@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="{{ lang }}" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ i18n.meth_runs_title }} — Lottery Lab</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/design-system.css?v=3" />
+    <link rel="stylesheet" href="/static/css/components.css?v=3" />
+    <link rel="stylesheet" href="/static/css/home.css?v=3" />
+    <link rel="stylesheet" href="/static/css/methodology-detail.css?v=3" />
+    <!-- Theme toggle (load early to prevent flash) -->
+    <script src="/static/js/theme-toggle.js?v=3"></script>
+  </head>
+  <body>
+    <div class="bg-pattern"></div>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <a href="/" class="logo">
+          <div class="logo-icon">Λ</div>
+          <div class="logo-text">Lottery <span>Lab</span></div>
+        </a>
+        <nav class="breadcrumb">
+          <a href="/">{{ i18n.home }}</a>
+          <span class="separator">›</span>
+          <a href="/methodology">{{ i18n.methodology }}</a>
+          <span class="separator">›</span>
+          <span>{{ i18n.meth_runs_title }}</span>
+        </nav>
+        <div class="header-actions">
+          <div class="switch-group">
+            {% for supported_lang in supported_languages %}
+            <a href="/set-language?lang={{ supported_lang }}" 
+               class="{% if lang == supported_lang %}active{% endif %}">
+              {{ supported_lang|upper }}
+            </a>
+            {% endfor %}
+          </div>
+          <button id="theme-toggle" class="theme-toggle" title="{{ i18n.toggle_theme }}" aria-label="{{ i18n.toggle_theme }}">
+            <span class="icon-sun">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+              </svg>
+            </span>
+            <span class="icon-moon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            </span>
+          </button>
+          <a href="/app" class="btn btn-primary">{{ i18n.open_analyzer }} →</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Layout -->
+    <div class="layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-title">{{ i18n.meth_tests_title }}</div>
+          <nav class="sidebar-nav">
+            <a href="/methodology/chi-square" class="sidebar-link">
+              <span class="icon">📊</span>
+              <span>{{ i18n.meth_chi_title }}</span>
+              <span class="badge">8 min</span>
+            </a>
+            <a href="/methodology/kolmogorov-smirnov" class="sidebar-link">
+              <span class="icon">📈</span>
+              <span>{{ i18n.meth_ks_title }}</span>
+              <span class="badge">10 min</span>
+            </a>
+            <a href="/methodology/runs-test" class="sidebar-link active">
+              <span class="icon">🔄</span>
+              <span>{{ i18n.meth_runs_title }}</span>
+              <span class="badge">7 min</span>
+            </a>
+            <a href="/methodology/autocorrelation" class="sidebar-link">
+              <span class="icon">⏱️</span>
+              <span>{{ i18n.meth_autocorr_title }}</span>
+              <span class="badge">6 min</span>
+            </a>
+            <a href="/methodology/entropy" class="sidebar-link">
+              <span class="icon">🎲</span>
+              <span>{{ i18n.meth_entropy_title }}</span>
+              <span class="badge">5 min</span>
+            </a>
+            <a href="/methodology/monte-carlo" class="sidebar-link">
+              <span class="icon">🎰</span>
+              <span>{{ i18n.meth_monte_title }}</span>
+              <span class="badge">12 min</span>
+            </a>
+          </nav>
+        </div>
+
+        <div class="sidebar-progress">
+          <div class="progress-label">{{ i18n.meth_your_progress }}</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 50%;"></div>
+          </div>
+          <div class="progress-text">3 {{ i18n.meth_of }} 6 {{ i18n.meth_chapters }}</div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="page-header">
+          <span class="page-tag">
+            <span>🔄</span>
+            {{ i18n.meth_tests_title }}
+          </span>
+          <h1 class="page-title">{{ i18n.meth_runs_title }}</h1>
+          <p class="page-subtitle">{{ i18n.runs_subtitle }}</p>
+        </div>
+
+        <!-- Section: Intuition -->
+        <section class="section" id="intuition">
+          <h2 class="section-title">
+            <span class="icon">💡</span>
+            {{ i18n.runs_intuition_title }}
+          </h2>
+          <div class="prose">
+            <p>{{ i18n.runs_intuition_p1 }}</p>
+            <p>{{ i18n.runs_intuition_p2 }}</p>
+            <p><strong>{{ i18n.runs_intuition_question }}</strong> {{ i18n.runs_intuition_answer }}</p>
+          </div>
+
+          <!-- Visual example of runs -->
+          <div class="runs-visual">
+            <div class="runs-example">
+              <div class="runs-label">{{ i18n.runs_example_title }}</div>
+              <div class="runs-sequence">
+                <span class="run-item above">↑</span>
+                <span class="run-item above">↑</span>
+                <span class="run-item above">↑</span>
+                <span class="run-separator">|</span>
+                <span class="run-item below">↓</span>
+                <span class="run-item below">↓</span>
+                <span class="run-separator">|</span>
+                <span class="run-item above">↑</span>
+                <span class="run-separator">|</span>
+                <span class="run-item below">↓</span>
+                <span class="run-item below">↓</span>
+                <span class="run-item below">↓</span>
+                <span class="run-item below">↓</span>
+              </div>
+              <div class="runs-count">{{ i18n.runs_count }}: <strong>4</strong></div>
+            </div>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="info-card-header">
+                <div class="info-card-icon amber">⚡</div>
+                <div class="info-card-title">{{ i18n.runs_too_few }}</div>
+              </div>
+              <div class="info-card-value amber">{{ i18n.runs_clustering }}</div>
+              <div class="info-card-desc">{{ i18n.runs_too_few_desc }}</div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header">
+                <div class="info-card-icon rose">⚡</div>
+                <div class="info-card-title">{{ i18n.runs_too_many }}</div>
+              </div>
+              <div class="info-card-value rose">{{ i18n.runs_oscillation }}</div>
+              <div class="info-card-desc">{{ i18n.runs_too_many_desc }}</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Formula -->
+        <section class="section" id="formula">
+          <h2 class="section-title">
+            <span class="icon">📐</span>
+            {{ i18n.runs_formula_title }}
+          </h2>
+          
+          <div class="formula-box">
+            <div class="formula-label">{{ i18n.runs_z_statistic }}</div>
+            <div class="formula">Z = (R - μ<sub>R</sub>) / σ<sub>R</sub></div>
+            <div class="formula-desc">
+              <code>R</code> = {{ i18n.runs_observed_runs }}, 
+              <code>μ<sub>R</sub></code> = {{ i18n.runs_expected_runs }},
+              <code>σ<sub>R</sub></code> = {{ i18n.runs_std_dev }}
+            </div>
+          </div>
+
+          <div class="formula-box">
+            <div class="formula-label">{{ i18n.runs_expected_formula }}</div>
+            <div class="formula">μ<sub>R</sub> = (2n₁n₂)/(n₁+n₂) + 1</div>
+            <div class="formula-desc">
+              <code>n₁</code> = {{ i18n.runs_n1 }}, 
+              <code>n₂</code> = {{ i18n.runs_n2 }}
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>{{ i18n.runs_formula_explanation }}</p>
+          </div>
+
+          <div class="steps-list">
+            <div class="step-item">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h4>{{ i18n.runs_step1_title }}</h4>
+                <p>{{ i18n.runs_step1_desc }}</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h4>{{ i18n.runs_step2_title }}</h4>
+                <p>{{ i18n.runs_step2_desc }}</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h4>{{ i18n.runs_step3_title }}</h4>
+                <p>{{ i18n.runs_step3_desc }}</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h4>{{ i18n.runs_step4_title }}</h4>
+                <p>{{ i18n.runs_step4_desc }}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Interactive Demo -->
+        <section class="section" id="demo">
+          <h2 class="section-title">
+            <span class="icon">🧪</span>
+            {{ i18n.runs_demo_title }}
+          </h2>
+
+          <div class="demo-box">
+            <div class="demo-header">
+              <div class="demo-icon">🔄</div>
+              <div>
+                <div class="demo-title">{{ i18n.runs_simulator_title }}</div>
+                <div class="demo-subtitle">{{ i18n.runs_simulator_desc }}</div>
+              </div>
+            </div>
+
+            <div class="runs-demo-visual">
+              <div class="runs-demo-sequence" id="runsSequence">
+                <!-- Generated by JS -->
+              </div>
+            </div>
+
+            <div class="demo-controls">
+              <div class="demo-slider">
+                <label>{{ i18n.runs_sequence_length }}: <strong id="seqLength">30</strong></label>
+                <input type="range" min="20" max="100" value="30" id="seqSlider">
+              </div>
+            </div>
+
+            <button class="demo-btn" id="runRunsDemo">
+              ▶ {{ i18n.runs_generate }}
+            </button>
+
+            <div class="demo-results">
+              <div class="demo-result">
+                <div class="demo-result-label">{{ i18n.runs_num_runs }}</div>
+                <div class="demo-result-value neutral" id="numRuns">—</div>
+              </div>
+              <div class="demo-result">
+                <div class="demo-result-label">{{ i18n.runs_expected }}</div>
+                <div class="demo-result-value neutral" id="expectedRuns">—</div>
+              </div>
+              <div class="demo-result">
+                <div class="demo-result-label">{{ i18n.runs_z_score }}</div>
+                <div class="demo-result-value neutral" id="zScore">—</div>
+              </div>
+              <div class="demo-result">
+                <div class="demo-result-label">P-Value</div>
+                <div class="demo-result-value neutral" id="runsPValue">—</div>
+              </div>
+              <div class="demo-result">
+                <div class="demo-result-label">{{ i18n.runs_verdict }}</div>
+                <div class="demo-result-value neutral" id="runsVerdict">—</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Applications -->
+        <section class="section" id="applications">
+          <h2 class="section-title">
+            <span class="icon">🎯</span>
+            {{ i18n.runs_applications_title }}
+          </h2>
+
+          <div class="applications-grid">
+            <div class="application-card">
+              <div class="application-icon">🎱</div>
+              <h4>{{ i18n.runs_app_lottery }}</h4>
+              <p>{{ i18n.runs_app_lottery_desc }}</p>
+            </div>
+            <div class="application-card">
+              <div class="application-icon">📊</div>
+              <h4>{{ i18n.runs_app_stocks }}</h4>
+              <p>{{ i18n.runs_app_stocks_desc }}</p>
+            </div>
+            <div class="application-card">
+              <div class="application-icon">🏭</div>
+              <h4>{{ i18n.runs_app_quality }}</h4>
+              <p>{{ i18n.runs_app_quality_desc }}</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Interpretation -->
+        <section class="section" id="interpretation">
+          <h2 class="section-title">
+            <span class="icon">🔍</span>
+            {{ i18n.runs_interpret_title }}
+          </h2>
+
+          <div class="interpretation">
+            <div class="interpretation-header">
+              <span>✓</span>
+              <span>{{ i18n.runs_lotto_result }}</span>
+            </div>
+            <p>{{ i18n.runs_lotto_result_desc }}</p>
+          </div>
+
+          <div class="warning-box">
+            <div class="warning-header">
+              <span>💡</span>
+              <span>{{ i18n.runs_key_insight }}</span>
+            </div>
+            <p>{{ i18n.runs_key_insight_desc }}</p>
+          </div>
+        </section>
+
+        <!-- Section: Code -->
+        <section class="section" id="code">
+          <h2 class="section-title">
+            <span class="icon">💻</span>
+            {{ i18n.runs_code_title }}
+          </h2>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Python</span>
+            </div>
+            <pre class="code-content"><span class="keyword">import</span> numpy <span class="keyword">as</span> np
+<span class="keyword">from</span> scipy <span class="keyword">import</span> stats
+
+<span class="keyword">def</span> <span class="function">runs_test</span>(sequence: <span class="function">list</span>) -> <span class="function">dict</span>:
+    <span class="string">"""{{ i18n.runs_code_docstring }}"""</span>
+    
+    <span class="comment"># {{ i18n.runs_code_comment1 }}</span>
+    median = np.median(sequence)
+    binary = [<span class="number">1</span> <span class="keyword">if</span> x >= median <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">for</span> x <span class="keyword">in</span> sequence]
+    
+    <span class="comment"># {{ i18n.runs_code_comment2 }}</span>
+    runs = <span class="number">1</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="function">len</span>(binary)):
+        <span class="keyword">if</span> binary[i] != binary[i-<span class="number">1</span>]:
+            runs += <span class="number">1</span>
+    
+    <span class="comment"># {{ i18n.runs_code_comment3 }}</span>
+    n1 = <span class="function">sum</span>(binary)
+    n2 = <span class="function">len</span>(binary) - n1
+    
+    <span class="comment"># {{ i18n.runs_code_comment4 }}</span>
+    mu = (<span class="number">2</span> * n1 * n2) / (n1 + n2) + <span class="number">1</span>
+    sigma = np.sqrt((<span class="number">2</span>*n1*n2*(<span class="number">2</span>*n1*n2-n1-n2)) / 
+                    ((n1+n2)**<span class="number">2</span> * (n1+n2-<span class="number">1</span>)))
+    
+    <span class="comment"># {{ i18n.runs_code_comment5 }}</span>
+    z = (runs - mu) / sigma
+    p_value = <span class="number">2</span> * (<span class="number">1</span> - stats.norm.cdf(<span class="function">abs</span>(z)))
+    
+    <span class="keyword">return</span> {
+        <span class="string">"runs"</span>: runs,
+        <span class="string">"expected"</span>: mu,
+        <span class="string">"z_score"</span>: z,
+        <span class="string">"p_value"</span>: p_value,
+        <span class="string">"is_random"</span>: p_value > <span class="number">0.05</span>
+    }</pre>
+          </div>
+        </section>
+      </main>
+
+      <!-- Right Panel -->
+      <aside class="right-panel">
+        <div class="panel-section">
+          <div class="panel-title">{{ i18n.runs_on_this_page }}</div>
+          <a href="#intuition" class="toc-link active">{{ i18n.runs_intuition_title }}</a>
+          <a href="#formula" class="toc-link">{{ i18n.runs_formula_title }}</a>
+          <a href="#demo" class="toc-link">{{ i18n.runs_demo_title }}</a>
+          <a href="#applications" class="toc-link">{{ i18n.runs_applications_title }}</a>
+          <a href="#interpretation" class="toc-link">{{ i18n.runs_interpret_title }}</a>
+          <a href="#code" class="toc-link">{{ i18n.runs_code_title }}</a>
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-title">{{ i18n.tip }}</div>
+          <div class="tip-card">
+            <div class="tip-header">
+              <span>💡</span>
+              <span>Pro tip</span>
+            </div>
+            <p class="tip-text">{{ i18n.runs_tip_text }}</p>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-title">{{ i18n.runs_related }}</div>
+          <div class="related-links">
+            <a href="/methodology/autocorrelation" class="related-link">
+              <span>⏱️</span>
+              {{ i18n.meth_autocorr_title }}
+            </a>
+            <a href="/methodology/chi-square" class="related-link">
+              <span>📊</span>
+              {{ i18n.meth_chi_title }}
+            </a>
+            <a href="/app" class="related-link">
+              <span>🔄</span>
+              {{ i18n.pattern_analysis }}
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Footer Navigation -->
+    <nav class="footer-nav">
+      <div class="footer-nav-content">
+        <a href="/methodology/kolmogorov-smirnov" class="nav-btn">
+          ← {{ i18n.meth_ks_title }}
+        </a>
+        <div class="progress-indicator">
+          <div class="progress-dots">
+            <div class="progress-dot completed"></div>
+            <div class="progress-dot completed"></div>
+            <div class="progress-dot active"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+          </div>
+          <span class="progress-label">3 {{ i18n.meth_of }} 6</span>
+        </div>
+        <a href="/methodology/autocorrelation" class="nav-btn primary">
+          {{ i18n.meth_autocorr_title }} →
+        </a>
+      </div>
+    </nav>
+
+    <script>
+      // Demo elements
+      const seqSlider = document.getElementById('seqSlider');
+      const seqLength = document.getElementById('seqLength');
+      const runRunsDemo = document.getElementById('runRunsDemo');
+      const runsSequence = document.getElementById('runsSequence');
+      const numRuns = document.getElementById('numRuns');
+      const expectedRuns = document.getElementById('expectedRuns');
+      const zScore = document.getElementById('zScore');
+      const runsPValue = document.getElementById('runsPValue');
+      const runsVerdict = document.getElementById('runsVerdict');
+
+      seqSlider.oninput = function() {
+        seqLength.textContent = this.value;
+      }
+
+      function normalCDF(x) {
+        const a1 =  0.254829592;
+        const a2 = -0.284496736;
+        const a3 =  1.421413741;
+        const a4 = -1.453152027;
+        const a5 =  1.061405429;
+        const p  =  0.3275911;
+        const sign = x < 0 ? -1 : 1;
+        x = Math.abs(x) / Math.sqrt(2);
+        const t = 1.0 / (1.0 + p * x);
+        const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+        return 0.5 * (1.0 + sign * y);
+      }
+
+      runRunsDemo.onclick = function() {
+        const n = parseInt(seqSlider.value);
+        
+        // Generate random sequence (simulate lottery number sums or frequencies)
+        const sequence = [];
+        for (let i = 0; i < n; i++) {
+          sequence.push(Math.random());
+        }
+        
+        // Calculate median
+        const sorted = [...sequence].sort((a, b) => a - b);
+        const median = sorted[Math.floor(n / 2)];
+        
+        // Convert to binary (above/below median)
+        const binary = sequence.map(x => x >= median ? 1 : 0);
+        
+        // Count runs
+        let runs = 1;
+        for (let i = 1; i < binary.length; i++) {
+          if (binary[i] !== binary[i - 1]) runs++;
+        }
+        
+        // Calculate n1, n2
+        const n1 = binary.filter(x => x === 1).length;
+        const n2 = n - n1;
+        
+        // Calculate expected runs and std dev
+        const mu = (2 * n1 * n2) / (n1 + n2) + 1;
+        const sigma = Math.sqrt((2 * n1 * n2 * (2 * n1 * n2 - n1 - n2)) / 
+                                ((n1 + n2) ** 2 * (n1 + n2 - 1)));
+        
+        // Z-score and p-value
+        const z = (runs - mu) / sigma;
+        const pVal = 2 * (1 - normalCDF(Math.abs(z)));
+        
+        // Visualize sequence
+        runsSequence.innerHTML = binary.map((b, i) => {
+          const isNewRun = i === 0 || binary[i] !== binary[i - 1];
+          return `<span class="run-dot ${b ? 'above' : 'below'} ${isNewRun ? 'new-run' : ''}">${b ? '↑' : '↓'}</span>`;
+        }).join('');
+        
+        // Update results
+        numRuns.textContent = runs;
+        numRuns.className = 'demo-result-value neutral';
+        
+        expectedRuns.textContent = mu.toFixed(1);
+        expectedRuns.className = 'demo-result-value neutral';
+        
+        zScore.textContent = z.toFixed(2);
+        zScore.className = 'demo-result-value ' + (Math.abs(z) < 1.96 ? 'success' : 'warning');
+        
+        runsPValue.textContent = pVal.toFixed(4);
+        runsPValue.className = 'demo-result-value ' + (pVal > 0.05 ? 'success' : 'warning');
+        
+        const verdictText = pVal > 0.05 ? '{{ i18n.runs_random }}' : '{{ i18n.runs_not_random }}';
+        runsVerdict.textContent = verdictText;
+        runsVerdict.className = 'demo-result-value ' + (pVal > 0.05 ? 'success' : 'warning');
+      }
+
+      // Initialize
+      document.addEventListener('DOMContentLoaded', function() {
+        runRunsDemo.click();
+      });
+
+      // Smooth scroll for TOC
+      document.querySelectorAll('.toc-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+          document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+
+      // Update active TOC on scroll
+      window.addEventListener('scroll', function() {
+        const sections = document.querySelectorAll('.section');
+        let current = '';
+        
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 150;
+          if (scrollY >= sectionTop) {
+            current = section.getAttribute('id');
+          }
+        });
+        
+        document.querySelectorAll('.toc-link').forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
+
+
+

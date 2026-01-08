@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="{{ lang }}" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ i18n.meth_entropy_title }} — Lottery Lab</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/design-system.css?v=3" />
+    <link rel="stylesheet" href="/static/css/components.css?v=3" />
+    <link rel="stylesheet" href="/static/css/home.css?v=3" />
+    <link rel="stylesheet" href="/static/css/methodology-detail.css?v=3" />
+    <!-- Theme toggle (load early to prevent flash) -->
+    <script src="/static/js/theme-toggle.js?v=3"></script>
+  </head>
+  <body>
+    <div class="bg-pattern"></div>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <a href="/" class="logo">
+          <div class="logo-icon">Λ</div>
+          <div class="logo-text">Lottery <span>Lab</span></div>
+        </a>
+        <nav class="breadcrumb">
+          <a href="/">{{ i18n.home }}</a>
+          <span class="separator">›</span>
+          <a href="/methodology">{{ i18n.methodology }}</a>
+          <span class="separator">›</span>
+          <span>{{ i18n.meth_entropy_title }}</span>
+        </nav>
+        <div class="header-actions">
+          <div class="switch-group">
+            {% for supported_lang in supported_languages %}
+            <a href="/set-language?lang={{ supported_lang }}" 
+               class="{% if lang == supported_lang %}active{% endif %}">
+              {{ supported_lang|upper }}
+            </a>
+            {% endfor %}
+          </div>
+          <button id="theme-toggle" class="theme-toggle" title="{{ i18n.toggle_theme }}" aria-label="{{ i18n.toggle_theme }}">
+            <span class="icon-sun">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+              </svg>
+            </span>
+            <span class="icon-moon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            </span>
+          </button>
+          <a href="/app" class="btn btn-primary">{{ i18n.open_analyzer }} →</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Layout -->
+    <div class="layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-title">{{ i18n.meth_tests_title }}</div>
+          <nav class="sidebar-nav">
+            <a href="/methodology/chi-square" class="sidebar-link">
+              <span class="icon">📊</span>
+              <span>{{ i18n.meth_chi_title }}</span>
+              <span class="badge">8 min</span>
+            </a>
+            <a href="/methodology/kolmogorov-smirnov" class="sidebar-link">
+              <span class="icon">📈</span>
+              <span>{{ i18n.meth_ks_title }}</span>
+              <span class="badge">10 min</span>
+            </a>
+            <a href="/methodology/runs-test" class="sidebar-link">
+              <span class="icon">🔄</span>
+              <span>{{ i18n.meth_runs_title }}</span>
+              <span class="badge">7 min</span>
+            </a>
+            <a href="/methodology/autocorrelation" class="sidebar-link">
+              <span class="icon">⏱️</span>
+              <span>{{ i18n.meth_autocorr_title }}</span>
+              <span class="badge">6 min</span>
+            </a>
+            <a href="/methodology/entropy" class="sidebar-link active">
+              <span class="icon">🎲</span>
+              <span>{{ i18n.meth_entropy_title }}</span>
+              <span class="badge">5 min</span>
+            </a>
+            <a href="/methodology/monte-carlo" class="sidebar-link">
+              <span class="icon">🎰</span>
+              <span>{{ i18n.meth_monte_title }}</span>
+              <span class="badge">12 min</span>
+            </a>
+          </nav>
+        </div>
+        <div class="sidebar-progress">
+          <div class="progress-label">{{ i18n.meth_your_progress }}</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 83%;"></div>
+          </div>
+          <div class="progress-text">5 {{ i18n.meth_of }} 6 {{ i18n.meth_chapters }}</div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="page-header">
+          <span class="page-tag">
+            <span>🎲</span>
+            {{ i18n.meth_tests_title }}
+          </span>
+          <h1 class="page-title">{{ i18n.meth_entropy_title }}</h1>
+          <p class="page-subtitle">{{ i18n.entropy_subtitle }}</p>
+        </div>
+
+        <!-- Section: Intuition -->
+        <section class="section" id="intuition">
+          <h2 class="section-title">
+            <span class="icon">💡</span>
+            {{ i18n.entropy_intuition_title }}
+          </h2>
+          <div class="prose">
+            <p>{{ i18n.entropy_intuition_p1 }}</p>
+            <p>{{ i18n.entropy_intuition_p2 }}</p>
+            <p><strong>{{ i18n.entropy_intuition_question }}</strong> {{ i18n.entropy_intuition_answer }}</p>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="info-card-header">
+                <div class="info-card-icon amber">📉</div>
+                <div class="info-card-title">{{ i18n.entropy_low_entropy }}</div>
+              </div>
+              <div class="info-card-value amber">{{ i18n.low_randomness }}</div>
+              <div class="info-card-desc">{{ i18n.entropy_low_desc }}</div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header">
+                <div class="info-card-icon emerald">📈</div>
+                <div class="info-card-title">{{ i18n.entropy_high_entropy }}</div>
+              </div>
+              <div class="info-card-value emerald">{{ i18n.high_randomness }}</div>
+              <div class="info-card-desc">{{ i18n.entropy_high_desc }}</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Formula -->
+        <section class="section" id="formula">
+          <h2 class="section-title">
+            <span class="icon">📐</span>
+            {{ i18n.entropy_formula_title }}
+          </h2>
+
+          <div class="formula-box">
+            <div class="formula-label">{{ i18n.entropy_formula_label }}</div>
+            <div class="formula">H = - Σ p(x) · log₂ p(x)</div>
+            <div class="formula-desc">
+              <code>p(x)</code> — {{ i18n.formula_entropy_desc }}<br />
+              <code>H</code> — {{ i18n.stat_entropy_unit }}
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>{{ i18n.entropy_formula_desc }}</p>
+          </div>
+
+          <div class="steps-list">
+            <div class="step-item">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h4>{{ i18n.entropy_step1_title }}</h4>
+                <p>{{ i18n.entropy_step1_desc }}</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h4>{{ i18n.entropy_step2_title }}</h4>
+                <p>{{ i18n.entropy_step2_desc }}</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h4>{{ i18n.entropy_step3_title }}</h4>
+                <p>{{ i18n.entropy_step3_desc }}</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h4>{{ i18n.entropy_step4_title }}</h4>
+                <p>{{ i18n.entropy_step4_desc }}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Interactive Demo -->
+        <section class="section" id="demo">
+          <h2 class="section-title">
+            <span class="icon">🧪</span>
+            {{ i18n.entropy_demo_title }}
+          </h2>
+
+          <div class="demo-box">
+            <div class="demo-header">
+              <div class="demo-icon">🎲</div>
+              <div>
+                <div class="demo-title">{{ i18n.shannon_entropy }}</div>
+                <div class="demo-subtitle">{{ i18n.entropy_demo_subtitle }}</div>
+              </div>
+            </div>
+
+            <div class="demo-controls">
+              <div class="demo-slider">
+                <label>{{ i18n.entropy_demo_draws_label }}: <strong id="entropyDrawsValue">500</strong></label>
+                <input type="range" min="100" max="5000" value="500" id="entropyDrawsSlider">
+              </div>
+              <div class="demo-select">
+                <label>{{ i18n.entropy_demo_mode_label }}</label>
+                <div class="mode-toggle" id="entropyMode">
+                  <button type="button" class="mode-pill active" data-mode="uniform">
+                    {{ i18n.entropy_demo_mode_uniform }}
+                  </button>
+                  <button type="button" class="mode-pill" data-mode="biased">
+                    {{ i18n.entropy_demo_mode_biased }}
+                  </button>
+                </div>
+              </div>
+              <button class="demo-btn" id="runEntropyDemo">
+                ▶ {{ i18n.entropy_demo_run_button }}
+              </button>
+            </div>
+
+            <div class="demo-results">
+              <div class="demo-result">
+                <div class="demo-result-label">{{ i18n.entropy_result_entropy }}</div>
+                <div class="demo-result-value neutral" id="entropyValue">—</div>
+              </div>
+              <div class="demo-result">
+                <div class="demo-result-label">{{ i18n.entropy_result_max_entropy }}</div>
+                <div class="demo-result-value neutral" id="maxEntropyValue">—</div>
+              </div>
+              <div class="demo-result">
+                <div class="demo-result-label">{{ i18n.entropy_result_normalized }}</div>
+                <div class="demo-result-value neutral" id="normalizedEntropyValue">—</div>
+              </div>
+              <div class="demo-result">
+                <div class="demo-result-label">{{ i18n.entropy_result_verdict }}</div>
+                <div class="demo-result-value neutral" id="entropyVerdict">—</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Interpretation -->
+        <section class="section" id="interpretation">
+          <h2 class="section-title">
+            <span class="icon">🔍</span>
+            {{ i18n.entropy_interpret_title }}
+          </h2>
+
+          <div class="interpretation">
+            <div class="interpretation-header">
+              <span>✓</span>
+              <span>{{ i18n.entropy_lotto_result }}</span>
+            </div>
+            <p>{{ i18n.entropy_lotto_result_desc }}</p>
+          </div>
+
+          <div class="warning-box">
+            <div class="warning-header">
+              <span>💡</span>
+              <span>{{ i18n.entropy_key_insight }}</span>
+            </div>
+            <p>{{ i18n.entropy_key_insight_desc }}</p>
+          </div>
+        </section>
+
+        <!-- Section: Code Example -->
+        <section class="section" id="code">
+          <h2 class="section-title">
+            <span class="icon">💻</span>
+            {{ i18n.entropy_code_title }}
+          </h2>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Python</span>
+            </div>
+            <pre class="code-content"><code><span class="keyword">import</span> math
+<span class="keyword">from</span> collections <span class="keyword">import</span> Counter
+
+
+<span class="keyword">def</span> <span class="function">shannon_entropy</span>(numbers: <span class="function">list</span>[<span class="function">int</span>]) -> <span class="function">dict</span>:
+    <span class="string">"""{{ i18n.entropy_code_docstring }}"""</span>
+
+    <span class="comment"># {{ i18n.entropy_code_comment1 }}</span>
+    counts = Counter(numbers)
+    total = <span class="function">sum</span>(counts.values())
+    <span class="keyword">if</span> total == <span class="number">0</span>:
+        <span class="keyword">return</span> {<span class="string">'entropy'</span>: <span class="number">0.0</span>, <span class="string">'max_entropy'</span>: <span class="number">0.0</span>, <span class="string">'normalized'</span>: <span class="number">0.0</span>}
+
+    <span class="comment"># {{ i18n.entropy_code_comment2 }}</span>
+    probs = [count / total <span class="keyword">for</span> count <span class="keyword">in</span> counts.values()]
+
+    <span class="comment"># {{ i18n.entropy_code_comment3 }}</span>
+    H = -<span class="function">sum</span>(p * math.log2(p) <span class="keyword">for</span> p <span class="keyword">in</span> probs <span class="keyword">if</span> p &gt; <span class="number">0</span>)
+    max_entropy = math.log2(<span class="number">49</span>)
+    normalized = H / max_entropy <span class="keyword">if</span> max_entropy &gt; <span class="number">0</span> <span class="keyword">else</span> <span class="number">0.0</span>
+
+    <span class="keyword">return</span> {
+        <span class="string">'entropy'</span>: H,
+        <span class="string">'max_entropy'</span>: max_entropy,
+        <span class="string">'normalized'</span>: normalized,
+    }
+
+
+<span class="comment"># {{ i18n.entropy_code_usage }}</span>
+numbers = [<span class="number">5</span>, <span class="number">12</span>, <span class="number">23</span>, <span class="number">8</span>, <span class="number">31</span>, <span class="number">17</span>, ...]
+result = shannon_entropy(numbers)
+<span class="function">print</span>(<span class="string">"{{ i18n.entropy_code_print1 }}:"</span>, result[<span class="string">'entropy'</span>])
+<span class="function">print</span>(<span class="string">"{{ i18n.entropy_code_print2 }}:"</span>, result[<span class="string">'normalized'</span>])</code></pre>
+            <button class="code-copy" onclick="copyCode(this)">{{ i18n.copy_btn }}</button>
+          </div>
+        </section>
+
+        <!-- Footer Navigation -->
+        <nav class="footer-nav">
+          <div class="footer-nav-content">
+            <a href="/methodology/autocorrelation" class="nav-btn">
+              ← {{ i18n.meth_autocorr_title }}
+            </a>
+            <div class="progress-indicator">
+              <div class="progress-dots">
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+              </div>
+              <span class="progress-label">5 {{ i18n.meth_of }} 6</span>
+            </div>
+            <a href="/methodology/monte-carlo" class="nav-btn primary">
+              {{ i18n.meth_monte_title }} →
+            </a>
+          </div>
+        </nav>
+      </main>
+
+      <!-- Right Panel -->
+      <aside class="right-panel">
+        <div class="panel-section">
+          <div class="panel-title">{{ i18n.entropy_on_this_page }}</div>
+          <a href="#intuition" class="toc-link active">{{ i18n.entropy_intuition_title }}</a>
+          <a href="#formula" class="toc-link">{{ i18n.entropy_formula_title }}</a>
+          <a href="#demo" class="toc-link">{{ i18n.entropy_demo_title }}</a>
+          <a href="#interpretation" class="toc-link">{{ i18n.entropy_interpret_title }}</a>
+          <a href="#code" class="toc-link">{{ i18n.entropy_code_title }}</a>
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-title">{{ i18n.tip }}</div>
+          <div class="tip-card">
+            <div class="tip-header">
+              <span>💡</span>
+              <span>Pro tip</span>
+            </div>
+            <p class="tip-text">{{ i18n.entropy_tip_text }}</p>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-title">{{ i18n.entropy_related }}</div>
+          <div class="related-links">
+            <a href="/methodology/chi-square" class="related-link">
+              <span>📊</span>
+              {{ i18n.meth_chi_title }}
+            </a>
+            <a href="/methodology/autocorrelation" class="related-link">
+              <span>⏱️</span>
+              {{ i18n.meth_autocorr_title }}
+            </a>
+            <a href="/methodology/monte-carlo" class="related-link">
+              <span>🎰</span>
+              {{ i18n.meth_monte_title }}
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+      const drawsSlider = document.getElementById('entropyDrawsSlider');
+      const drawsValue = document.getElementById('entropyDrawsValue');
+      const modeToggle = document.getElementById('entropyMode');
+      const runBtn = document.getElementById('runEntropyDemo');
+
+      const entropyValueEl = document.getElementById('entropyValue');
+      const maxEntropyEl = document.getElementById('maxEntropyValue');
+      const normalizedEl = document.getElementById('normalizedEntropyValue');
+      const verdictEl = document.getElementById('entropyVerdict');
+
+      const H_MAX = Math.log2(49);
+
+      drawsSlider.addEventListener('input', function() {
+        drawsValue.textContent = this.value;
+      });
+
+      // Mode toggle behaviour
+      const modeButtons = modeToggle.querySelectorAll('.mode-pill');
+      modeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          modeButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+
+      function computeEntropy(counts) {
+        const total = counts.reduce((a, b) => a + b, 0);
+        if (!total) return 0;
+
+        let H = 0;
+        for (const c of counts) {
+          if (!c) continue;
+          const p = c / total;
+          H -= p * Math.log2(p);
+        }
+        return H;
+      }
+
+      runBtn.addEventListener('click', function() {
+        const n = parseInt(drawsSlider.value, 10);
+        const activeMode = modeToggle.querySelector('.mode-pill.active');
+        const mode = activeMode ? activeMode.dataset.mode : 'uniform';
+
+        const counts = new Array(49).fill(0);
+
+        for (let i = 0; i < n; i++) {
+          let idx;
+          if (mode === 'biased') {
+            // 60% szans na liczby 1–10, reszta losowo z całego zakresu
+            if (Math.random() < 0.6) {
+              idx = Math.floor(Math.random() * 10); // 0–9 → liczby 1–10
+            } else {
+              idx = Math.floor(Math.random() * 49); // 0–48 → 1–49
+            }
+          } else {
+            // Jednostajny rozkład 1–49
+            idx = Math.floor(Math.random() * 49);
+          }
+          counts[idx] += 1;
+        }
+
+        const H = computeEntropy(counts);
+        const normalized = H_MAX ? H / H_MAX : 0;
+
+        entropyValueEl.textContent = H.toFixed(2) + ' bits';
+        maxEntropyEl.textContent = H_MAX.toFixed(2) + ' bits';
+        normalizedEl.textContent = (normalized * 100).toFixed(1) + '%';
+
+        let verdictText;
+        let cls = 'demo-result-value neutral';
+
+        if (normalized >= 0.97) {
+          verdictText = '{{ i18n.entropy_verdict_high }}';
+          cls = 'demo-result-value success';
+        } else if (normalized >= 0.9) {
+          verdictText = '{{ i18n.entropy_verdict_medium }}';
+          cls = 'demo-result-value warning';
+        } else {
+          verdictText = '{{ i18n.entropy_verdict_low }}';
+          cls = 'demo-result-value danger';
+        }
+
+        verdictEl.textContent = verdictText;
+        verdictEl.className = cls;
+      });
+
+      // Copy code functionality
+      function copyCode(btn) {
+        const code = btn.closest('.code-block').querySelector('code').textContent;
+        navigator.clipboard.writeText(code);
+        btn.textContent = '{{ i18n.copied_btn }}';
+        setTimeout(() => btn.textContent = '{{ i18n.copy_btn }}', 2000);
+      }
+
+      // Table of contents active state
+      document.querySelectorAll('.section').forEach(section => {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
+              document.querySelector(`.toc-link[href="#${section.id}"]`)?.classList.add('active');
+            }
+          });
+        }, { threshold: 0.3 });
+        observer.observe(section);
+      });
+    </script>
+  </body>
+</html>
+
+
