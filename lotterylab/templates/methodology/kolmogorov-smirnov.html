@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="{{ lang }}" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ i18n.meth_ks_title }} — Lottery Lab</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/design-system.css?v=3" />
+    <link rel="stylesheet" href="/static/css/components.css?v=3" />
+    <link rel="stylesheet" href="/static/css/home.css?v=3" />
+    <link rel="stylesheet" href="/static/css/methodology-detail.css?v=3" />
+    <!-- Theme toggle (load early to prevent flash) -->
+    <script src="/static/js/theme-toggle.js?v=3"></script>
+  </head>
+  <body>
+    <div class="bg-pattern"></div>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <a href="/" class="logo">
+          <div class="logo-icon">Λ</div>
+          <div class="logo-text">Lottery <span>Lab</span></div>
+        </a>
+        <nav class="breadcrumb">
+          <a href="/">{{ i18n.home }}</a>
+          <span class="separator">›</span>
+          <a href="/methodology">{{ i18n.methodology }}</a>
+          <span class="separator">›</span>
+          <span>{{ i18n.meth_ks_title }}</span>
+        </nav>
+        <div class="header-actions">
+          <div class="switch-group">
+            {% for supported_lang in supported_languages %}
+            <a href="/set-language?lang={{ supported_lang }}" 
+               class="{% if lang == supported_lang %}active{% endif %}">
+              {{ supported_lang|upper }}
+            </a>
+            {% endfor %}
+          </div>
+          <button id="theme-toggle" class="theme-toggle" title="{{ i18n.toggle_theme }}" aria-label="{{ i18n.toggle_theme }}">
+            <span class="icon-sun">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+              </svg>
+            </span>
+            <span class="icon-moon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            </span>
+          </button>
+          <a href="/app" class="btn btn-primary">{{ i18n.open_analyzer }} →</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Layout -->
+    <div class="layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-title">{{ i18n.meth_tests_title }}</div>
+          <nav class="sidebar-nav">
+            <a href="/methodology/chi-square" class="sidebar-link">
+              <span class="icon">📊</span>
+              <span>{{ i18n.meth_chi_title }}</span>
+              <span class="badge">8 min</span>
+            </a>
+            <a href="/methodology/kolmogorov-smirnov" class="sidebar-link active">
+              <span class="icon">📈</span>
+              <span>{{ i18n.meth_ks_title }}</span>
+              <span class="badge">10 min</span>
+            </a>
+            <a href="/methodology/runs-test" class="sidebar-link">
+              <span class="icon">🔄</span>
+              <span>{{ i18n.meth_runs_title }}</span>
+              <span class="badge">7 min</span>
+            </a>
+            <a href="/methodology/autocorrelation" class="sidebar-link">
+              <span class="icon">⏱️</span>
+              <span>{{ i18n.meth_autocorr_title }}</span>
+              <span class="badge">6 min</span>
+            </a>
+            <a href="/methodology/entropy" class="sidebar-link">
+              <span class="icon">🎲</span>
+              <span>{{ i18n.meth_entropy_title }}</span>
+              <span class="badge">5 min</span>
+            </a>
+            <a href="/methodology/monte-carlo" class="sidebar-link">
+              <span class="icon">🎰</span>
+              <span>{{ i18n.meth_monte_title }}</span>
+              <span class="badge">12 min</span>
+            </a>
+          </nav>
+        </div>
+
+        <div class="sidebar-progress">
+          <div class="progress-label">{{ i18n.meth_your_progress }}</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 33%;"></div>
+          </div>
+          <div class="progress-text">2 {{ i18n.meth_of }} 6 {{ i18n.meth_chapters }}</div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="page-header">
+          <span class="page-tag">
+            <span>📈</span>
+            {{ i18n.meth_tests_title }}
+          </span>
+          <h1 class="page-title">{{ i18n.meth_ks_title }}</h1>
+          <p class="page-subtitle">{{ i18n.ks_subtitle }}</p>
+        </div>
+
+        <!-- Section: Intuition -->
+        <section class="section" id="intuition">
+          <h2 class="section-title">
+            <span class="icon">💡</span>
+            {{ i18n.ks_intuition_title }}
+          </h2>
+          <div class="prose">
+            <p>{{ i18n.ks_intuition_p1 }}</p>
+            <p>{{ i18n.ks_intuition_p2 }}</p>
+            <p><strong>{{ i18n.ks_intuition_question }}</strong> {{ i18n.ks_intuition_answer }}</p>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="info-card-header">
+                <div class="info-card-icon cyan">F<sub>n</sub></div>
+                <div class="info-card-title">{{ i18n.ks_ecdf }}</div>
+              </div>
+              <div class="info-card-value cyan">{{ i18n.ks_ecdf_formula }}</div>
+              <div class="info-card-desc">{{ i18n.ks_ecdf_desc }}</div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header">
+                <div class="info-card-icon rose">F</div>
+                <div class="info-card-title">{{ i18n.ks_cdf }}</div>
+              </div>
+              <div class="info-card-value rose">{{ i18n.ks_cdf_formula }}</div>
+              <div class="info-card-desc">{{ i18n.ks_cdf_desc }}</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Formula -->
+        <section class="section" id="formula">
+          <h2 class="section-title">
+            <span class="icon">📐</span>
+            {{ i18n.ks_formula_title }}
+          </h2>
+          
+          <div class="formula-box">
+            <div class="formula-label">{{ i18n.ks_statistic }}</div>
+            <div class="formula">D = sup |F<sub>n</sub>(x) - F(x)|</div>
+            <div class="formula-desc">
+              <code>sup</code> = {{ i18n.ks_supremum }}, 
+              <code>F<sub>n</sub></code> = {{ i18n.ks_empirical }},
+              <code>F</code> = {{ i18n.ks_theoretical }}
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>{{ i18n.ks_formula_explanation }}</p>
+          </div>
+
+          <div class="steps-list">
+            <div class="step-item">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h4>{{ i18n.ks_step1_title }}</h4>
+                <p>{{ i18n.ks_step1_desc }}</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h4>{{ i18n.ks_step2_title }}</h4>
+                <p>{{ i18n.ks_step2_desc }}</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h4>{{ i18n.ks_step3_title }}</h4>
+                <p>{{ i18n.ks_step3_desc }}</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h4>{{ i18n.ks_step4_title }}</h4>
+                <p>{{ i18n.ks_step4_desc }}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Visualization -->
+        <section class="section" id="visualization">
+          <h2 class="section-title">
+            <span class="icon">📊</span>
+            {{ i18n.ks_visual_title }}
+          </h2>
+
+          <div class="demo-box">
+            <div class="demo-header">
+              <div class="demo-icon">📈</div>
+              <div>
+                <div class="demo-title">{{ i18n.ks_visual_demo_title }}</div>
+                <div class="demo-subtitle">{{ i18n.ks_visual_demo_desc }}</div>
+              </div>
+            </div>
+
+            <div class="ks-chart-container">
+              <canvas id="ksChart" width="600" height="300"></canvas>
+            </div>
+
+            <div class="demo-controls">
+              <div class="demo-slider">
+                <label>{{ i18n.ks_sample_size }}: <strong id="sampleCount">50</strong></label>
+                <input type="range" min="20" max="500" value="50" id="sampleSlider">
+              </div>
+            </div>
+
+            <button class="demo-btn" id="runKsDemo">
+              ▶ {{ i18n.ks_generate_sample }}
+            </button>
+
+            <div class="demo-results">
+              <div class="demo-result">
+                <div class="demo-result-label">{{ i18n.ks_d_statistic }}</div>
+                <div class="demo-result-value neutral" id="dValue">—</div>
+              </div>
+              <div class="demo-result">
+                <div class="demo-result-label">P-Value</div>
+                <div class="demo-result-value neutral" id="ksPValue">—</div>
+              </div>
+              <div class="demo-result">
+                <div class="demo-result-label">{{ i18n.ks_verdict }}</div>
+                <div class="demo-result-value neutral" id="ksVerdict">—</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Comparison with Chi-square -->
+        <section class="section" id="comparison">
+          <h2 class="section-title">
+            <span class="icon">⚖️</span>
+            {{ i18n.ks_comparison_title }}
+          </h2>
+
+          <div class="comparison-table">
+            <div class="comparison-row header">
+              <div class="comparison-cell"></div>
+              <div class="comparison-cell">{{ i18n.meth_chi_title }}</div>
+              <div class="comparison-cell">{{ i18n.meth_ks_title }}</div>
+            </div>
+            <div class="comparison-row">
+              <div class="comparison-cell label">{{ i18n.ks_comp_what }}</div>
+              <div class="comparison-cell">{{ i18n.ks_comp_chi_what }}</div>
+              <div class="comparison-cell">{{ i18n.ks_comp_ks_what }}</div>
+            </div>
+            <div class="comparison-row">
+              <div class="comparison-cell label">{{ i18n.ks_comp_sensitive }}</div>
+              <div class="comparison-cell">{{ i18n.ks_comp_chi_sensitive }}</div>
+              <div class="comparison-cell">{{ i18n.ks_comp_ks_sensitive }}</div>
+            </div>
+            <div class="comparison-row">
+              <div class="comparison-cell label">{{ i18n.ks_comp_data }}</div>
+              <div class="comparison-cell">{{ i18n.ks_comp_chi_data }}</div>
+              <div class="comparison-cell">{{ i18n.ks_comp_ks_data }}</div>
+            </div>
+            <div class="comparison-row">
+              <div class="comparison-cell label">{{ i18n.ks_comp_best }}</div>
+              <div class="comparison-cell">{{ i18n.ks_comp_chi_best }}</div>
+              <div class="comparison-cell">{{ i18n.ks_comp_ks_best }}</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Interpretation -->
+        <section class="section" id="interpretation">
+          <h2 class="section-title">
+            <span class="icon">🔍</span>
+            {{ i18n.ks_interpret_title }}
+          </h2>
+
+          <div class="interpretation">
+            <div class="interpretation-header">
+              <span>✓</span>
+              <span>{{ i18n.ks_lotto_result }}</span>
+            </div>
+            <p>{{ i18n.ks_lotto_result_desc }}</p>
+          </div>
+
+          <div class="warning-box">
+            <div class="warning-header">
+              <span>💡</span>
+              <span>{{ i18n.ks_advantage_title }}</span>
+            </div>
+            <p>{{ i18n.ks_advantage_desc }}</p>
+          </div>
+        </section>
+
+        <!-- Section: Code -->
+        <section class="section" id="code">
+          <h2 class="section-title">
+            <span class="icon">💻</span>
+            {{ i18n.ks_code_title }}
+          </h2>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Python</span>
+            </div>
+            <pre class="code-content"><span class="keyword">from</span> scipy <span class="keyword">import</span> stats
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np
+
+<span class="keyword">def</span> <span class="function">ks_test_lottery</span>(frequencies: <span class="function">dict</span>) -> <span class="function">dict</span>:
+    <span class="string">"""{{ i18n.ks_code_docstring }}"""</span>
+    
+    <span class="comment"># {{ i18n.ks_code_comment1 }}</span>
+    observed = np.array(<span class="function">list</span>(frequencies.values()))
+    total = observed.sum()
+    
+    <span class="comment"># {{ i18n.ks_code_comment2 }}</span>
+    observed_norm = observed / total
+    expected_norm = np.ones(<span class="function">len</span>(observed)) / <span class="function">len</span>(observed)
+    
+    <span class="comment"># {{ i18n.ks_code_comment3 }}</span>
+    ecdf = np.cumsum(observed_norm)
+    tcdf = np.cumsum(expected_norm)
+    
+    <span class="comment"># {{ i18n.ks_code_comment4 }}</span>
+    d_stat = np.<span class="function">max</span>(np.<span class="function">abs</span>(ecdf - tcdf))
+    
+    <span class="comment"># {{ i18n.ks_code_comment5 }}</span>
+    n = <span class="function">len</span>(observed)
+    p_value = <span class="number">2</span> * np.<span class="function">exp</span>(-<span class="number">2</span> * n * d_stat**<span class="number">2</span>)
+    
+    <span class="keyword">return</span> {
+        <span class="string">"d_statistic"</span>: d_stat,
+        <span class="string">"p_value"</span>: <span class="function">min</span>(p_value, <span class="number">1.0</span>),
+        <span class="string">"is_uniform"</span>: p_value > <span class="number">0.05</span>
+    }</pre>
+          </div>
+        </section>
+      </main>
+
+      <!-- Right Panel -->
+      <aside class="right-panel">
+        <div class="panel-section">
+          <div class="panel-title">{{ i18n.ks_on_this_page }}</div>
+          <a href="#intuition" class="toc-link active">{{ i18n.ks_intuition_title }}</a>
+          <a href="#formula" class="toc-link">{{ i18n.ks_formula_title }}</a>
+          <a href="#visualization" class="toc-link">{{ i18n.ks_visual_title }}</a>
+          <a href="#comparison" class="toc-link">{{ i18n.ks_comparison_title }}</a>
+          <a href="#interpretation" class="toc-link">{{ i18n.ks_interpret_title }}</a>
+          <a href="#code" class="toc-link">{{ i18n.ks_code_title }}</a>
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-title">{{ i18n.tip }}</div>
+          <div class="tip-card">
+            <div class="tip-header">
+              <span>💡</span>
+              <span>Pro tip</span>
+            </div>
+            <p class="tip-text">{{ i18n.ks_tip_text }}</p>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-title">{{ i18n.ks_related }}</div>
+          <div class="related-links">
+            <a href="/methodology/chi-square" class="related-link">
+              <span>📊</span>
+              {{ i18n.meth_chi_title }}
+            </a>
+            <a href="/methodology/runs-test" class="related-link">
+              <span>🔄</span>
+              {{ i18n.meth_runs_title }}
+            </a>
+            <a href="/app" class="related-link">
+              <span>📈</span>
+              {{ i18n.frequency_analysis }}
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Footer Navigation -->
+    <nav class="footer-nav">
+      <div class="footer-nav-content">
+        <a href="/methodology/chi-square" class="nav-btn">
+          ← {{ i18n.meth_chi_title }}
+        </a>
+        <div class="progress-indicator">
+          <div class="progress-dots">
+            <div class="progress-dot completed"></div>
+            <div class="progress-dot active"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+          </div>
+          <span class="progress-label">2 {{ i18n.meth_of }} 6</span>
+        </div>
+        <a href="/methodology/runs-test" class="nav-btn primary">
+          {{ i18n.meth_runs_title }} →
+        </a>
+      </div>
+    </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // Sample slider
+      const sampleSlider = document.getElementById('sampleSlider');
+      const sampleCount = document.getElementById('sampleCount');
+      const runKsDemo = document.getElementById('runKsDemo');
+      const dValue = document.getElementById('dValue');
+      const ksPValue = document.getElementById('ksPValue');
+      const ksVerdict = document.getElementById('ksVerdict');
+
+      let ksChart = null;
+
+      sampleSlider.oninput = function() {
+        sampleCount.textContent = this.value;
+      }
+
+      function kolmogorovSmirnovPValue(d, n) {
+        // Approximation using asymptotic formula
+        const lambda = (Math.sqrt(n) + 0.12 + 0.11 / Math.sqrt(n)) * d;
+        let p = 0;
+        for (let k = 1; k <= 100; k++) {
+          p += 2 * Math.pow(-1, k - 1) * Math.exp(-2 * k * k * lambda * lambda);
+        }
+        return Math.max(0, Math.min(1, p));
+      }
+
+      runKsDemo.onclick = function() {
+        const n = parseInt(sampleSlider.value);
+        const numBalls = 49;
+        
+        // Generate random frequencies (uniform distribution)
+        const freq = {};
+        for (let i = 1; i <= numBalls; i++) freq[i] = 0;
+        
+        // Simulate n*6 ball draws
+        const totalDraws = n * 6;
+        for (let i = 0; i < totalDraws; i++) {
+          const ball = Math.floor(Math.random() * numBalls) + 1;
+          freq[ball]++;
+        }
+        
+        // Calculate ECDF and theoretical CDF
+        const observed = Object.values(freq);
+        const total = observed.reduce((a, b) => a + b, 0);
+        
+        // Sort and normalize
+        const sorted = [...observed].sort((a, b) => a - b);
+        const ecdf = [];
+        const tcdf = [];
+        let cumSum = 0;
+        
+        for (let i = 0; i < numBalls; i++) {
+          cumSum += sorted[i];
+          ecdf.push(cumSum / total);
+          tcdf.push((i + 1) / numBalls);
+        }
+        
+        // Calculate D statistic
+        let d = 0;
+        for (let i = 0; i < numBalls; i++) {
+          d = Math.max(d, Math.abs(ecdf[i] - tcdf[i]));
+        }
+        
+        // Calculate p-value
+        const pVal = kolmogorovSmirnovPValue(d, numBalls);
+        
+        // Update chart
+        const ctx = document.getElementById('ksChart').getContext('2d');
+        
+        if (ksChart) {
+          ksChart.destroy();
+        }
+        
+        ksChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: Array.from({length: numBalls}, (_, i) => i + 1),
+            datasets: [
+              {
+                label: '{{ i18n.ks_empirical }}',
+                data: ecdf,
+                borderColor: '#00d4aa',
+                backgroundColor: 'rgba(0, 212, 170, 0.1)',
+                fill: false,
+                tension: 0.1,
+                pointRadius: 2
+              },
+              {
+                label: '{{ i18n.ks_theoretical }}',
+                data: tcdf,
+                borderColor: '#ff6b9d',
+                backgroundColor: 'rgba(255, 107, 157, 0.1)',
+                fill: false,
+                tension: 0.1,
+                pointRadius: 2,
+                borderDash: [5, 5]
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: {
+                  color: getComputedStyle(document.documentElement).getPropertyValue('--text-primary')
+                }
+              }
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: '{{ i18n.ks_sorted_values }}',
+                  color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary')
+                },
+                ticks: {
+                  color: getComputedStyle(document.documentElement).getPropertyValue('--text-muted')
+                },
+                grid: {
+                  color: getComputedStyle(document.documentElement).getPropertyValue('--border-subtle')
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: '{{ i18n.ks_cumulative_prob }}',
+                  color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary')
+                },
+                ticks: {
+                  color: getComputedStyle(document.documentElement).getPropertyValue('--text-muted')
+                },
+                grid: {
+                  color: getComputedStyle(document.documentElement).getPropertyValue('--border-subtle')
+                },
+                min: 0,
+                max: 1
+              }
+            }
+          }
+        });
+        
+        // Update results
+        dValue.textContent = d.toFixed(4);
+        dValue.className = 'demo-result-value neutral';
+        
+        ksPValue.textContent = pVal.toFixed(4);
+        ksPValue.className = 'demo-result-value ' + (pVal > 0.05 ? 'success' : 'warning');
+        
+        const verdictText = pVal > 0.05 ? '{{ i18n.ks_uniform }}' : '{{ i18n.ks_not_uniform }}';
+        ksVerdict.textContent = verdictText;
+        ksVerdict.className = 'demo-result-value ' + (pVal > 0.05 ? 'success' : 'warning');
+      }
+
+      // Initialize chart on load
+      document.addEventListener('DOMContentLoaded', function() {
+        runKsDemo.click();
+      });
+
+      // Smooth scroll for TOC
+      document.querySelectorAll('.toc-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+          document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+
+      // Update active TOC on scroll
+      window.addEventListener('scroll', function() {
+        const sections = document.querySelectorAll('.section');
+        let current = '';
+        
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 150;
+          if (scrollY >= sectionTop) {
+            current = section.getAttribute('id');
+          }
+        });
+        
+        document.querySelectorAll('.toc-link').forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
+
+
+
