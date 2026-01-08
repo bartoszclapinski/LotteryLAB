@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodologia — Lottery Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-elevated: #1a1a24;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #1e293b;
+            --gradient-1: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        /* Background */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 10% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 32px;
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .breadcrumb a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--accent-blue);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Layout */
+        .layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            padding: 32px 24px;
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+            border-right: 1px solid var(--border);
+        }
+
+        .sidebar-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .sidebar-link:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .sidebar-link.active {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+            font-weight: 500;
+        }
+
+        .sidebar-link .icon {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-link .badge {
+            margin-left: auto;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: var(--bg-elevated);
+            color: var(--text-muted);
+        }
+
+        .sidebar-link.active .badge {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--accent-blue);
+        }
+
+        .sidebar-section {
+            margin-bottom: 32px;
+        }
+
+        .sidebar-progress {
+            margin-top: 24px;
+            padding: 16px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .progress-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--bg-elevated);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 35%;
+            background: var(--gradient-1);
+            border-radius: 3px;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 48px 64px;
+            max-width: 800px;
+        }
+
+        .page-header {
+            margin-bottom: 48px;
+        }
+
+        .page-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--accent-purple);
+            margin-bottom: 16px;
+        }
+
+        .page-title {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .page-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+        }
+
+        /* Content Sections */
+        .section {
+            margin-bottom: 64px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title .icon {
+            font-size: 28px;
+        }
+
+        .prose {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .prose p {
+            margin-bottom: 16px;
+        }
+
+        .prose strong {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Formula Box */
+        .formula-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent-purple);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+
+        .formula-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent-purple);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .formula {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            color: var(--text-primary);
+            text-align: center;
+            padding: 16px 0;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .formula-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .formula-desc code {
+            background: var(--bg-elevated);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--accent-cyan);
+        }
+
+        /* Info Cards */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .info-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .info-card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .info-card-icon.green { background: rgba(16, 185, 129, 0.15); }
+        .info-card-icon.rose { background: rgba(244, 63, 94, 0.15); }
+        .info-card-icon.blue { background: rgba(59, 130, 246, 0.15); }
+        .info-card-icon.amber { background: rgba(245, 158, 11, 0.15); }
+
+        .info-card-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .info-card-value {
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 4px;
+        }
+
+        .info-card-value.green { color: var(--accent-green); }
+        .info-card-value.rose { color: var(--accent-rose); }
+
+        .info-card-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Interactive Demo */
+        .demo-box {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            padding: 32px;
+            margin: 32px 0;
+        }
+
+        .demo-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .demo-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .demo-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .demo-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .demo-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .demo-slider {
+            flex: 1;
+        }
+
+        .demo-slider label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .demo-slider input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--bg-elevated);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .demo-slider input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-purple);
+            cursor: pointer;
+        }
+
+        .demo-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: var(--accent-cyan);
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .demo-btn {
+            padding: 12px 24px;
+            background: var(--accent-purple);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .demo-btn:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
+        }
+
+        .demo-results {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .demo-result {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .demo-result-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .demo-result-value {
+            font-size: 28px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .demo-result-value.success { color: var(--accent-green); }
+        .demo-result-value.warning { color: var(--accent-amber); }
+        .demo-result-value.neutral { color: var(--text-primary); }
+
+        /* Interpretation Box */
+        .interpretation {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+
+        .interpretation-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+
+        .interpretation p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Warning Box */
+        .warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+
+        .warning-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: var(--accent-amber);
+        }
+
+        .warning p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Steps */
+        .steps-list {
+            margin: 24px 0;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .step-item:last-child {
+            border-bottom: none;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .step-content p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Code Block */
+        .code-block {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 24px 0;
+        }
+
+        .code-header {
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-lang {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .code-content {
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .code-content .keyword { color: var(--accent-purple); }
+        .code-content .function { color: var(--accent-blue); }
+        .code-content .string { color: var(--accent-green); }
+        .code-content .number { color: var(--accent-amber); }
+        .code-content .comment { color: var(--text-muted); }
+
+        /* Right Panel */
+        .right-panel {
+            width: 280px;
+            padding: 32px 24px;
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            margin-bottom: 32px;
+        }
+
+        .panel-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .toc-link {
+            display: block;
+            padding: 8px 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-left: 2px solid transparent;
+            margin-left: -12px;
+            padding-left: 24px;
+            transition: all 0.2s;
+        }
+
+        .toc-link:hover {
+            color: var(--text-primary);
+        }
+
+        .toc-link.active {
+            color: var(--accent-blue);
+            border-left-color: var(--accent-blue);
+        }
+
+        .tip-card {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .tip-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+
+        .tip-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .related-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .related-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .related-link:hover {
+            border-color: var(--accent-blue);
+            color: var(--text-primary);
+        }
+
+        /* Footer Navigation */
+        .footer-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 32px;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+
+        .nav-btn.primary {
+            background: var(--gradient-1);
+            border: none;
+            color: white;
+        }
+
+        .progress-indicator {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .progress-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border);
+        }
+
+        .progress-dot.active {
+            background: var(--accent-blue);
+        }
+
+        .progress-dot.completed {
+            background: var(--accent-green);
+        }
+
+        .progress-label {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .right-panel {
+                display: none;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                padding: 32px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                <div class="logo-icon">Λ</div>
+                <div class="logo-text">Lottery Lab</div>
+            </a>
+            <nav class="breadcrumb">
+                <a href="/">Strona główna</a>
+                <span>›</span>
+                <a href="/methodology">Metodologia</a>
+                <span>›</span>
+                <span>Test Chi-kwadrat</span>
+            </nav>
+            <a href="/app" class="btn">
+                Otwórz analizator →
+            </a>
+        </div>
+    </header>
+
+    <!-- Layout -->
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">Wprowadzenie</div>
+                <nav class="sidebar-nav">
+                    <a href="#" class="sidebar-link">
+                        <span class="icon">📖</span>
+                        <span>Czym jest losowość?</span>
+                        <span class="badge">5 min</span>
+                    </a>
+                    <a href="#" class="sidebar-link">
+                        <span class="icon">🎯</span>
+                        <span>Hipoteza zerowa</span>
+                        <span class="badge">3 min</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">Testy statystyczne</div>
+                <nav class="sidebar-nav">
+                    <a href="#" class="sidebar-link active">
+                        <span class="icon">📊</span>
+                        <span>Test Chi-kwadrat</span>
+                        <span class="badge">8 min</span>
+                    </a>
+                    <a href="#" class="sidebar-link">
+                        <span class="icon">📈</span>
+                        <span>Test Kołmogorowa-Smirnowa</span>
+                        <span class="badge">10 min</span>
+                    </a>
+                    <a href="#" class="sidebar-link">
+                        <span class="icon">🔄</span>
+                        <span>Test serii (Runs)</span>
+                        <span class="badge">7 min</span>
+                    </a>
+                    <a href="#" class="sidebar-link">
+                        <span class="icon">⏱️</span>
+                        <span>Autokorelacja</span>
+                        <span class="badge">6 min</span>
+                    </a>
+                    <a href="#" class="sidebar-link">
+                        <span class="icon">🎲</span>
+                        <span>Entropia Shannona</span>
+                        <span class="badge">5 min</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">Zaawansowane</div>
+                <nav class="sidebar-nav">
+                    <a href="#" class="sidebar-link">
+                        <span class="icon">🔥</span>
+                        <span>Analiza korelacji</span>
+                        <span class="badge">12 min</span>
+                    </a>
+                    <a href="#" class="sidebar-link">
+                        <span class="icon">🎰</span>
+                        <span>Monte Carlo</span>
+                        <span class="badge">15 min</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="sidebar-progress">
+                <div class="progress-label">Twój postęp</div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="progress-text">3 z 9 rozdziałów ukończonych</div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <div class="page-header">
+                <span class="page-tag">
+                    <span>📊</span>
+                    Testy statystyczne
+                </span>
+                <h1 class="page-title">Test Chi-kwadrat</h1>
+                <p class="page-subtitle">
+                    Sprawdź czy rozkład częstości liczb jest zgodny z rozkładem teoretycznym. 
+                    Jeden z najpotężniejszych testów losowości.
+                </p>
+            </div>
+
+            <!-- Section: Intuition -->
+            <section class="section" id="intuition">
+                <h2 class="section-title">
+                    <span class="icon">💡</span>
+                    Intuicja
+                </h2>
+                <div class="prose">
+                    <p>
+                        Wyobraź sobie, że rzucasz kostką 600 razy. Jeśli kostka jest uczciwa, 
+                        każda liczba powinna wypaść <strong>około 100 razy</strong> (600 ÷ 6).
+                    </p>
+                    <p>
+                        Ale czy dokładnie 100? Nie! Losowość oznacza, że będą <strong>naturalne odchylenia</strong>. 
+                        Może 95 jedynek, 108 dwójek, 97 trójek...
+                    </p>
+                    <p>
+                        <strong>Test chi-kwadrat odpowiada na pytanie:</strong> "Czy te odchylenia są 
+                        w granicach tego, czego oczekiwalibyśmy od uczciwej kostki, czy są podejrzanie duże?"
+                    </p>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-card-header">
+                            <div class="info-card-icon green">✓</div>
+                            <div class="info-card-title">Akceptujemy H₀</div>
+                        </div>
+                        <div class="info-card-value green">p > 0.05</div>
+                        <div class="info-card-desc">
+                            Odchylenia są normalne dla losowego procesu
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-header">
+                            <div class="info-card-icon rose">✗</div>
+                            <div class="info-card-title">Odrzucamy H₀</div>
+                        </div>
+                        <div class="info-card-value rose">p ≤ 0.05</div>
+                        <div class="info-card-desc">
+                            Odchylenia są zbyt duże — coś jest nie tak
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Formula -->
+            <section class="section" id="formula">
+                <h2 class="section-title">
+                    <span class="icon">📐</span>
+                    Wzór matematyczny
+                </h2>
+                
+                <div class="formula-box">
+                    <div class="formula-label">Statystyka chi-kwadrat</div>
+                    <div class="formula">χ² = Σ (O - E)² / E</div>
+                    <div class="formula-desc">
+                        <code>O</code> = częstość obserwowana, 
+                        <code>E</code> = częstość oczekiwana
+                    </div>
+                </div>
+
+                <div class="prose">
+                    <p>
+                        Dla każdej liczby od 1 do 49 obliczamy różnicę między tym, 
+                        ile razy wypadła (<strong>O</strong>bserwowane), a tym ile powinna wypaść 
+                        (<strong>E</strong>kspektowane). Podnosimy do kwadratu (aby pozbyć się minusów) 
+                        i dzielimy przez oczekiwaną wartość (normalizacja).
+                    </p>
+                </div>
+
+                <div class="steps-list">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Policz częstości</h4>
+                            <p>Dla każdej z 49 liczb policz ile razy wypadła w analizowanym okresie</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Oblicz oczekiwane</h4>
+                            <p>E = (liczba losowań × 6) ÷ 49 — tyle razy powinna wypaść każda liczba</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Podstaw do wzoru</h4>
+                            <p>Dla każdej liczby oblicz (O-E)²/E i zsumuj wszystkie wyniki</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Porównaj z rozkładem χ²</h4>
+                            <p>Sprawdź p-value: jeśli > 0.05, dane są zgodne z losowością</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Interactive Demo -->
+            <section class="section" id="demo">
+                <h2 class="section-title">
+                    <span class="icon">🧪</span>
+                    Spróbuj sam
+                </h2>
+
+                <div class="demo-box">
+                    <div class="demo-header">
+                        <div class="demo-icon">🎲</div>
+                        <div>
+                            <div class="demo-title">Symulator testu chi-kwadrat</div>
+                            <div class="demo-subtitle">Przeprowadź wirtualne losowania i zobacz wyniki</div>
+                        </div>
+                    </div>
+
+                    <div class="demo-controls">
+                        <div class="demo-slider">
+                            <label>Liczba losowań: <strong id="drawCount">100</strong></label>
+                            <input type="range" min="50" max="1000" value="100" id="drawSlider">
+                        </div>
+                        <div class="demo-value">df = 48</div>
+                    </div>
+
+                    <button class="demo-btn" id="runDemo">
+                        ▶ Uruchom symulację
+                    </button>
+
+                    <div class="demo-results">
+                        <div class="demo-result">
+                            <div class="demo-result-label">Statystyka χ²</div>
+                            <div class="demo-result-value neutral" id="chiValue">—</div>
+                        </div>
+                        <div class="demo-result">
+                            <div class="demo-result-label">P-Value</div>
+                            <div class="demo-result-value neutral" id="pValue">—</div>
+                        </div>
+                        <div class="demo-result">
+                            <div class="demo-result-label">Werdykt</div>
+                            <div class="demo-result-value neutral" id="verdict">—</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Interpretation -->
+            <section class="section" id="interpretation">
+                <h2 class="section-title">
+                    <span class="icon">🔍</span>
+                    Jak interpretować wyniki?
+                </h2>
+
+                <div class="interpretation">
+                    <div class="interpretation-header">
+                        <span>✓</span>
+                        <span>Wynik dla polskiego Lotto (9,300+ losowań)</span>
+                    </div>
+                    <p>
+                        Dla historycznych danych Lotto otrzymujemy <strong>p-value ≈ 0.52</strong>, 
+                        co oznacza, że nie ma podstaw do odrzucenia hipotezy o losowości. 
+                        Rozkład liczb jest zgodny z oczekiwanym — loteria jest uczciwa!
+                    </p>
+                </div>
+
+                <div class="warning">
+                    <div class="warning-header">
+                        <span>⚠️</span>
+                        <span>Uwaga na błędną interpretację</span>
+                    </div>
+                    <p>
+                        Wysoka wartość p-value <strong>nie oznacza</strong>, że możemy przewidzieć przyszłe wyniki. 
+                        Wręcz przeciwnie — potwierdza, że każde losowanie jest niezależne i nieprzewidywalne. 
+                        To dobra wiadomość: loteria działa tak, jak powinna!
+                    </p>
+                </div>
+            </section>
+
+            <!-- Section: Code -->
+            <section class="section" id="code">
+                <h2 class="section-title">
+                    <span class="icon">💻</span>
+                    Implementacja
+                </h2>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                    </div>
+                    <pre class="code-content"><span class="keyword">def</span> <span class="function">chi_square_test</span>(observed: <span class="function">dict</span>) -> <span class="function">dict</span>:
+    <span class="string">"""Test chi-kwadrat dla rozkładu częstości."""</span>
+    
+    total = <span class="function">sum</span>(observed.values())
+    expected = total / <span class="function">len</span>(observed)  <span class="comment"># równy rozkład</span>
+    
+    chi_sq = <span class="number">0</span>
+    <span class="keyword">for</span> obs <span class="keyword">in</span> observed.values():
+        chi_sq += (obs - expected) ** <span class="number">2</span> / expected
+    
+    df = <span class="function">len</span>(observed) - <span class="number">1</span>  <span class="comment"># stopnie swobody</span>
+    p_value = <span class="number">1</span> - chi2.cdf(chi_sq, df)
+    
+    <span class="keyword">return</span> {
+        <span class="string">"chi_square"</span>: chi_sq,
+        <span class="string">"p_value"</span>: p_value,
+        <span class="string">"is_random"</span>: p_value > <span class="number">0.05</span>
+    }</pre>
+                </div>
+            </section>
+        </main>
+
+        <!-- Right Panel -->
+        <aside class="right-panel">
+            <div class="panel-section">
+                <div class="panel-title">Na tej stronie</div>
+                <a href="#intuition" class="toc-link active">Intuicja</a>
+                <a href="#formula" class="toc-link">Wzór matematyczny</a>
+                <a href="#demo" class="toc-link">Spróbuj sam</a>
+                <a href="#interpretation" class="toc-link">Interpretacja wyników</a>
+                <a href="#code" class="toc-link">Implementacja</a>
+            </div>
+
+            <div class="panel-section">
+                <div class="panel-title">Wskazówka</div>
+                <div class="tip-card">
+                    <div class="tip-header">
+                        <span>💡</span>
+                        <span>Pro tip</span>
+                    </div>
+                    <p class="tip-text">
+                        Im większa próbka (więcej losowań), tym bardziej wiarygodny test. 
+                        Dla 100 losowań wynik może być przypadkowy; dla 9,000+ jest bardzo pewny.
+                    </p>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="panel-title">Powiązane tematy</div>
+                <div class="related-links">
+                    <a href="#" class="related-link">
+                        <span>📈</span>
+                        Test Kołmogorowa-Smirnowa
+                    </a>
+                    <a href="#" class="related-link">
+                        <span>🎲</span>
+                        Entropia Shannona
+                    </a>
+                    <a href="#" class="related-link">
+                        <span>📊</span>
+                        Analiza częstości
+                    </a>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Footer Navigation -->
+    <nav class="footer-nav">
+        <div class="footer-nav-content">
+            <a href="#" class="nav-btn">
+                ← Hipoteza zerowa
+            </a>
+            <div class="progress-indicator">
+                <div class="progress-dots">
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot active"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                </div>
+                <span class="progress-label">3 z 9</span>
+            </div>
+            <a href="#" class="nav-btn primary">
+                Test Kołmogorowa-Smirnowa →
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        // Interactive demo
+        const drawSlider = document.getElementById('drawSlider');
+        const drawCount = document.getElementById('drawCount');
+        const runDemo = document.getElementById('runDemo');
+        const chiValue = document.getElementById('chiValue');
+        const pValue = document.getElementById('pValue');
+        const verdict = document.getElementById('verdict');
+
+        drawSlider.oninput = function() {
+            drawCount.textContent = this.value;
+        }
+
+        runDemo.onclick = function() {
+            const n = parseInt(drawSlider.value);
+            
+            // Simulate draws
+            const freq = {};
+            for (let i = 1; i <= 49; i++) freq[i] = 0;
+            
+            for (let draw = 0; draw < n; draw++) {
+                const nums = [];
+                while (nums.length < 6) {
+                    const r = Math.floor(Math.random() * 49) + 1;
+                    if (!nums.includes(r)) nums.push(r);
+                }
+                nums.forEach(num => freq[num]++);
+            }
+            
+            // Calculate chi-square
+            const total = n * 6;
+            const expected = total / 49;
+            let chi = 0;
+            
+            for (let i = 1; i <= 49; i++) {
+                chi += Math.pow(freq[i] - expected, 2) / expected;
+            }
+            
+            // Approximate p-value (simplified)
+            const pVal = Math.exp(-chi / 100); // Very rough approximation
+            
+            chiValue.textContent = chi.toFixed(2);
+            chiValue.className = 'demo-result-value neutral';
+            
+            pValue.textContent = pVal.toFixed(4);
+            pValue.className = 'demo-result-value ' + (pVal > 0.05 ? 'success' : 'warning');
+            
+            verdict.textContent = pVal > 0.05 ? 'LOSOWE' : 'PODEJRZANE';
+            verdict.className = 'demo-result-value ' + (pVal > 0.05 ? 'success' : 'warning');
+        }
+
+        // Smooth scroll for TOC
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
+

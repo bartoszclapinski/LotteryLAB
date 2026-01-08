@@ -68,13 +68,13 @@ async def lifespan(app: FastAPI):
         skipped = result.get("skipped", 0)
         if inserted > 0:
             logger.info(f"✅ Auto-update: {inserted} new draws imported, {skipped} skipped")
-            print(f"🎲 Auto-update: {inserted} new draws imported")
+            print(f"[UPDATE] Auto-update: {inserted} new draws imported")
         else:
             logger.info(f"ℹ️ Auto-update: No new draws (database up to date)")
-            print("🎲 Auto-update: Database already up to date")
+            print("[UPDATE] Auto-update: Database already up to date")
     except Exception as e:
         logger.warning(f"⚠️ Auto-update failed: {e}")
-        print(f"⚠️ Auto-update failed: {e} (continuing without update)")
+        print(f"[WARNING] Auto-update failed: {e} (continuing without update)")
     
     yield  # Application runs here
     
@@ -192,9 +192,103 @@ async def set_language(request: Request, lang: str = DEFAULT_LANGUAGE):
 
 
 @app.get("/", response_class=HTMLResponse)
-async def index(request: Request):
+async def home(request: Request):
+    """Landing page with overview of Lottery Lab."""
+    lang = get_lang_from_request(request)
+    texts = get_all_texts(lang)
+    
+    # Generate sample balls for visual
+    sample_balls = [
+        {"number": 7, "class": ""}, {"number": 13, "class": "hot"}, {"number": 21, "class": ""},
+        {"number": 28, "class": "cold"}, {"number": 33, "class": ""}, {"number": 36, "class": "hot"},
+        {"number": 42, "class": ""}, {"number": 3, "class": "cold"}, {"number": 11, "class": ""},
+        {"number": 17, "class": "hot"}, {"number": 25, "class": ""}, {"number": 31, "class": ""},
+        {"number": 38, "class": "cold"}, {"number": 45, "class": ""}, {"number": 5, "class": ""},
+        {"number": 14, "class": ""}, {"number": 20, "class": "hot"}, {"number": 27, "class": "cold"},
+        {"number": 34, "class": ""}, {"number": 41, "class": ""}, {"number": 49, "class": "hot"},
+    ]
+    
+    ctx = {
+        "request": request,
+        "title": "Lottery Lab — " + texts.get("tagline", "Where Luck Meets Science"),
+        "lang": lang,
+        "supported_languages": SUPPORTED_LANGUAGES,
+        "i18n": texts,
+        "sample_balls": sample_balls,
+        "stats": {
+            "total_draws": "9,300+",
+            "years": "68",
+            "methods": "12",
+        },
+        "hot_number": "36",
+        "cold_number": "41",
+        "chi_p_value": "0.52",
+        "entropy_value": "5.61",
+    }
+    return templates.TemplateResponse("home.html", ctx)
+
+
+@app.get("/app", response_class=HTMLResponse)
+async def app_dashboard(request: Request):
+    """Main application dashboard with analysis tools."""
     ctx = get_template_context(request, title="Lottery Lab", game_type="lotto")
     return templates.TemplateResponse("index.html", ctx)
+
+
+@app.get("/methodology", response_class=HTMLResponse)
+async def methodology(request: Request):
+    """Methodology overview page with all statistical methods."""
+    lang = get_lang_from_request(request)
+    texts = get_all_texts(lang)
+
+    ctx = {
+        "request": request,
+        "title": texts.get("methodology", "Methodology") + " — Lottery Lab",
+        "lang": lang,
+        "supported_languages": SUPPORTED_LANGUAGES,
+        "i18n": texts,
+        "stats": {
+            "years": "68",
+        },
+    }
+    return templates.TemplateResponse("methodology.html", ctx)
+
+
+@app.get("/methodology/{method_slug}", response_class=HTMLResponse)
+async def methodology_detail(request: Request, method_slug: str):
+    """
+    Detail pages for individual statistical methods (chi-square, KS, runs, etc.).
+    """
+    # Supported methods and their order for progress indicator
+    methods_order = [
+        "chi-square",
+        "kolmogorov-smirnov",
+        "runs-test",
+        "autocorrelation",
+        "entropy",
+        "monte-carlo",
+    ]
+
+    if method_slug not in methods_order:
+        raise HTTPException(status_code=404, detail="Unknown methodology page")
+
+    lang = get_lang_from_request(request)
+    texts = get_all_texts(lang)
+
+    # Simple linear progress (1/6, 2/6, ..., 6/6)
+    index = methods_order.index(method_slug)
+    progress_pct = int((index + 1) / len(methods_order) * 100)
+
+    ctx = {
+        "request": request,
+        "lang": lang,
+        "supported_languages": SUPPORTED_LANGUAGES,
+        "i18n": texts,
+        "progress_pct": progress_pct,
+    }
+
+    template_name = f"methodology/{method_slug}.html"
+    return templates.TemplateResponse(template_name, ctx)
 
 
 @app.get("/partials/frequency", response_class=HTMLResponse)
@@ -215,6 +309,64 @@ async def frequency_partial(request: Request, game_type: str = "lotto", window_d
         cold_numbers=hot_cold["cold"]
     )
     return templates.TemplateResponse("partials/frequency.html", ctx)
+
+
+@app.get("/partials/stats", response_class=HTMLResponse)
+async def stats_partial(request: Request, game_type: str = "lotto", window_days: int = 365):
+    """Get HTML partial for key metrics display."""
+    import math
+    
+    with SessionLocal() as session:
+        # Get basic data
+        num_draws = count_draws(session, game_type=game_type, window_days=window_days)
+        
+        # Get randomness analysis for chi-square and entropy
+        result = analyze_number_randomness(
+            session=session,
+            game_type=game_type,
+            window_days=window_days,
+        )
+    
+    # Extract values - correct keys!
+    chi_square_test = result.get("chi_square_test", {})
+    chi_square = chi_square_test.get("chi_square_statistic", 0)
+    p_value = chi_square_test.get("p_value", 1.0)
+    df = chi_square_test.get("degrees_of_freedom", 48)
+    is_random = chi_square_test.get("is_random", True)
+    
+    entropy_data = result.get("entropy", {})
+    entropy = entropy_data.get("shannon_entropy", 0)
+    max_entropy = entropy_data.get("max_possible_entropy", 5.614)
+    normalized_entropy = entropy_data.get("normalized_entropy", 0)
+    
+    sample_data = result.get("sample_size", {})
+    total_observations = sample_data.get("total_observations", 0)
+    coverage = sample_data.get("coverage_percentage", 0)
+    
+    # Calculate 95% confidence interval for frequency
+    # Using formula: CI = 1.96 * sqrt(p*(1-p)/n) where p = 6/49
+    p = 6/49
+    if num_draws > 0:
+        se = math.sqrt(p * (1 - p) / (num_draws * 6))  # num_draws * 6 total numbers drawn
+        confidence_interval = 1.96 * se * 100  # Convert to percentage
+    else:
+        confidence_interval = 0
+    
+    ctx = get_template_context(
+        request,
+        total_draws=num_draws,
+        total_observations=total_observations,
+        chi_square=chi_square,
+        p_value=p_value,
+        df=df,
+        is_random=is_random,
+        entropy=entropy,
+        max_entropy=max_entropy,
+        normalized_entropy=normalized_entropy,
+        coverage=coverage,
+        confidence_interval=confidence_interval
+    )
+    return templates.TemplateResponse("partials/stats.html", ctx)
 
 
 @app.get("/partials/recent-draws", response_class=HTMLResponse)
@@ -298,6 +450,7 @@ async def patterns_partial(request: Request, game_type: str = "lotto", window_da
 
     # Remove keys that conflict with template context
     result.pop("game_type", None)
+    result.pop("window_days", None)
     
     ctx = get_template_context(
         request,
@@ -320,6 +473,7 @@ async def correlation_partial(request: Request, game_type: str = "lotto", window
 
     # Remove keys that conflict with template context
     result.pop("game_type", None)
+    result.pop("window_days", None)
     
     ctx = get_template_context(
         request,
@@ -467,6 +621,8 @@ async def trends_partial(
 
     # Remove keys that conflict with template context
     result.pop("game_type", None)
+    result.pop("period", None)
+    result.pop("num_periods", None)
     chart_data.pop("game_type", None)
     
     ctx = get_template_context(

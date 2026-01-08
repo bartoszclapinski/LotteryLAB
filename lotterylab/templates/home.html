@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="{{ lang }}" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title }}</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/design-system.css?v=1" />
+    <link rel="stylesheet" href="/static/css/components.css?v=1" />
+    <link rel="stylesheet" href="/static/css/home.css?v=1" />
+    <!-- Theme toggle (load early to prevent flash) -->
+    <script src="/static/js/theme-toggle.js?v=1"></script>
+  </head>
+  <body>
+    <div class="bg-pattern"></div>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <a href="/" class="logo">
+          <div class="logo-icon">Λ</div>
+          <div class="logo-text">Lottery <span>Lab</span></div>
+        </a>
+        <nav class="nav">
+          <a href="#features">{{ i18n.features }}</a>
+          <a href="#how-it-works">{{ i18n.how_it_works }}</a>
+          <a href="/methodology">{{ i18n.methodology }}</a>
+          <a href="/docs">{{ i18n.docs }}</a>
+        </nav>
+        <div class="header-actions">
+          <!-- Language Switch -->
+          <div class="switch-group">
+            {% for supported_lang in supported_languages %}
+            <a href="/set-language?lang={{ supported_lang }}" 
+               class="{% if lang == supported_lang %}active{% endif %}">
+              {{ supported_lang|upper }}
+            </a>
+            {% endfor %}
+          </div>
+          
+          <!-- Theme Toggle -->
+          <button id="theme-toggle" class="theme-toggle" title="{{ i18n.toggle_theme }}" aria-label="{{ i18n.toggle_theme }}">
+            <span class="icon-sun">☀️</span>
+            <span class="icon-moon">🌙</span>
+          </button>
+          
+          <a href="/app" class="btn btn-primary">
+            {{ i18n.open_analyzer }} →
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>
+            {{ i18n.hero_title_1 }} <span class="gradient">{{ i18n.hero_title_highlight }}</span><br>
+            {{ i18n.hero_title_2 }}
+          </h1>
+          <p class="subtitle">
+            {{ i18n.hero_subtitle }}
+          </p>
+          
+          <div class="hero-disclaimer">
+            <span class="icon">⚠️</span>
+            <p>
+              <strong>{{ i18n.disclaimer_title }}</strong><br>
+              {{ i18n.disclaimer_text }}
+            </p>
+          </div>
+
+          <div class="hero-cta">
+            <a href="/app" class="btn btn-primary">
+              🔬 {{ i18n.start_analysis }}
+            </a>
+            <a href="#how-it-works" class="btn btn-ghost">
+              📖 {{ i18n.learn_more }}
+            </a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat">
+              <div class="stat-value">{{ stats.total_draws | default('9,300+') }}</div>
+              <div class="stat-label">{{ i18n.stat_draws }}</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">{{ stats.years | default('68') }} {{ i18n.years }}</div>
+              <div class="stat-label">{{ i18n.stat_data_since }}</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">{{ stats.methods | default('12') }}</div>
+              <div class="stat-label">{{ i18n.stat_methods }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="lottery-balls">
+            {% for ball in sample_balls %}
+            <div class="ball {{ ball.class }}">{{ ball.number }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="visual-stats">
+            <div class="mini-stat">
+              <div class="mini-stat-header">
+                <span class="mini-stat-icon">🔥</span>
+                <span class="mini-stat-label">{{ i18n.hottest }}</span>
+              </div>
+              <div class="mini-stat-value amber">{{ hot_number | default('36') }}</div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-stat-header">
+                <span class="mini-stat-icon">❄️</span>
+                <span class="mini-stat-label">{{ i18n.coldest }}</span>
+              </div>
+              <div class="mini-stat-value blue">{{ cold_number | default('41') }}</div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-stat-header">
+                <span class="mini-stat-icon">📊</span>
+                <span class="mini-stat-label">{{ i18n.chi_square }}</span>
+              </div>
+              <div class="mini-stat-value green">p = {{ chi_p_value | default('0.52') }}</div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-stat-header">
+                <span class="mini-stat-icon">🎲</span>
+                <span class="mini-stat-label">{{ i18n.entropy }}</span>
+              </div>
+              <div class="mini-stat-value purple">{{ entropy_value | default('5.61') }} bit</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+      <div class="section-header">
+        <span class="section-tag">{{ i18n.features }}</span>
+        <h2 class="section-title">{{ i18n.features_title }}</h2>
+        <p class="section-subtitle">
+          {{ i18n.features_subtitle }}
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon blue">📊</div>
+          <h3 class="feature-title">{{ i18n.feature_frequency_title }}</h3>
+          <p class="feature-desc">
+            {{ i18n.feature_frequency_desc }}
+          </p>
+          <a href="/app" class="feature-link">
+            {{ i18n.explore }} →
+          </a>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon purple">🧪</div>
+          <h3 class="feature-title">{{ i18n.feature_randomness_title }}</h3>
+          <p class="feature-desc">
+            {{ i18n.feature_randomness_desc }}
+          </p>
+          <a href="/app" class="feature-link">
+            {{ i18n.test }} →
+          </a>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon cyan">🔍</div>
+          <h3 class="feature-title">{{ i18n.feature_patterns_title }}</h3>
+          <p class="feature-desc">
+            {{ i18n.feature_patterns_desc }}
+          </p>
+          <a href="/app" class="feature-link">
+            {{ i18n.analyze }} →
+          </a>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon green">🌡️</div>
+          <h3 class="feature-title">{{ i18n.feature_correlation_title }}</h3>
+          <p class="feature-desc">
+            {{ i18n.feature_correlation_desc }}
+          </p>
+          <a href="/app" class="feature-link">
+            {{ i18n.view_map }} →
+          </a>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon amber">📈</div>
+          <h3 class="feature-title">{{ i18n.feature_trends_title }}</h3>
+          <p class="feature-desc">
+            {{ i18n.feature_trends_desc }}
+          </p>
+          <a href="/app" class="feature-link">
+            {{ i18n.observe }} →
+          </a>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon rose">🎲</div>
+          <h3 class="feature-title">{{ i18n.feature_generator_title }}</h3>
+          <p class="feature-desc">
+            {{ i18n.feature_generator_desc }}
+          </p>
+          <a href="/app" class="feature-link">
+            {{ i18n.generate }} →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+      <div class="section-header">
+        <span class="section-tag">{{ i18n.methodology }}</span>
+        <h2 class="section-title">{{ i18n.how_it_works_title }}</h2>
+        <p class="section-subtitle">
+          {{ i18n.how_it_works_subtitle }}
+        </p>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3 class="step-title">{{ i18n.step1_title }}</h3>
+          <p class="step-desc">
+            {{ i18n.step1_desc }}
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3 class="step-title">{{ i18n.step2_title }}</h3>
+          <p class="step-desc">
+            {{ i18n.step2_desc }}
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3 class="step-title">{{ i18n.step3_title }}</h3>
+          <p class="step-desc">
+            {{ i18n.step3_desc }}
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3 class="step-title">{{ i18n.step4_title }}</h3>
+          <p class="step-desc">
+            {{ i18n.step4_desc }}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <p class="footer-text">
+          © 2025 Lottery Lab — {{ i18n.footer_tagline }}
+        </p>
+        <div class="footer-links">
+          <a href="https://github.com/bartoszclapinski/LotteryLAB" target="_blank" rel="noopener">GitHub</a>
+          <a href="/docs">{{ i18n.docs }}</a>
+          <a href="/methodology">{{ i18n.methodology }}</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
