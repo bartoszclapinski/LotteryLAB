@@ -10,19 +10,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <!-- Design System CSS -->
-    <link rel="stylesheet" href="/static/css/design-system.css?v=2" />
-    <link rel="stylesheet" href="/static/css/components.css?v=2" />
-    <link rel="stylesheet" href="/static/css/home.css?v=2" />
-    <link rel="stylesheet" href="/static/css/main.css?v=7" />
+    <link rel="stylesheet" href="/static/css/design-system.css?v=3" />
+    <link rel="stylesheet" href="/static/css/components.css?v=3" />
+    <link rel="stylesheet" href="/static/css/home.css?v=3" />
+    <link rel="stylesheet" href="/static/css/main.css?v=8" />
     <!-- Theme toggle (load early to prevent flash) -->
-    <script src="/static/js/theme-toggle.js?v=1"></script>
-    <!-- Other scripts -->
-
-    <link rel="stylesheet" href="/static/css/design-system.css?v=1" />
-    <link rel="stylesheet" href="/static/css/components.css?v=1" />
-    <link rel="stylesheet" href="/static/css/main.css?v=5" />
-    <!-- Theme toggle (load early to prevent flash) -->
-    <script src="/static/js/theme-toggle.js?v=1"></script>
+    <script src="/static/js/theme-toggle.js?v=2"></script>
     <!-- Other scripts -->
     <script src="https://unpkg.com/htmx.org@1.9.12" defer></script>
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" defer></script>
@@ -34,18 +27,15 @@
     <!-- Header (matching home.html design) -->
     <header class="header">
       <div class="header-content">
-        <div style="display: flex; align-items: center;">
-          <div class="logo-section">
-            <div class="logo">L</div>
-            <div class="site-title">{{ site_title }}</div>
-          </div>
-          <nav class="nav-tabs">
-            <a href="#" class="nav-tab active">{{ nav_overview }}</a>
-            <a href="#" class="nav-tab">{{ nav_analysis }}</a>
-            <a href="#" class="nav-tab">{{ nav_experiments }}</a>
-            <a href="#" class="nav-tab">{{ nav_docs }}</a>
-          </nav>
-        </div>
+        <a href="/" class="logo">
+          <div class="logo-icon">Λ</div>
+          <div class="logo-text">Lottery <span>Lab</span></div>
+        </a>
+        <nav class="nav-links">
+          <a href="/" class="nav-link">{{ nav_home }}</a>
+          <a href="/app" class="nav-link active">{{ nav_analyzer }}</a>
+          <a href="/methodology" class="nav-link">{{ nav_methodology }}</a>
+        </nav>
         <div class="header-actions">
           <!-- Language Switch -->
           <div class="switch-group">
@@ -56,7 +46,6 @@
             </a>
             {% endfor %}
           </div>
-          <button class="btn btn-primary">{{ new_study }}</button>          
           <!-- Theme Toggle -->
           <button id="theme-toggle" class="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
             <span class="icon-sun">☀️</span>
@@ -220,8 +209,6 @@
       </aside>
     </div>
 
-    <footer class="site-footer">
-      <div class="container">© {{ title }} — {{ footer }}</div>
     <div class="progress-section">
       <button class="btn btn-secondary" id="prev-topic">{{ prev_topic }}</button>
       <div class="progress-bar">
