@@ -97,6 +97,8 @@ Status: ✅ Completed, 🚧 In Progress, 📋 Planned
 ---
 
 ## Notes
+- API client work is blocked pending Lotto OpenAPI key; use CSV first 🚧
+- Maintain educational positioning; avoid “prediction” claims ✅
 - API client work is blocked pending Lotto OpenAPI key; using CSV/MBNet ✅
 - Maintain educational positioning; avoid "prediction" claims ✅
 - Current data: ~9300+ historical draws from 1957
@@ -105,3 +107,4 @@ Status: ✅ Completed, 🚧 In Progress, 📋 Planned
 ---
 
 *Last updated: 2025-01-06*
+
