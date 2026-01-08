@@ -35,5 +35,16 @@ Status: ✅ Completed, 🚧 In Progress, 📋 Planned
 21. [P4][E3][S:S] 📋 Theming and branding polish (light/dark tokens)
 
 ## Notes
+<<<<<<< Updated upstream
 - API client work is blocked pending Lotto OpenAPI key; use CSV first 🚧
 - Maintain educational positioning; avoid “prediction” claims ✅
+=======
+- API client work is blocked pending Lotto OpenAPI key; using CSV/MBNet ✅
+- Maintain educational positioning; avoid "prediction" claims ✅
+- Current data: ~9300+ historical draws from 1957
+- Sprint 002.5 is ~90% complete — only monte-carlo.html and cleanup remaining
+
+---
+
+*Last updated: 2025-01-06*
+>>>>>>> Stashed changes
