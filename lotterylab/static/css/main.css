@@ -40,26 +40,7 @@ html[data-theme="dark"] {
 html, body { margin: 0; background: var(--bg-primary); color: var(--text-primary); font-family: "Roboto", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial; }
 .container { max-width: 1200px; margin: 0 auto; padding: 18px; }
 
-/* Header (Google ML Crash Course-inspired) */
-.header { background: var(--bg-secondary); border-bottom: 1px solid var(--border-light); position: sticky; top: 0; z-index: 50; }
-.header-content { max-width: 1440px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
-.logo-section { display: flex; align-items: center; gap: 12px; }
-.logo { width: 32px; height: 32px; background: #1a73e8; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; }
-.site-title { font-size: 18px; color: #5f6368; font-weight: 400; }
-.nav-tabs { display: flex; gap: 8px; margin-left: 48px; }
-.nav-tab { padding: 8px 16px; color: #5f6368; text-decoration: none; border-radius: 8px; transition: all 0.2s; font-size: 14px; }
-.nav-tab.active { background: #e8f0fe; color: #1a73e8; }
-.nav-tab:hover { background: #f8f9fa; }
-.btn { padding: 10px 24px; border-radius: 8px; border: none; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-.btn-primary { background: #1a73e8; color: white; }
-.btn-primary:hover { background: #1557b0; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-
-/* Header actions (language switcher + buttons) */
-.header-actions { display: flex; align-items: center; gap: 16px; }
-.lang-switcher { display: flex; gap: 4px; background: #f1f3f4; border-radius: 8px; padding: 4px; }
-.lang-btn { padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 500; color: #5f6368; transition: all 0.2s; }
-.lang-btn:hover { background: #e8eaed; }
-.lang-btn.active { background: #fff; color: #1a73e8; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+/* Header styles are now in home.css - shared across all pages */
 
 /* Three-column layout */
 .container-3col { display: grid; grid-template-columns: 280px 1fr 280px; max-width: 1440px; margin: 0 auto; }

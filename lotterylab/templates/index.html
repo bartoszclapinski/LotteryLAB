@@ -10,6 +10,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <!-- Design System CSS -->
+    <link rel="stylesheet" href="/static/css/design-system.css?v=2" />
+    <link rel="stylesheet" href="/static/css/components.css?v=2" />
+    <link rel="stylesheet" href="/static/css/home.css?v=2" />
+    <link rel="stylesheet" href="/static/css/main.css?v=7" />
+    <!-- Theme toggle (load early to prevent flash) -->
+    <script src="/static/js/theme-toggle.js?v=1"></script>
+    <!-- Other scripts -->
+
     <link rel="stylesheet" href="/static/css/design-system.css?v=1" />
     <link rel="stylesheet" href="/static/css/components.css?v=1" />
     <link rel="stylesheet" href="/static/css/main.css?v=5" />
@@ -21,6 +29,9 @@
     <script src="/static/js/app.js?v=5" defer></script>
   </head>
   <body>
+    <div class="bg-pattern"></div>
+
+    <!-- Header (matching home.html design) -->
     <header class="header">
       <div class="header-content">
         <div style="display: flex; align-items: center;">
@@ -36,19 +47,21 @@
           </nav>
         </div>
         <div class="header-actions">
-          <div class="lang-switcher">
+          <!-- Language Switch -->
+          <div class="switch-group">
             {% for supported_lang in supported_languages %}
             <a href="/set-language?lang={{ supported_lang }}" 
-               class="lang-btn {% if lang == supported_lang %}active{% endif %}">
+               class="{% if lang == supported_lang %}active{% endif %}">
               {{ supported_lang|upper }}
             </a>
             {% endfor %}
           </div>
+          <button class="btn btn-primary">{{ new_study }}</button>          
+          <!-- Theme Toggle -->
           <button id="theme-toggle" class="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
             <span class="icon-sun">☀️</span>
             <span class="icon-moon">🌙</span>
           </button>
-          <button class="btn btn-primary">{{ new_study }}</button>
         </div>
       </div>
     </header>
@@ -85,9 +98,9 @@
 
       <main class="main-content" id="main-content">
         <div class="breadcrumb">
-          <a href="#">Lottery Lab</a>
+          <a href="/">Lottery Lab</a>
           <span>›</span>
-          <a href="#">{{ methods }}</a>
+          <a href="/app">{{ nav_analyzer }}</a>
           <span>›</span>
           <span>{{ frequency_analysis }}</span>
         </div>
@@ -207,6 +220,8 @@
       </aside>
     </div>
 
+    <footer class="site-footer">
+      <div class="container">© {{ title }} — {{ footer }}</div>
     <div class="progress-section">
       <button class="btn btn-secondary" id="prev-topic">{{ prev_topic }}</button>
       <div class="progress-bar">
@@ -216,8 +231,17 @@
       <button class="btn btn-primary" id="next-topic">{{ next_topic }}</button>
     </div>
 
-    <footer class="site-footer">
-      <div class="container">© {{ title }} — {{ footer }}</div>
+    <!-- Footer (matching home.html design) -->
+    <footer class="footer">
+      <div class="footer-content">
+        <p class="footer-text">
+          © 2025 Lottery Lab — {{ footer }}
+        </p>
+        <div class="footer-links">
+          <a href="https://github.com/bartoszclapinski/LotteryLAB" target="_blank" rel="noopener">GitHub</a>
+          <a href="/methodology">{{ nav_methodology }}</a>
+        </div>
+      </div>
     </footer>
   </body>
 </html>
