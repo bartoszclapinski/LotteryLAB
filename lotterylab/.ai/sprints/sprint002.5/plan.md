@@ -5,7 +5,7 @@
 - **Scope:** 
   - IN: Design system, homepage, metodologia, themes, cleanup, i18n
   - OUT: Nowe funkcje analityczne, ML, deployment
-- **Status:** ✅ ~95% Complete (Methodology pages done!)
+- **Status:** ✅ ~98% Complete (Only optional P2 tasks remaining)
 
 ---
 
@@ -18,7 +18,7 @@
 | D3 | Methodology overview page | P1 | ✅ Done |
 | D4 | Methodology detail pages (6 metod) | P1 | ✅ Done |
 | D5 | Dark/Light theme toggle | P1 | ✅ Done |
-| D6 | Test data cleanup (999997/999998) | P1 | 📋 Pending |
+| D6 | Test data cleanup (999997/999998) | P1 | ✅ Done (already clean) |
 | D7 | App route restructure (/app) | P2 | ✅ Done |
 | D8 | Multi-lottery selector UI | P2 | 📋 Pending |
 | D9 | URL-based i18n | P2 | 📋 Pending |
@@ -113,9 +113,10 @@
   - Dropdown in sidebar
   - Update all analysis endpoints to use selected lottery
   
-- [ ] **T4.3** Cleanup test data
+- [x] **T4.3** Cleanup test data
   - SQL script to remove draw_number > 900000
   - Verify data integrity
+  - ✅ Verified 2025-01-09: No test records found, database is clean
   
 - [x] **T4.4** Update navigation
   - Header: Home | Methodology | Analyzer | Docs
@@ -162,8 +163,8 @@
    - [x] All pages respect theme
 
 4. **No test data visible**:
-   - [ ] Draw numbers 999997, 999998 removed
-   - [ ] Only real historical data shown
+   - [x] Draw numbers 999997, 999998 removed (verified clean)
+   - [x] Only real historical data shown (max draw_number = 9377)
 
 5. **i18n works**:
    - [ ] `/pl/...` shows Polish (not implemented - using query params)
@@ -253,7 +254,7 @@
 ## 📌 Remaining Work
 
 1. ~~**Create `monte-carlo.html`**~~ ✅ DONE (2025-01-07)
-2. **Cleanup test data** (999997/999998) — ~30 min
+2. ~~**Cleanup test data**~~ ✅ VERIFIED CLEAN (2025-01-09)
 3. **URL-based i18n** (optional, P2) — ~4 hours
 4. **Multi-lottery selector** (optional, P2) — ~3 hours
 5. **Lighthouse audit** — ~1 hour

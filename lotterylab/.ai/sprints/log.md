@@ -143,3 +143,10 @@ Conventions: [UTC ISO date] (optional sprint-day) — entry
 - ✅ Added 50+ translations for Monte Carlo page (EN + PL)
 - ✅ Sprint 002.5 Methodology pages: 6/6 complete!
 - 📋 Remaining: test data cleanup, URL-based i18n (optional)
+
+- 2025-01-09 — **Test Data Cleanup & Merge Fixes** 🧹
+- ✅ Resolved merge conflicts in `index.html` (duplicate CSS, old header, duplicate footers)
+- ✅ Verified database is clean — no test records (999997/999998) found
+- ✅ Script `cleanup_test_data.py` confirms: "No test records found. Database is clean."
+- ✅ Max draw_number = 9377 (real historical data only)
+- ✅ Sprint 002.5 now ~98% complete — only optional P2 tasks remaining
