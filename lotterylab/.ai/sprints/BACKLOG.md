@@ -36,7 +36,7 @@ Status: ✅ Completed, 🚧 In Progress, 📋 Planned
 24. [P1][E7][S:S] ✅ Auto-update on server startup (lifespan handler)
 25. [P1][E3][S:M] ✅ UI alignment with design mockup (Stats Grid, Formula Box, Progress Bar, Monte Carlo demo)
 
-## Sprint 002.5 — UI Redesign 🚧 (~90% Complete)
+## Sprint 002.5 — UI Redesign 🚧 (~98% Complete)
 
 ### Phase 1: Design System ✅
 26. [P1][E8][S:M] ✅ `design-system.css` — CSS variables, design tokens (430+ lines)
@@ -59,7 +59,7 @@ Status: ✅ Completed, 🚧 In Progress, 📋 Planned
 ### Phase 4: App & Cleanup 🚧
 38. [P2][E8][S:M] ✅ Move analyzer to /app route
 39. [P2][E8][S:M] 📋 Multi-lottery selector UI
-40. [P1][E8][S:S] 📋 Cleanup test data (999997/999998)
+40. [P1][E8][S:S] ✅ Cleanup test data (999997/999998) — verified clean
 
 ### Phase 5: I18n 🚧
 41. [P1][E8][S:M] ✅ Expand translations for new pages (homepage, methodology)
@@ -102,9 +102,9 @@ Status: ✅ Completed, 🚧 In Progress, 📋 Planned
 - API client work is blocked pending Lotto OpenAPI key; using CSV/MBNet ✅
 - Maintain educational positioning; avoid "prediction" claims ✅
 - Current data: ~9300+ historical draws from 1957
-- Sprint 002.5 is ~90% complete — only monte-carlo.html and cleanup remaining
+- Sprint 002.5 is ~98% complete — only optional P2 tasks remaining (URL i18n, multi-lottery)
 
 ---
 
-*Last updated: 2025-01-06*
+*Last updated: 2025-01-09*
 
